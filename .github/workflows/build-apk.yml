@@ -3,7 +3,7 @@ name: Build APK
 on:
   push:
     branches: [claude/setup-react-native-expo-zYWmj, main]
-  workflow_dispatch:          # lets you trigger manually from GitHub's UI
+  workflow_dispatch:
 
 jobs:
   build:
@@ -40,23 +40,23 @@ jobs:
         working-directory: android
         run: ./gradlew assembleDebug -PbundleInDebug=true --no-daemon
 
-      - name: Upload APK artifact
+      - name: Upload APK as artifact (14-day download)
         uses: actions/upload-artifact@v4
         with:
           name: chess-coach-debug
           path: android/app/build/outputs/apk/debug/app-debug.apk
           retention-days: 14
 
-      - name: Copy APK to releases/
-        run: |
-          mkdir -p releases
-          cp android/app/build/outputs/apk/debug/app-debug.apk releases/chess-coach-debug.apk
-
-      - name: Commit APK to releases/
-        uses: stefanzweifel/git-auto-commit-action@v5
+      - name: Publish GitHub Release with APK
+        uses: softprops/action-gh-release@v2
         with:
-          commit_message: "ci: add debug APK to releases/ [skip ci]"
-          file_pattern: releases/chess-coach-debug.apk
-          branch: ${{ github.ref_name }}
+          tag_name: debug-build-${{ github.run_number }}
+          name: Debug Build #${{ github.run_number }}
+          body: |
+            Automated debug build from commit ${{ github.sha }}.
+            Download `app-debug.apk` below and install directly on Android
+            (enable "Install from unknown sources" in settings first).
+          prerelease: true
+          files: android/app/build/outputs/apk/debug/app-debug.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
