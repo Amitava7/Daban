@@ -36,19 +36,9 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x android/gradlew
 
-      - name: Bundle JS into APK assets
-        run: |
-          mkdir -p android/app/src/main/assets
-          npx react-native bundle \
-            --platform android \
-            --dev false \
-            --entry-file index.js \
-            --bundle-output android/app/src/main/assets/index.android.bundle \
-            --assets-dest android/app/src/main/res
-
-      - name: Build debug APK
+      - name: Build debug APK (JS bundled in)
         working-directory: android
-        run: ./gradlew assembleDebug --no-daemon
+        run: ./gradlew assembleDebug -PbundleInDebug=true --no-daemon
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
