@@ -1,0 +1,60 @@
+name: Build APK
+
+on:
+  push:
+    branches: [claude/setup-react-native-expo-zYWmj, main]
+  workflow_dispatch:          # lets you trigger manually from GitHub's UI
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Generate native Android project
+        run: npx expo prebuild --platform android --no-install
+
+      - name: Make gradlew executable
+        run: chmod +x android/gradlew
+
+      - name: Build debug APK
+        working-directory: android
+        run: ./gradlew assembleDebug --no-daemon
+        env:
+          ANDROID_HOME: ${{ env.ANDROID_HOME }}
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: chess-coach-debug
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 14
+
+      - name: Copy APK to releases/
+        run: |
+          mkdir -p releases
+          cp android/app/build/outputs/apk/debug/app-debug.apk releases/chess-coach-debug.apk
+
+      - name: Commit APK to releases/
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "ci: add debug APK to releases/ [skip ci]"
+          file_pattern: releases/chess-coach-debug.apk
+          branch: ${{ github.ref_name }}
