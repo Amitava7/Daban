@@ -8,6 +8,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout
@@ -56,3 +58,5 @@ jobs:
           commit_message: "ci: add debug APK to releases/ [skip ci]"
           file_pattern: releases/chess-coach-debug.apk
           branch: ${{ github.ref_name }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
