@@ -36,27 +36,84 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x android/gradlew
 
-      - name: Build debug APK (JS bundled in)
+      - name: Generate test signing keystore
+        run: |
+          keytool -genkey -noprompt \
+            -keystore android/app/release.keystore \
+            -alias chess-coach \
+            -keyalg RSA -keysize 2048 -validity 3650 \
+            -dname "CN=Chess Coach,O=Test,C=US" \
+            -storepass testpass123 -keypass testpass123
+
+      - name: Configure release signing
+        run: |
+          # Inject signing properties into gradle.properties
+          cat >> android/gradle.properties << 'EOF'
+
+          CHESS_STORE_FILE=release.keystore
+          CHESS_KEY_ALIAS=chess-coach
+          CHESS_STORE_PASSWORD=testpass123
+          CHESS_KEY_PASSWORD=testpass123
+          EOF
+
+          # Patch app/build.gradle to wire up the signing config
+          node - << 'JS'
+          const fs = require('fs');
+          let g = fs.readFileSync('android/app/build.gradle', 'utf8');
+
+          // Add signingConfigs block if not present
+          if (!g.includes('signingConfigs')) {
+            g = g.replace(
+              /(\n\s*buildTypes\s*\{)/,
+              `\n    signingConfigs {
+              release {
+                  storeFile file(CHESS_STORE_FILE)
+                  storePassword CHESS_STORE_PASSWORD
+                  keyAlias CHESS_KEY_ALIAS
+                  keyPassword CHESS_KEY_PASSWORD
+              }
+          }$1`
+            );
+          }
+
+          // Make release buildType use the signing config
+          g = g.replace(
+            /signingConfig signingConfigs\.release/g,
+            'signingConfig signingConfigs.release'
+          );
+
+          // If release buildType exists but has no signingConfig, add one
+          g = g.replace(
+            /(buildTypes\s*\{[^}]*release\s*\{)(\s*)/,
+            (m, p1, p2) => p1.includes('signingConfig') ? m
+              : `${p1}${p2}    signingConfig signingConfigs.release${p2}`
+          );
+
+          fs.writeFileSync('android/app/build.gradle', g);
+          console.log('build.gradle patched for release signing');
+          JS
+
+      - name: Build release APK
         working-directory: android
-        run: ./gradlew assembleDebug -PbundleInDebug=true --no-daemon
+        run: ./gradlew assembleRelease --no-daemon
 
       - name: Upload APK as artifact (14-day download)
         uses: actions/upload-artifact@v4
         with:
-          name: chess-coach-debug
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          name: chess-coach-release
+          path: android/app/build/outputs/apk/release/app-release.apk
           retention-days: 14
 
       - name: Publish GitHub Release with APK
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: debug-build-${{ github.run_number }}
-          name: Debug Build #${{ github.run_number }}
+          tag_name: build-${{ github.run_number }}
+          name: Release Build #${{ github.run_number }}
           body: |
-            Automated debug build from commit ${{ github.sha }}.
-            Download `app-debug.apk` below and install directly on Android
-            (enable "Install from unknown sources" in settings first).
+            Standalone release APK — works without a Metro server.
+
+            **Install:** download `app-release.apk`, enable "Install from unknown sources" in Android settings, then open the file.
           prerelease: true
-          files: android/app/build/outputs/apk/debug/app-debug.apk
+          files: android/app/build/outputs/apk/release/app-release.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
