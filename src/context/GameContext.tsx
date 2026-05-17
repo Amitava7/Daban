@@ -64,6 +64,8 @@ interface GameActions {
   clearCaptureFlash: () => void;
   loadSavedGame: () => Promise<boolean>;
   saveCurrentGame: () => Promise<void>;
+  undoLastMove: () => void;
+  canUndo: () => boolean;
 }
 
 const GameCtx = createContext<(GameState & GameActions) | null>(null);
@@ -423,6 +425,63 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     setHintsUsed(h => Math.min(h + 1, MAX_HINTS));
   }, []);
 
+  const canUndo = useCallback(() => {
+    if (status === 'game_over' || status === 'idle') return false;
+    if (status === 'engine_thinking') return false; // wait for engine
+    // We can undo as long as the player has at least one move in history.
+    return moveHistory.some(m => m.playerMove);
+  }, [status, moveHistory]);
+
+  const undoLastMove = useCallback(() => {
+    if (status === 'game_over' || status === 'idle' || status === 'engine_thinking') return;
+    if (moveHistory.length === 0) return;
+
+    // Undo enough half-moves to land just BEFORE the player's last move,
+    // so it becomes the player's turn again with their previous position.
+    // Typical case: history ends with [..., playerMove, engineMove] → undo 2.
+    // Blunder state: history ends with [..., playerMove] → undo 1.
+    let undoCount = 0;
+    if (moveHistory[moveHistory.length - 1].playerMove) {
+      undoCount = 1;
+    } else {
+      // last is engine move; undo it and the player move before it
+      undoCount = moveHistory.length >= 2 ? 2 : 1;
+    }
+
+    for (let i = 0; i < undoCount; i++) {
+      chess.undo();
+    }
+
+    const newFen = chess.fen();
+    const newHistory = moveHistory.slice(0, moveHistory.length - undoCount);
+
+    // Restore visual board from the resulting FEN. Piece IDs are regenerated
+    // (no animation across an undo — pieces snap to the restored position).
+    setFen(newFen);
+    setBoardPieces(piecesFromFen(newFen));
+    setMoveHistory(newHistory);
+    setLastAnalysis(null);
+    setStatus('playing');
+    setSelectedSquare(null);
+    setLegalMoves([]);
+    setCaptureFlash(null);
+
+    // Recompute last-move highlight from the new tail of history
+    const tail = newHistory[newHistory.length - 1];
+    if (tail) {
+      // Derive from/to from the SAN: not always reliable. Easier: clear the
+      // highlight since undoing has no canonical "previous move".
+      setLastMove(null);
+    } else {
+      setLastMove(null);
+    }
+
+    // Refresh eval in the background
+    setTimeout(() => {
+      setCurrentEval(getEvaluation(chess, 1));
+    }, 0);
+  }, [chess, moveHistory, status]);
+
   const loadSavedGame = useCallback(async () => {
     const saved = await Storage.getSavedGame();
     if (!saved) return false;
@@ -467,6 +526,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       boardPieces, lastMove, captureFlash,
       startNewGame, selectSquare, makeMove, resign, offerDraw,
       useHint, clearBlunderAlert, clearCaptureFlash, loadSavedGame, saveCurrentGame,
+      undoLastMove, canUndo,
     }}>
       {children}
     </GameCtx.Provider>

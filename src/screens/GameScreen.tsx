@@ -43,6 +43,7 @@ export function GameScreen() {
     selectedSquare, legalMoves, playerColor, level, timeWhite, timeBlack,
     hintsUsed, selectSquare, makeMove, resign, offerDraw, useHint,
     clearBlunderAlert, boardPieces, lastMove, captureFlash, clearCaptureFlash,
+    undoLastMove, canUndo,
   } = useGame();
   const { settings, recordGame } = useProgress();
   const [showResignModal, setShowResignModal] = useState(false);
@@ -248,6 +249,16 @@ export function GameScreen() {
               <Text style={[styles.btnText, { color: colors.onBrand }]}>
                 Hint {maxHints < 99 ? `(${maxHints - hintsUsed})` : ''}
               </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.btn,
+                { backgroundColor: colors.surface, borderColor: colors.border, opacity: canUndo() ? 1 : 0.4 },
+              ]}
+              onPress={() => { if (canUndo()) undoLastMove(); }}
+              disabled={!canUndo()}
+            >
+              <Text style={[styles.btnText, { color: colors.ink }]}>Undo</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.btn, { backgroundColor: colors.surface, borderColor: colors.border }]}

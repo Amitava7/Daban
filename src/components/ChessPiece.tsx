@@ -1,90 +1,42 @@
-import React, { memo } from 'react';
-import Svg, { Text as SvgText, G } from 'react-native-svg';
-
-const GLYPHS: Record<string, string> = {
-  K: '♚', // ♚
-  Q: '♛', // ♛
-  R: '♜', // ♜
-  B: '♝', // ♝
-  N: '♞', // ♞
-  P: '♟', // ♟
-};
+import React, { memo, useMemo } from 'react';
+import { View, StyleSheet } from 'react-native';
+import { SvgXml } from 'react-native-svg';
+import { useTheme } from '../context/ThemeContext';
+import { PIECE_SVGS, tunePieceSvg } from './chessPieceSvgs';
 
 interface ChessPieceProps {
-  code: string;
+  code: string; // 'wK', 'wQ', ..., 'bP'
   size: number;
-  fillLight?: string;   // color used for white pieces' fill
-  fillDark?: string;    // color used for black pieces' fill
-  strokeLight?: string; // outline color for white pieces (dark)
-  strokeDark?: string;  // outline color for black pieces (light)
 }
 
-function ChessPieceImpl({
-  code,
-  size,
-  fillLight = '#f8f0d8',
-  fillDark = '#1a1410',
-  strokeLight = '#1a1410',
-  strokeDark = '#fdf8e8',
-}: ChessPieceProps) {
-  const isWhite = code[0] === 'w';
-  const type = code[1];
-  const glyph = GLYPHS[type] ?? '?';
+function ChessPieceImpl({ code, size }: ChessPieceProps) {
+  const { mode } = useTheme();
+  const color = code[0] as 'w' | 'b';
 
-  const fontSize = size * 0.86;
-  const fill = isWhite ? fillLight : fillDark;
-  const stroke = isWhite ? strokeLight : strokeDark;
-  const strokeW = Math.max(1.5, size * 0.06);
-  const cx = size / 2;
-  const cy = size * 0.78;
-  const shadowDx = size * 0.025;
-  const shadowDy = size * 0.045;
+  const xml = useMemo(() => {
+    const base = PIECE_SVGS[code];
+    if (!base) return null;
+    return tunePieceSvg(base, color, mode);
+  }, [code, color, mode]);
+
+  if (!xml) return null;
+
+  // The cburnett SVG is designed at 45×45. Render at the full square size so
+  // the piece visually fills (~95%) the cell, matching standard chess UI feel.
+  const pieceSize = Math.round(size * 0.96);
 
   return (
-    <Svg width={size} height={size} pointerEvents="none">
-      <G>
-        {/* Drop shadow (offset, semi-transparent) */}
-        <SvgText
-          x={cx + shadowDx}
-          y={cy + shadowDy}
-          fontSize={fontSize}
-          textAnchor="middle"
-          fill="rgba(0,0,0,0.40)"
-          stroke="rgba(0,0,0,0.40)"
-          strokeWidth={strokeW * 1.6}
-          strokeLinejoin="round"
-          fontWeight="bold"
-        >
-          {glyph}
-        </SvgText>
-        {/* Outline */}
-        <SvgText
-          x={cx}
-          y={cy}
-          fontSize={fontSize}
-          textAnchor="middle"
-          fill="none"
-          stroke={stroke}
-          strokeWidth={strokeW * 1.6}
-          strokeLinejoin="round"
-          fontWeight="bold"
-        >
-          {glyph}
-        </SvgText>
-        {/* Fill */}
-        <SvgText
-          x={cx}
-          y={cy}
-          fontSize={fontSize}
-          textAnchor="middle"
-          fill={fill}
-          fontWeight="bold"
-        >
-          {glyph}
-        </SvgText>
-      </G>
-    </Svg>
+    <View style={[styles.wrap, { width: size, height: size }]} pointerEvents="none">
+      <SvgXml xml={xml} width={pieceSize} height={pieceSize} />
+    </View>
   );
 }
 
 export const ChessPiece = memo(ChessPieceImpl);
+
+const styles = StyleSheet.create({
+  wrap: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});

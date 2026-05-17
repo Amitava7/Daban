@@ -4,7 +4,6 @@ import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withTiming,
-  withSequence,
   withDelay,
   Easing,
 } from 'react-native-reanimated';
@@ -60,17 +59,21 @@ interface AnimatedPieceProps {
   animate: boolean;
 }
 
-function AnimatedPieceImpl({ piece, squareSize, flipped, animate }: AnimatedPieceProps) {
+function AnimatedPiece({ piece, squareSize, flipped, animate }: AnimatedPieceProps) {
   const { col, row } = sqToCoord(piece.sq, flipped);
   const targetX = col * squareSize;
   const targetY = row * squareSize;
+  const captured = !!piece.captured;
 
   const x = useSharedValue(targetX);
   const y = useSharedValue(targetY);
-  const opacity = useSharedValue(1);
-  const scale = useSharedValue(1);
+  const opacity = useSharedValue(captured ? 0 : 1);
+  const scale = useSharedValue(captured ? 0.4 : 1);
 
-  // Animate position changes
+  // Position sync: runs after EVERY render so the visual position can never
+  // drift from the prop. If targetX/Y match current x/y, withTiming is a no-op.
+  // No deps array on purpose — we don't want React's dep comparison to ever
+  // suppress a needed re-sync (which was the regression cause).
   useEffect(() => {
     if (!animate) {
       x.value = targetX;
@@ -79,22 +82,23 @@ function AnimatedPieceImpl({ piece, squareSize, flipped, animate }: AnimatedPiec
     }
     x.value = withTiming(targetX, { duration: 230, easing: Easing.out(Easing.cubic) });
     y.value = withTiming(targetY, { duration: 230, easing: Easing.out(Easing.cubic) });
-  }, [targetX, targetY, animate]);
+  });
 
-  // Capture animation
+  // Capture animation: fade + shrink. Only fires when captured flag changes.
   useEffect(() => {
-    if (piece.captured) {
+    if (captured) {
       if (animate) {
         opacity.value = withDelay(80, withTiming(0, { duration: 200 }));
         scale.value = withDelay(80, withTiming(0.4, { duration: 220 }));
       } else {
         opacity.value = 0;
+        scale.value = 0.4;
       }
     } else {
       opacity.value = 1;
       scale.value = 1;
     }
-  }, [piece.captured, animate]);
+  }, [captured, animate]);
 
   const half = squareSize / 2;
   const style = useAnimatedStyle(() => ({
@@ -126,8 +130,6 @@ function AnimatedPieceImpl({ piece, squareSize, flipped, animate }: AnimatedPiec
     </Animated.View>
   );
 }
-
-const AnimatedPiece = React.memo(AnimatedPieceImpl);
 
 export function Board({
   pieces,
