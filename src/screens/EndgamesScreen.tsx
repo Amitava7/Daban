@@ -2,41 +2,49 @@ import React from 'react';
 import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTheme } from '../context/ThemeContext';
+import { useProgress } from '../context/ProgressContext';
+import { RootStackParamList } from '../navigation/types';
 import { AppBar } from '../components/AppBar';
 import { Board } from '../components/Board';
 import { Card } from '../components/Card';
 import { Pill } from '../components/Pill';
+import {
+  CATEGORY_META, getPuzzlesByCategory, EndgameCategory, getAllPuzzles,
+} from '../engine/EndgameGenerator';
+import { fenToPieces } from '../utils/fenUtils';
 
-const KPK = {
-  wK: { sq: 'e3', code: 'wK' },
-  wP: { sq: 'e4', code: 'wP' },
-  bK: { sq: 'e6', code: 'bK' },
-};
+type Nav = NativeStackNavigationProp<RootStackParamList, 'Endgames'>;
 
-const CATEGORIES = [
-  { name: 'Basic mates', done: '3 / 5' },
-  { name: 'Pawn endings', done: '1 / 8', current: true },
-  { name: 'Rook endings', done: '0 / 6' },
-  { name: 'Minor pieces', done: '0 / 4' },
-];
+const CATEGORIES: EndgameCategory[] = ['basic_mates', 'pawn_endings', 'rook_endings', 'minor_pieces'];
 
-function CategoryRow({ name, done, current }: { name: string; done: string; current?: boolean }) {
+function CategoryRow({
+  category, done, total, current, onPress,
+}: {
+  category: EndgameCategory; done: number; total: number; current?: boolean; onPress: () => void;
+}) {
   const { colors } = useTheme();
-  const [n, total] = done.split(' / ').map(Number);
-  const pct = (n / total) * 100;
+  const pct = total > 0 ? (done / total) * 100 : 0;
+  const meta = CATEGORY_META[category];
 
   return (
-    <View style={[
-      styles.row,
-      { backgroundColor: current ? colors.brandSoft : colors.surface, borderColor: current ? colors.brand : colors.border },
-    ]}>
+    <TouchableOpacity
+      onPress={onPress}
+      activeOpacity={0.7}
+      style={[
+        styles.row,
+        { backgroundColor: current ? colors.brandSoft : colors.surface, borderColor: current ? colors.brand : colors.border },
+      ]}
+    >
       <View style={{ flex: 1 }}>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-          <Text style={[styles.rowTitle, { color: colors.ink }]}>{name}</Text>
+          <Text style={[styles.rowTitle, { color: colors.ink }]}>{meta.name}</Text>
           {current && <Pill tone="outlined-brand"><Text>resume</Text></Pill>}
         </View>
-        <Text style={[styles.rowMeta, { color: colors.inkSoft, fontFamily: 'monospace' }]}>{done}</Text>
+        <Text style={[styles.rowMeta, { color: colors.inkSoft, fontFamily: 'monospace' }]}>
+          {done} / {total} solved
+        </Text>
       </View>
       <View style={{ width: 64, marginRight: 8 }}>
         <View style={[styles.progressTrack, { backgroundColor: colors.surface3 }]}>
@@ -44,57 +52,108 @@ function CategoryRow({ name, done, current }: { name: string; done: string; curr
         </View>
       </View>
       <Text style={[styles.chev, { color: colors.inkMute }]}>›</Text>
-    </View>
+    </TouchableOpacity>
   );
 }
 
 export function EndgamesScreen() {
   const { colors } = useTheme();
-  const nav = useNavigation();
+  const nav = useNavigation<Nav>();
+  const { endgameCompleted } = useProgress();
+
+  // Today's pick: first unsolved puzzle
+  const todaysPuzzle = getAllPuzzles().find(p => !endgameCompleted[p.id])
+    ?? getAllPuzzles()[0];
+  const todayPieces = todaysPuzzle ? fenToPieces(todaysPuzzle.fen) : {};
+
+  const getCategoryProgress = (cat: EndgameCategory) => {
+    const puzzles = getPuzzlesByCategory(cat);
+    const done = puzzles.filter(p => endgameCompleted[p.id]).length;
+    return { done, total: puzzles.length };
+  };
+
+  // Find current category (first with progress)
+  const currentCategory = CATEGORIES.find(cat => {
+    const { done, total } = getCategoryProgress(cat);
+    return done > 0 && done < total;
+  }) ?? CATEGORIES[0];
 
   return (
     <SafeAreaView style={[styles.safe, { backgroundColor: colors.bg }]}>
       <AppBar left="‹" title="Endgames" right="+" onLeft={() => nav.goBack()} />
       <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
         {/* Today's pick */}
-        <Card variant="brand" loose>
-          <View style={styles.pickHeader}>
-            <Text style={[styles.kicker, { color: colors.brand }]}>Today · 3 min</Text>
-            <Pill tone="outlined-brand"><Text>essential</Text></Pill>
-          </View>
-          <Text style={[styles.pickTitle, { color: colors.brand2, fontFamily: 'serif' }]}>
-            K + P <Text style={{ fontStyle: 'italic', fontWeight: '400' }}>vs</Text> K
-          </Text>
-          <Text style={[styles.pickSub, { color: colors.brand2 }]}>
-            The square rule. Promote the pawn — and don't let the king cut you off.
-          </Text>
-
-          <View style={styles.pickContent}>
-            <View style={{ width: 140 }}>
-              <Board pieces={KPK} highlights={[{ sq: 'e4', kind: 'good' }]} coords />
-            </View>
-            <View style={styles.pickInfo}>
-              <Text style={[styles.pickRole, { color: colors.brand2, fontFamily: 'serif' }]}>You're White</Text>
-              <Text style={[styles.pickGoal, { color: colors.brand2 }]}>Goal: queen the pawn.</Text>
-              <Text style={[styles.pickNote, { color: colors.brand2 }]}>
-                Coach is on. Hints & refutations work like in a real game.
+        {todaysPuzzle && (
+          <Card variant="brand" loose>
+            <View style={styles.pickHeader}>
+              <Text style={[styles.kicker, { color: colors.brand }]}>
+                {endgameCompleted[todaysPuzzle.id] ? 'Completed ✓' : `Today · ${CATEGORY_META[todaysPuzzle.category].name}`}
               </Text>
+              <Pill tone="outlined-brand"><Text>essential</Text></Pill>
             </View>
-          </View>
+            <Text style={[styles.pickTitle, { color: colors.brand2, fontFamily: 'serif' }]}>
+              {todaysPuzzle.title}
+            </Text>
+            <Text style={[styles.pickSub, { color: colors.brand2 }]}>
+              {todaysPuzzle.description}
+            </Text>
 
-          <View style={styles.pickBtns}>
-            <TouchableOpacity style={[styles.btn, { backgroundColor: colors.brand }]}>
-              <Text style={[styles.btnText, { color: colors.onBrand }]}>Solve ▶</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={[styles.btnOutline, { borderColor: colors.brand }]}>
-              <Text style={[styles.btnText, { color: colors.brand2 }]}>Skip</Text>
-            </TouchableOpacity>
-          </View>
-        </Card>
+            <View style={styles.pickContent}>
+              <View style={{ width: 140 }}>
+                <Board
+                  pieces={todayPieces}
+                  flipped={todaysPuzzle.playerSide === 'b'}
+                  coords
+                />
+              </View>
+              <View style={styles.pickInfo}>
+                <Text style={[styles.pickRole, { color: colors.brand2, fontFamily: 'serif' }]}>
+                  You're {todaysPuzzle.playerSide === 'w' ? 'White' : 'Black'}
+                </Text>
+                <Text style={[styles.pickGoal, { color: colors.brand2 }]}>{todaysPuzzle.goal}</Text>
+                {todaysPuzzle.hint && (
+                  <Text style={[styles.pickNote, { color: colors.brand2 }]}>
+                    Hint: {todaysPuzzle.hint}
+                  </Text>
+                )}
+              </View>
+            </View>
+
+            <View style={styles.pickBtns}>
+              <TouchableOpacity
+                style={[styles.btn, { backgroundColor: colors.brand }]}
+                onPress={() => nav.navigate('EndgamePuzzle', { puzzleId: todaysPuzzle.id })}
+              >
+                <Text style={[styles.btnText, { color: colors.onBrand }]}>
+                  {endgameCompleted[todaysPuzzle.id] ? 'Retry ▶' : 'Solve ▶'}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={[styles.btnOutline, { borderColor: colors.brand }]}>
+                <Text style={[styles.btnText, { color: colors.brand2 }]}>Skip</Text>
+              </TouchableOpacity>
+            </View>
+          </Card>
+        )}
 
         <Text style={[styles.sectionTitle, { color: colors.ink, fontFamily: 'serif' }]}>Categories</Text>
 
-        {CATEGORIES.map(c => <CategoryRow key={c.name} {...c} />)}
+        {CATEGORIES.map(cat => {
+          const { done, total } = getCategoryProgress(cat);
+          return (
+            <CategoryRow
+              key={cat}
+              category={cat}
+              done={done}
+              total={total}
+              current={cat === currentCategory}
+              onPress={() => {
+                const first = getPuzzlesByCategory(cat).find(p => !endgameCompleted[p.id])
+                  ?? getPuzzlesByCategory(cat)[0];
+                if (first) nav.navigate('EndgamePuzzle', { puzzleId: first.id });
+              }}
+            />
+          );
+        })}
       </ScrollView>
     </SafeAreaView>
   );

@@ -1,48 +1,87 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '../context/ThemeContext';
+import { useGame } from '../context/GameContext';
+import { useProgress } from '../context/ProgressContext';
 import { RootStackParamList } from '../navigation/types';
 import { StatChip } from '../components/StatChip';
 import { NavRow } from '../components/NavRow';
 import { Board } from '../components/Board';
 import { Pill } from '../components/Pill';
+import { fenToPieces } from '../utils/fenUtils';
+import { Storage } from '../services/StorageService';
+import { OPENINGS } from '../engine/OpeningBook';
+import { CATEGORY_META, getAllPuzzles } from '../engine/EndgameGenerator';
 
 type Nav = NativeStackNavigationProp<RootStackParamList, 'Home'>;
 
-const RESUME_POS = {
-  wK: { sq: 'g1', code: 'wK' }, wRa: { sq: 'a1', code: 'wR' }, wRf: { sq: 'f1', code: 'wR' },
-  wQ: { sq: 'd1', code: 'wQ' }, wBc: { sq: 'c4', code: 'wB' }, wNf: { sq: 'f3', code: 'wN' },
-  wPa: { sq: 'a2', code: 'wP' }, wPb: { sq: 'b2', code: 'wP' }, wPc: { sq: 'c2', code: 'wP' },
-  wPd: { sq: 'd3', code: 'wP' }, wPe: { sq: 'e4', code: 'wP' }, wPf: { sq: 'f2', code: 'wP' },
-  wPg: { sq: 'g2', code: 'wP' }, wPh: { sq: 'h2', code: 'wP' },
-  bK: { sq: 'g8', code: 'bK' }, bRa: { sq: 'a8', code: 'bR' }, bRf: { sq: 'f8', code: 'bR' },
-  bQ: { sq: 'd8', code: 'bQ' }, bBc: { sq: 'c5', code: 'bB' },
-  bNc: { sq: 'c6', code: 'bN' }, bNf: { sq: 'f6', code: 'bN' },
-  bPa: { sq: 'a7', code: 'bP' }, bPb: { sq: 'b7', code: 'bP' }, bPc: { sq: 'c7', code: 'bP' },
-  bPd: { sq: 'd7', code: 'bP' }, bPe: { sq: 'e5', code: 'bP' },
-  bPf: { sq: 'f7', code: 'bP' }, bPg: { sq: 'g7', code: 'bP' }, bPh: { sq: 'h7', code: 'bP' },
-};
+const INITIAL_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
+
+function getDayStreak(games: { date: string }[]): number {
+  if (games.length === 0) return 0;
+  let streak = 0;
+  let currentDay = new Date();
+  currentDay.setHours(0, 0, 0, 0);
+  const sortedDays = [...new Set(games.map(g => {
+    const d = new Date(g.date);
+    d.setHours(0, 0, 0, 0);
+    return d.getTime();
+  }))].sort((a, b) => b - a);
+
+  for (const day of sortedDays) {
+    const diff = (currentDay.getTime() - day) / (24 * 60 * 60 * 1000);
+    if (diff <= 1) { streak++; currentDay = new Date(day); }
+    else break;
+  }
+  return streak;
+}
 
 export function HomeScreen() {
   const { colors } = useTheme();
   const nav = useNavigation<Nav>();
+  const { fen, status, playerColor, level } = useGame();
+  const { progress, settings, openingMastery, endgameCompleted, weeklyEloChange } = useProgress();
+
+  const hasActiveGame = status === 'playing' || status === 'engine_thinking' || status === 'player_blundered';
+  const currentFen = hasActiveGame ? fen : INITIAL_FEN;
+  const resumePieces = fenToPieces(currentFen);
+  const wEloChange = weeklyEloChange();
+  const streak = getDayStreak(progress.games);
+  const accuracy = (() => {
+    const recent = progress.games.slice(0, 5);
+    if (recent.length === 0) return 0;
+    return Math.round(recent.reduce((s, g) => s + g.accuracy, 0) / recent.length);
+  })();
+
+  // Best opening to practice
+  const bestOpeningToPractice = OPENINGS.map(o => {
+    const m = openingMastery[o.id] ?? { played: 0, correct: 0 };
+    const mastery = m.played > 0 ? Math.round((m.correct / m.played) * 100) : 0;
+    return { ...o, mastery };
+  }).sort((a, b) => a.mastery - b.mastery)[0];
+
+  // Next endgame puzzle
+  const nextEndgame = getAllPuzzles().find(p => !endgameCompleted[p.id]);
+
+  const today = new Date();
+  const dayName = today.toLocaleDateString('en-US', { weekday: 'long' });
+  const practiceDay = progress.games.length + 1;
 
   return (
     <SafeAreaView style={[styles.safe, { backgroundColor: colors.bg }]}>
-      <ScrollView
-        contentContainerStyle={styles.scroll}
-        showsVerticalScrollIndicator={false}
-      >
+      <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
         {/* Header row */}
         <View style={styles.header}>
           <View style={styles.headerLeft}>
-            <Text style={[styles.kicker, { color: colors.inkMute }]}>Tuesday · day 12 of practice</Text>
+            <Text style={[styles.kicker, { color: colors.inkMute }]}>
+              {dayName} · day {practiceDay} of practice
+            </Text>
             <Text style={[styles.greeting, { color: colors.ink }]}>
               Welcome back,{' '}
-              <Text style={[styles.greetingName, { color: colors.brand, fontStyle: 'italic' }]}>Sam</Text>
+              <Text style={[styles.greetingName, { color: colors.brand, fontStyle: 'italic' }]}>Player</Text>
             </Text>
           </View>
           <TouchableOpacity onPress={() => nav.navigate('Settings')}>
@@ -52,26 +91,34 @@ export function HomeScreen() {
 
         {/* Stat chips */}
         <View style={styles.statsRow}>
-          <StatChip label="ELO" value="1280" delta="+24" />
-          <StatChip label="Streak" value="3" suffix="🔥" />
-          <StatChip label="Accuracy" value="78%" />
+          <StatChip label="ELO" value={progress.elo.toString()} delta={wEloChange !== 0 ? `${wEloChange >= 0 ? '+' : ''}${wEloChange}` : undefined} />
+          <StatChip label="Streak" value={streak.toString()} suffix="🔥" />
+          <StatChip label="Accuracy" value={accuracy > 0 ? `${accuracy}%` : '—'} />
         </View>
 
-        {/* Resume hero */}
+        {/* Resume / New game hero */}
         <TouchableOpacity
           style={[styles.resumeCard, { backgroundColor: colors.brandSoft, borderColor: colors.brandTint }]}
-          onPress={() => nav.navigate('Game')}
+          onPress={() => hasActiveGame ? nav.navigate('Game') : nav.navigate('ColorPicker')}
           activeOpacity={0.8}
         >
           <View style={styles.resumeBoard}>
-            <Board pieces={RESUME_POS} size={96} />
+            <Board pieces={resumePieces} size={96} flipped={playerColor === 'b'} />
           </View>
           <View style={styles.resumeInfo}>
-            <Text style={[styles.kicker, { color: colors.brand }]}>Resume game</Text>
-            <Text style={[styles.resumeTitle, { color: colors.brand2, fontFamily: 'serif', fontStyle: 'italic' }]}>
-              Move 14 · you're +0.3
+            <Text style={[styles.kicker, { color: colors.brand }]}>
+              {hasActiveGame ? 'Resume game' : 'New game'}
             </Text>
-            <Text style={[styles.resumeMeta, { color: colors.brand2 }]}>vs Coach Lv 4 · started 2h ago</Text>
+            <Text style={[styles.resumeTitle, { color: colors.brand2, fontFamily: 'serif', fontStyle: 'italic' }]}>
+              {hasActiveGame
+                ? `Move ${Math.floor(progress.games.length + 1)} · vs Coach Lv ${level}`
+                : 'vs Coach · tap to start'}
+            </Text>
+            <Text style={[styles.resumeMeta, { color: colors.brand2 }]}>
+              {hasActiveGame
+                ? `Level ${level} · ${playerColor === 'w' ? 'White' : 'Black'}`
+                : `Level ${settings.level} · choose color`}
+            </Text>
           </View>
           <View style={[styles.resumeBtn, { backgroundColor: colors.brand }]}>
             <Text style={[styles.resumeBtnText, { color: colors.onBrand }]}>▶</Text>
@@ -80,10 +127,34 @@ export function HomeScreen() {
 
         {/* Nav rows */}
         <View style={styles.navList}>
-          <NavRow glyph="♟" title="New game" meta="Level 4 · ≈ 1100 ELO" onPress={() => nav.navigate('Game')} />
-          <NavRow glyph="♝" title="Openings" meta="Italian Game · 62% mastered" tone="brand" onPress={() => nav.navigate('Openings')} />
-          <NavRow glyph="♚" title="Endgames" meta="K + P vs K next up" onPress={() => nav.navigate('Endgames')} />
-          <NavRow glyph="↗" title="Progress" meta="+24 ELO this week" tone="good" onPress={() => nav.navigate('Progress')} />
+          <NavRow
+            glyph="♟"
+            title="New game"
+            meta={`Level ${settings.level} · ≈ ${[600,700,850,1000,1100,1250,1400,1550,1700,1900][settings.level-1]} ELO`}
+            onPress={() => nav.navigate('ColorPicker')}
+          />
+          <NavRow
+            glyph="♝"
+            title="Openings"
+            meta={bestOpeningToPractice
+              ? `${bestOpeningToPractice.name} · ${bestOpeningToPractice.mastery}% mastered`
+              : 'Drill your openings'}
+            tone="brand"
+            onPress={() => nav.navigate('Openings')}
+          />
+          <NavRow
+            glyph="♚"
+            title="Endgames"
+            meta={nextEndgame ? `${nextEndgame.title} next up` : 'All puzzles complete!'}
+            onPress={() => nav.navigate('Endgames')}
+          />
+          <NavRow
+            glyph="↗"
+            title="Progress"
+            meta={wEloChange !== 0 ? `${wEloChange >= 0 ? '+' : ''}${wEloChange} ELO this week` : `${progress.games.length} games played`}
+            tone="good"
+            onPress={() => nav.navigate('Progress')}
+          />
         </View>
 
         {/* Footer */}
@@ -107,24 +178,14 @@ const styles = StyleSheet.create({
   settingsIcon: { fontSize: 22, padding: 4 },
   statsRow: { flexDirection: 'row', gap: 10 },
   resumeCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 14,
-    padding: 14,
-    borderWidth: 1,
-    borderRadius: 18,
+    flexDirection: 'row', alignItems: 'center', gap: 14,
+    padding: 14, borderWidth: 1, borderRadius: 18,
   },
   resumeBoard: { width: 96, flexShrink: 0 },
   resumeInfo: { flex: 1 },
   resumeTitle: { fontSize: 19, fontWeight: '500', lineHeight: 22, marginTop: 4 },
   resumeMeta: { fontSize: 12, opacity: 0.75, marginTop: 2 },
-  resumeBtn: {
-    width: 44,
-    height: 44,
-    borderRadius: 999,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+  resumeBtn: { width: 44, height: 44, borderRadius: 999, alignItems: 'center', justifyContent: 'center' },
   resumeBtnText: { fontSize: 16 },
   navList: { gap: 10 },
   footer: { flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 4, marginTop: 4 },

@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, TouchableOpacity, ScrollView, StyleSheet, Switch } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Slider from '@react-native-community/slider';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '../context/ThemeContext';
+import { useProgress } from '../context/ProgressContext';
 import { AppBar } from '../components/AppBar';
 import { Pill } from '../components/Pill';
 
@@ -16,11 +17,16 @@ const PROFILES = [
   { name: 'Tournament', sub: 'No coach. Hide eval & feedback.', detail: 'for ranked / OTB prep' },
 ];
 
+const TIME_OPTIONS: { label: string; value: 'none' | '5min' | '10min' }[] = [
+  { label: 'No clock', value: 'none' },
+  { label: '5 min', value: '5min' },
+  { label: '10 min', value: '10min' },
+];
+
 function ProfileCard({ name, sub, detail, active, onPress }: {
   name: string; sub: string; detail: string; active: boolean; onPress: () => void;
 }) {
   const { colors } = useTheme();
-
   return (
     <TouchableOpacity
       style={[
@@ -49,10 +55,9 @@ function ProfileCard({ name, sub, detail, active, onPress }: {
 export function SettingsScreen() {
   const { colors, toggleTheme, mode } = useTheme();
   const nav = useNavigation();
-  const [diff, setDiff] = useState(4);
-  const [profile, setProfile] = useState('Loud');
+  const { settings, updateSettings } = useProgress();
 
-  const elo = ELO_MAP[Math.round(diff) - 1] ?? ELO_MAP[3];
+  const elo = ELO_MAP[Math.round(settings.level) - 1] ?? ELO_MAP[3];
 
   return (
     <SafeAreaView style={[styles.safe, { backgroundColor: colors.bg }]}>
@@ -63,7 +68,7 @@ export function SettingsScreen() {
           <View style={styles.diffRow}>
             <Text style={[styles.diffLabel, { color: colors.ink }]}>Difficulty</Text>
             <Text style={[styles.diffValue, { color: colors.brand, fontFamily: 'serif' }]}>
-              Lv {Math.round(diff)}
+              Lv {Math.round(settings.level)}
               <Text style={[styles.diffElo, { color: colors.inkMute, fontFamily: 'monospace' }]}>  ≈ {elo} ELO</Text>
             </Text>
           </View>
@@ -72,8 +77,8 @@ export function SettingsScreen() {
             minimumValue={1}
             maximumValue={10}
             step={1}
-            value={diff}
-            onValueChange={setDiff}
+            value={settings.level}
+            onValueChange={v => updateSettings({ level: Math.round(v) })}
             minimumTrackTintColor={colors.brand}
             maximumTrackTintColor={colors.surface3}
             thumbTintColor={colors.ink}
@@ -90,10 +95,36 @@ export function SettingsScreen() {
           <Text style={[styles.toggleLabel, { color: colors.ink }]}>Dark mode</Text>
           <Switch
             value={mode === 'dark'}
-            onValueChange={toggleTheme}
+            onValueChange={() => { toggleTheme(); updateSettings({ mode: mode === 'dark' ? 'light' : 'dark' }); }}
             trackColor={{ false: colors.surface3, true: colors.brand }}
             thumbColor={colors.surface}
           />
+        </View>
+
+        {/* Time control */}
+        <View style={[styles.diffBlock, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+          <Text style={[styles.diffLabel, { color: colors.ink, marginBottom: 12 }]}>Default time control</Text>
+          <View style={{ flexDirection: 'row', gap: 8 }}>
+            {TIME_OPTIONS.map(opt => (
+              <TouchableOpacity
+                key={opt.value}
+                onPress={() => updateSettings({ timeControl: opt.value })}
+                style={[
+                  styles.timeBtn,
+                  {
+                    backgroundColor: settings.timeControl === opt.value ? colors.brandSoft : colors.surface2,
+                    borderColor: settings.timeControl === opt.value ? colors.brand : colors.border,
+                  },
+                ]}
+              >
+                <Text style={[styles.timeBtnText, {
+                  color: settings.timeControl === opt.value ? colors.brand2 : colors.ink,
+                }]}>
+                  {opt.label}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
         </View>
 
         <Text style={[styles.sectionKicker, { color: colors.inkMute }]}>Personality</Text>
@@ -102,8 +133,8 @@ export function SettingsScreen() {
           <ProfileCard
             key={p.name}
             {...p}
-            active={profile === p.name}
-            onPress={() => setProfile(p.name)}
+            active={settings.personality === p.name}
+            onPress={() => updateSettings({ personality: p.name })}
           />
         ))}
 
@@ -126,42 +157,30 @@ const styles = StyleSheet.create({
   diffTicks: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 4 },
   diffTick: { fontSize: 10, fontFamily: 'monospace' },
   toggleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: 16,
-    borderWidth: 1,
-    borderRadius: 12,
+    flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
+    padding: 16, borderWidth: 1, borderRadius: 12,
   },
   toggleLabel: { fontSize: 14, fontWeight: '600' },
+  timeBtn: {
+    flex: 1, alignItems: 'center', paddingVertical: 10,
+    borderRadius: 10, borderWidth: 1.5,
+  },
+  timeBtnText: { fontSize: 13, fontWeight: '600' },
   sectionKicker: {
-    fontSize: 11,
-    fontFamily: 'monospace',
-    textTransform: 'uppercase',
-    letterSpacing: 1.2,
-    marginTop: 4,
+    fontSize: 11, fontFamily: 'monospace', textTransform: 'uppercase',
+    letterSpacing: 1.2, marginTop: 4,
   },
   profile: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-    padding: 14,
-    paddingHorizontal: 16,
-    borderWidth: 1,
-    borderRadius: 18,
+    flexDirection: 'row', alignItems: 'center', gap: 12,
+    padding: 14, paddingHorizontal: 16, borderWidth: 1, borderRadius: 18,
   },
   profileNameRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   profileName: { fontSize: 19, fontWeight: '500', letterSpacing: -0.2, lineHeight: 24 },
   profileSub: { fontSize: 12, marginTop: 2 },
   profileDetail: { fontSize: 10, marginTop: 6 },
   radio: {
-    width: 22,
-    height: 22,
-    borderRadius: 999,
-    borderWidth: 2,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexShrink: 0,
+    width: 22, height: 22, borderRadius: 999, borderWidth: 2,
+    alignItems: 'center', justifyContent: 'center', flexShrink: 0,
   },
   ghostBtn: { alignSelf: 'flex-start', marginTop: 4 },
   ghostBtnText: { fontSize: 13, fontWeight: '600' },
