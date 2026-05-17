@@ -3,6 +3,7 @@ import { View, Text, Pressable, StyleSheet, LayoutChangeEvent } from 'react-nati
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
+  useDerivedValue,
   withTiming,
   withDelay,
   Easing,
@@ -65,40 +66,50 @@ function AnimatedPiece({ piece, squareSize, flipped, animate }: AnimatedPiecePro
   const targetY = row * squareSize;
   const captured = !!piece.captured;
 
-  const x = useSharedValue(targetX);
-  const y = useSharedValue(targetY);
-  const opacity = useSharedValue(captured ? 0 : 1);
-  const scale = useSharedValue(captured ? 0.4 : 1);
-
-  // Position sync: runs after EVERY render so the visual position can never
-  // drift from the prop. If targetX/Y match current x/y, withTiming is a no-op.
-  // No deps array on purpose — we don't want React's dep comparison to ever
-  // suppress a needed re-sync (which was the regression cause).
+  // === Target shared values ===
+  // These mirror the latest target position from props. They are written
+  // synchronously on every render (no deps) so they can never lag behind
+  // boardPieces — even if React produces extra re-renders or this component
+  // is unmounted and remounted by a layout flicker.
+  const targetXSV = useSharedValue(targetX);
+  const targetYSV = useSharedValue(targetY);
+  const capturedSV = useSharedValue(captured);
   useEffect(() => {
-    if (!animate) {
-      x.value = targetX;
-      y.value = targetY;
-      return;
-    }
-    x.value = withTiming(targetX, { duration: 230, easing: Easing.out(Easing.cubic) });
-    y.value = withTiming(targetY, { duration: 230, easing: Easing.out(Easing.cubic) });
+    targetXSV.value = targetX;
+    targetYSV.value = targetY;
+    capturedSV.value = captured;
   });
 
-  // Capture animation: fade + shrink. Only fires when captured flag changes.
-  useEffect(() => {
-    if (captured) {
-      if (animate) {
-        opacity.value = withDelay(80, withTiming(0, { duration: 200 }));
-        scale.value = withDelay(80, withTiming(0.4, { duration: 220 }));
-      } else {
-        opacity.value = 0;
-        scale.value = 0.4;
-      }
-    } else {
-      opacity.value = 1;
-      scale.value = 1;
-    }
-  }, [captured, animate]);
+  // === Displayed shared values ===
+  // useDerivedValue runs its worklet on the UI thread whenever the targets
+  // change. We wrap the assignment in withTiming so the View interpolates
+  // toward the latest target. Because the worklet always reads
+  // `targetXSV.value` (a shared value, not a JS closure capture), the
+  // animation can never aim at a stale position.
+  const x = useDerivedValue(() =>
+    animate
+      ? withTiming(targetXSV.value, { duration: 230, easing: Easing.out(Easing.cubic) })
+      : targetXSV.value
+  );
+  const y = useDerivedValue(() =>
+    animate
+      ? withTiming(targetYSV.value, { duration: 230, easing: Easing.out(Easing.cubic) })
+      : targetYSV.value
+  );
+
+  // === Capture (fade + shrink) ===
+  const opacity = useDerivedValue(() => {
+    if (!capturedSV.value) return 1;
+    return animate
+      ? withDelay(80, withTiming(0, { duration: 200 }))
+      : 0;
+  });
+  const scale = useDerivedValue(() => {
+    if (!capturedSV.value) return 1;
+    return animate
+      ? withDelay(80, withTiming(0.4, { duration: 220 }))
+      : 0.4;
+  });
 
   const half = squareSize / 2;
   const style = useAnimatedStyle(() => ({
@@ -148,6 +159,10 @@ export function Board({
 
   const onLayout = (e: LayoutChangeEvent) => {
     const w = e.nativeEvent.layout.width;
+    // Never collapse a previously-valid size to 0 from a transient layout pass —
+    // that would unmount every piece and lose all in-flight Reanimated state.
+    // Only accept the new width if it's positive and meaningfully different.
+    if (w <= 0) return;
     if (Math.abs(w - measuredSize) > 0.5) setMeasuredSize(w);
   };
 
