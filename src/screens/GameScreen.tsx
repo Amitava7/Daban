@@ -11,9 +11,11 @@ import { useProgress } from '../context/ProgressContext';
 import { RootStackParamList } from '../navigation/types';
 import { AppBar } from '../components/AppBar';
 import { Board } from '../components/Board';
+import { CapturePopup } from '../components/CapturePopup';
 import { EvalBar } from '../components/EvalBar';
 import { Pill } from '../components/Pill';
 import { Card } from '../components/Card';
+import { ChessPiece } from '../components/ChessPiece';
 import { formatEval, qualityLabel, qualityTone } from '../engine/MoveClassifier';
 import { levelToElo } from '../engine/ChessEngine';
 import { fenToPieces } from '../utils/fenUtils';
@@ -40,13 +42,15 @@ export function GameScreen() {
     fen, status, result, moveHistory, lastAnalysis, currentEval,
     selectedSquare, legalMoves, playerColor, level, timeWhite, timeBlack,
     hintsUsed, selectSquare, makeMove, resign, offerDraw, useHint,
-    clearBlunderAlert,
+    clearBlunderAlert, boardPieces, lastMove, captureFlash, clearCaptureFlash,
   } = useGame();
   const { settings, recordGame } = useProgress();
   const [showResignModal, setShowResignModal] = useState(false);
   const [promotionPending, setPromotionPending] = useState<{ from: string; to: string } | null>(null);
+  const [boardWidth, setBoardWidth] = useState(0);
 
-  const pieces = useMemo(() => fenToPieces(fen), [fen]);
+  // Static fallback when the live tracked list isn't ready
+  const fallbackPieces = useMemo(() => fenToPieces(fen), [fen]);
   const evalPct = evalBarPct(currentEval);
   const evalLabel = formatEval(currentEval);
 
@@ -69,7 +73,7 @@ export function GameScreen() {
     // If we have a selected square and tap a legal move destination
     if (selectedSquare && legalMoves.includes(sq)) {
       // Check if pawn promotion
-      const piece = pieces[Object.keys(pieces).find(k => pieces[k].sq === selectedSquare) ?? ''];
+      const piece = boardPieces.find(p => !p.captured && p.sq === selectedSquare);
       const isPromotion = piece?.code === (playerColor === 'w' ? 'wP' : 'bP') &&
         ((playerColor === 'w' && sq[1] === '8') || (playerColor === 'b' && sq[1] === '1'));
       if (isPromotion) {
@@ -82,7 +86,6 @@ export function GameScreen() {
     }
   };
 
-  const lastMove = moveHistory[moveHistory.length - 1];
   const lastPlayerMove = [...moveHistory].reverse().find(m => m.playerMove);
   const lastNotation = moveHistory.slice(-4).map((m, i) => {
     const moveNum = Math.floor((moveHistory.length - moveHistory.slice(-4).length + i) / 2) + 1;
@@ -93,12 +96,7 @@ export function GameScreen() {
   const coachComment = lastAnalysis?.coachComment ?? 'Play your move.';
   const evalText = evalLabel;
 
-  const highlights = useMemo(() => {
-    if (!lastMove) return [];
-    return [
-      { sq: lastMove.san.slice(-2), kind: 'brand' as const },
-    ].filter(h => /^[a-h][1-8]$/.test(h.sq));
-  }, [lastMove]);
+  const highlights = useMemo(() => [], []);
 
   const isPlayerTurn = status === 'playing' && fen.split(' ')[1] === playerColor;
   const isThinking = status === 'engine_thinking';
@@ -158,15 +156,28 @@ export function GameScreen() {
         {/* Board + eval */}
         <View style={styles.boardRow}>
           <EvalBar pct={evalPct} label={evalLabel} />
-          <View style={styles.boardWrap}>
+          <View
+            style={styles.boardWrap}
+            onLayout={(e) => setBoardWidth(e.nativeEvent.layout.width)}
+          >
             <Board
-              pieces={pieces}
+              pieces={boardPieces.length > 0 ? boardPieces : fallbackPieces}
               highlights={highlights}
               coords
               flipped={playerColor === 'b'}
               onSquarePress={isPlayerTurn ? handleSquarePress : undefined}
               selectedSquare={selectedSquare}
               legalMoves={legalMoves}
+              lastMove={lastMove}
+              animate
+            />
+            <CapturePopup
+              flash={captureFlash}
+              boardSize={boardWidth}
+              flipped={playerColor === 'b'}
+              gainColor={colors.captureGain}
+              lossColor={colors.captureLoss}
+              onDone={clearCaptureFlash}
             />
           </View>
         </View>
@@ -294,9 +305,7 @@ export function GameScreen() {
             <Text style={[styles.modalTitle, { color: colors.ink }]}>Promote to?</Text>
             <View style={styles.promotionBtns}>
               {(['q', 'r', 'b', 'n'] as const).map(p => {
-                const glyph = playerColor === 'w'
-                  ? { q: '♕', r: '♖', b: '♗', n: '♘' }[p]
-                  : { q: '♛', r: '♜', b: '♝', n: '♞' }[p];
+                const code = (playerColor === 'w' ? 'w' : 'b') + p.toUpperCase();
                 return (
                   <TouchableOpacity
                     key={p}
@@ -308,7 +317,7 @@ export function GameScreen() {
                       }
                     }}
                   >
-                    <Text style={styles.promoGlyph}>{glyph}</Text>
+                    <ChessPiece code={code} size={52} />
                   </TouchableOpacity>
                 );
               })}
@@ -342,7 +351,7 @@ const styles = StyleSheet.create({
   clockText: { fontSize: 20, fontWeight: '700' },
   clockLabel: { fontSize: 11 },
   boardRow: { flexDirection: 'row', gap: 8 },
-  boardWrap: { flex: 1 },
+  boardWrap: { flex: 1, position: 'relative' },
   notation: { flexDirection: 'row', alignItems: 'center', gap: 12 },
   notationKicker: { fontSize: 10, fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: 1.2 },
   notationMoves: { flex: 1, fontSize: 12 },

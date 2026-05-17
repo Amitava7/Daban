@@ -42,10 +42,17 @@ export const LightColors = {
   badBorder:    'rgba(196, 69, 58, 0.30)',
 
   // Chess board
-  boardLight:   '#ede2c5',
-  boardDark:    '#b0905f',
+  boardLight:   '#ecd9a5',
+  boardDark:    '#8a5a2f',
   pieceLight:   '#fbf4e0',
   pieceDark:    '#181410',
+  pieceStrokeOnLight: '#15110a',   // dark outline around white pieces
+  pieceStrokeOnDark:  '#fdf8e8',   // light outline around black pieces
+  legalMoveDot:  'rgba(20, 17, 13, 0.45)',
+  selectedTint:  'rgba(214, 168, 65, 0.42)',
+  lastMoveTint:  'rgba(214, 168, 65, 0.32)',
+  captureGain:   '#3aa84a',        // green for player capture
+  captureLoss:   '#d23a3a',        // red for player piece lost
 
   // Shadows (expressed as drop shadow colors — use with elevation on Android)
   shadowColor:  '#1a1815',
@@ -90,13 +97,20 @@ export const DarkColors = {
   badBorder:    'rgba(227, 106, 92, 0.30)',
 
   // Chess board
-  boardLight:   '#5a4b35',
-  boardDark:    '#382c1c',
-  pieceLight:   '#ede4cb',
-  pieceDark:    '#1a1610',
+  boardLight:   '#46566a',
+  boardDark:    '#2a3744',
+  pieceLight:   '#f0e7cf',
+  pieceDark:    '#15110a',
+  pieceStrokeOnLight: '#0c0a07',   // dark outline around white pieces
+  pieceStrokeOnDark:  '#f5ecd5',   // light outline around black pieces
+  legalMoveDot:  'rgba(245, 236, 213, 0.55)',
+  selectedTint:  'rgba(255, 213, 95, 0.40)',
+  lastMoveTint:  'rgba(255, 213, 95, 0.28)',
+  captureGain:   '#4ac257',        // green for player capture
+  captureLoss:   '#e85a4f',        // red for player piece lost
 
   shadowColor:  '#000000',
 } as const;
 
-export type ColorScheme = typeof LightColors;
+export type ColorScheme = { readonly [K in keyof typeof LightColors]: string };
 export type ThemeMode = 'light' | 'dark';
