@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTheme } from '../context/ThemeContext';
+import { useProgress } from '../context/ProgressContext';
+import { RootStackParamList } from '../navigation/types';
 import { AppBar } from '../components/AppBar';
 import { Pill } from '../components/Pill';
 import { Card } from '../components/Card';
 import { Sparkline } from '../components/Sparkline';
 
-const ELO_DATA = [1240, 1245, 1238, 1252, 1260, 1270, 1268, 1280];
+type Nav = NativeStackNavigationProp<RootStackParamList, 'Progress'>;
 
 function MiniStat({ label, value, delta, tone }: { label: string; value: string; delta?: string; tone?: 'good' | 'bad' }) {
   const { colors } = useTheme();
@@ -31,9 +34,8 @@ function Insight({ tone, title, stat, body, cta }: {
   tone: 'good' | 'bad' | 'warn'; title: string; stat: string; body: string; cta: string;
 }) {
   const { colors } = useTheme();
-  const colorMap = { good: colors.good2, bad: colors.bad2, warn: colors.warn };
-  const c = colorMap[tone];
-
+  const colorMap: Record<string, string> = { good: colors.good2, bad: colors.bad2, warn: colors.warn };
+  const c = colorMap[tone] ?? colors.ink;
   return (
     <Card variant={tone} style={{ gap: 0 }}>
       <View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12 }}>
@@ -48,7 +50,118 @@ function Insight({ tone, title, stat, body, cta }: {
 
 export function ProgressScreen() {
   const { colors } = useTheme();
-  const nav = useNavigation();
+  const nav = useNavigation<Nav>();
+  const { progress, weeklyEloChange, weeklyAccuracy, totalGames, avgBlundersPerGame } = useProgress();
+
+  // Build ELO sparkline from last 8 game records
+  const eloData = useMemo(() => {
+    const base = progress.elo;
+    if (progress.games.length === 0) return [base];
+    const recent = [...progress.games].reverse().slice(0, 8);
+    const dataPoints: number[] = [];
+    let running = base;
+    for (let i = recent.length - 1; i >= 0; i--) {
+      running -= recent[i].eloChange; // go backwards
+    }
+    dataPoints.push(running);
+    for (const g of recent) {
+      running += g.eloChange;
+      dataPoints.push(running);
+    }
+    return dataPoints;
+  }, [progress]);
+
+  const wEloChange = weeklyEloChange();
+  const wAccuracy = weeklyAccuracy();
+  const games = totalGames();
+  const blunders = avgBlundersPerGame();
+
+  // Generate insights based on real data
+  const insights = useMemo(() => {
+    const result: Array<{ tone: 'good'|'bad'|'warn'; title: string; stat: string; body: string; cta: string }> = [];
+
+    if (games === 0) {
+      result.push({
+        tone: 'warn',
+        title: 'No games yet',
+        stat: '0',
+        body: 'Start playing to see your performance insights.',
+        cta: 'Play now',
+      });
+      return result;
+    }
+
+    // Blunder insight
+    if (blunders > 1.5) {
+      result.push({
+        tone: 'bad',
+        title: 'Blunders per game',
+        stat: blunders.toFixed(1),
+        body: `You're averaging ${blunders.toFixed(1)} blunders per game. Focus on checking your moves before playing.`,
+        cta: 'Drill puzzles',
+      });
+    } else if (blunders <= 0.5) {
+      result.push({
+        tone: 'good',
+        title: 'Clean play',
+        stat: blunders.toFixed(1),
+        body: `Impressive — only ${blunders.toFixed(1)} blunders per game on average. Your calculation is improving.`,
+        cta: 'See games',
+      });
+    }
+
+    // ELO trend
+    if (wEloChange >= 10) {
+      result.push({
+        tone: 'good',
+        title: 'Rating climbing',
+        stat: `+${wEloChange}`,
+        body: `You've gained ${wEloChange} rating points this week. Keep up the consistent play.`,
+        cta: 'Keep going',
+      });
+    } else if (wEloChange <= -15) {
+      result.push({
+        tone: 'warn',
+        title: 'Rating dipping',
+        stat: `${wEloChange}`,
+        body: 'Your rating dropped this week. Try reducing time pressure or dropping one difficulty level.',
+        cta: 'Adjust settings',
+      });
+    }
+
+    // Accuracy
+    if (wAccuracy > 0) {
+      if (wAccuracy >= 75) {
+        result.push({
+          tone: 'good',
+          title: 'High accuracy',
+          stat: `${wAccuracy}%`,
+          body: `${wAccuracy}% average accuracy this week. You're finding strong moves consistently.`,
+          cta: 'See games',
+        });
+      } else if (wAccuracy < 60) {
+        result.push({
+          tone: 'bad',
+          title: 'Accuracy needs work',
+          stat: `${wAccuracy}%`,
+          body: `${wAccuracy}% accuracy — many moves are below engine quality. Slow down and check tactics.`,
+          cta: 'Drill tactics',
+        });
+      }
+    }
+
+    if (result.length === 0) {
+      result.push({
+        tone: 'warn',
+        title: 'Keep playing',
+        stat: `${games} games`,
+        body: 'Play more games to unlock detailed pattern insights.',
+        cta: 'Start a game',
+      });
+    }
+
+    return result;
+  }, [blunders, wEloChange, wAccuracy, games]);
 
   return (
     <SafeAreaView style={[styles.safe, { backgroundColor: colors.bg }]}>
@@ -59,45 +172,75 @@ export function ProgressScreen() {
           <View>
             <Text style={[styles.kicker, { color: colors.inkMute }]}>ELO · all-time</Text>
             <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: 8, marginTop: 2 }}>
-              <Text style={[styles.eloValue, { color: colors.ink, fontFamily: 'serif' }]}>1280</Text>
-              <Pill tone="good-soft">+24 wk</Pill>
+              <Text style={[styles.eloValue, { color: colors.ink, fontFamily: 'serif' }]}>
+                {progress.elo}
+              </Text>
+              <Pill tone={wEloChange >= 0 ? 'good-soft' : 'bad-soft'}>
+                {wEloChange >= 0 ? '+' : ''}{wEloChange} wk
+              </Pill>
             </View>
           </View>
           <View style={{ width: 130 }}>
-            <Sparkline data={ELO_DATA} color={colors.brand} fill={colors.brand} height={48} />
+            <Sparkline data={eloData} color={colors.brand} fill={colors.brand} height={48} />
           </View>
         </View>
 
         {/* Mini stats */}
         <View style={{ flexDirection: 'row', gap: 10 }}>
-          <MiniStat label="Accuracy" value="78%" delta="+6" tone="good" />
-          <MiniStat label="Games" value="14" />
-          <MiniStat label="Blund/g" value="1.2" delta="–0.4" tone="good" />
+          <MiniStat
+            label="Accuracy"
+            value={wAccuracy > 0 ? `${wAccuracy}%` : '—'}
+            delta={wAccuracy > 0 ? undefined : undefined}
+            tone="good"
+          />
+          <MiniStat label="Games" value={games.toString()} />
+          <MiniStat
+            label="Blund/g"
+            value={games > 0 ? blunders.toFixed(1) : '—'}
+            tone={blunders > 1.5 ? 'bad' : 'good'}
+          />
         </View>
 
         <Text style={[styles.kicker, { color: colors.inkMute, marginTop: 4 }]}>Insights · this week</Text>
 
-        <Insight
-          tone="bad"
-          title="Knights left hanging"
-          stat="40%"
-          body="In 4 of last 10 games you moved a knight to a square only defended by a pinned piece."
-          cta="Drill 5 puzzles"
-        />
-        <Insight
-          tone="good"
-          title="Endgame conversion up"
-          stat="+18%"
-          body="K + P drills are paying off — you converted 6 / 7 winning endgames this week."
-          cta="See games"
-        />
-        <Insight
-          tone="warn"
-          title="Time pressure hurts you"
-          stat="–12 pts"
-          body="Accuracy drops sharply in the last 5 minutes of long games."
-          cta="Adjust timer"
-        />
+        {insights.map((ins, i) => (
+          <Insight key={i} {...ins} />
+        ))}
+
+        {/* Game history */}
+        {progress.games.length > 0 && (
+          <>
+            <Text style={[styles.kicker, { color: colors.inkMute, marginTop: 4 }]}>Recent games</Text>
+            {progress.games.slice(0, 5).map((g, i) => (
+              <View
+                key={i}
+                style={[styles.gameRow, { backgroundColor: colors.surface, borderColor: colors.border }]}
+              >
+                <View style={[styles.gameResult, {
+                  backgroundColor: g.result === 'win' ? colors.good : g.result === 'loss' ? colors.bad : colors.warn,
+                }]}>
+                  <Text style={styles.gameResultText}>
+                    {g.result === 'win' ? 'W' : g.result === 'loss' ? 'L' : 'D'}
+                  </Text>
+                </View>
+                <View style={{ flex: 1 }}>
+                  <Text style={[styles.gameMeta, { color: colors.ink }]}>
+                    {g.playerColor === 'w' ? 'White' : 'Black'} · Lv {g.level}
+                  </Text>
+                  <Text style={[styles.gameSub, { color: colors.inkMute }]}>
+                    {g.moves} moves · {g.accuracy}% acc · {g.blunders} blunders
+                  </Text>
+                </View>
+                <Text style={[styles.gameElo, {
+                  color: g.eloChange >= 0 ? colors.good : colors.bad,
+                  fontFamily: 'monospace',
+                }]}>
+                  {g.eloChange >= 0 ? '+' : ''}{g.eloChange}
+                </Text>
+              </View>
+            ))}
+          </>
+        )}
 
         <TouchableOpacity style={styles.ghostBtn}>
           <Text style={[styles.ghostBtnText, { color: colors.ink2 }]}>View raw stats ›</Text>
@@ -120,6 +263,15 @@ const styles = StyleSheet.create({
   insightStat: { fontSize: 13, fontWeight: '600', flexShrink: 0 },
   insightBody: { fontSize: 13, lineHeight: 19, marginTop: 6, opacity: 0.85 },
   insightCta: { fontSize: 13, fontWeight: '600', marginTop: 12 },
+  gameRow: {
+    flexDirection: 'row', alignItems: 'center', gap: 12,
+    padding: 10, paddingHorizontal: 12, borderWidth: 1, borderRadius: 10,
+  },
+  gameResult: { width: 28, height: 28, borderRadius: 8, alignItems: 'center', justifyContent: 'center' },
+  gameResultText: { color: '#fff', fontSize: 12, fontWeight: '700' },
+  gameMeta: { fontSize: 13, fontWeight: '600' },
+  gameSub: { fontSize: 11, marginTop: 2 },
+  gameElo: { fontSize: 13, fontWeight: '600' },
   ghostBtn: { alignItems: 'center', paddingVertical: 8 },
   ghostBtnText: { fontSize: 13, fontWeight: '600' },
 });

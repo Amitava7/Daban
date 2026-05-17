@@ -1,101 +1,167 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTheme } from '../context/ThemeContext';
+import { useProgress } from '../context/ProgressContext';
+import { RootStackParamList } from '../navigation/types';
 import { AppBar } from '../components/AppBar';
 import { Board } from '../components/Board';
 import { Card } from '../components/Card';
 import { Pill } from '../components/Pill';
+import { OPENINGS } from '../engine/OpeningBook';
+import { fenToPieces } from '../utils/fenUtils';
+import { Chess } from 'chess.js';
 
-const CARO_KANN = {
-  wK: { sq: 'e1', code: 'wK' }, wQ: { sq: 'd1', code: 'wQ' }, wBc: { sq: 'c1', code: 'wB' }, wBf: { sq: 'f1', code: 'wB' },
-  wNb: { sq: 'b1', code: 'wN' }, wNg: { sq: 'g1', code: 'wN' }, wRa: { sq: 'a1', code: 'wR' }, wRh: { sq: 'h1', code: 'wR' },
-  wPa: { sq: 'a2', code: 'wP' }, wPb: { sq: 'b2', code: 'wP' }, wPc: { sq: 'c2', code: 'wP' },
-  wPd: { sq: 'd4', code: 'wP' }, wPe: { sq: 'e5', code: 'wP' },
-  wPf: { sq: 'f2', code: 'wP' }, wPg: { sq: 'g2', code: 'wP' }, wPh: { sq: 'h2', code: 'wP' },
-  bK: { sq: 'e8', code: 'bK' }, bQ: { sq: 'd8', code: 'bQ' }, bBc: { sq: 'c8', code: 'bB' }, bBf: { sq: 'f8', code: 'bB' },
-  bNb: { sq: 'b8', code: 'bN' }, bNg: { sq: 'g8', code: 'bN' }, bRa: { sq: 'a8', code: 'bR' }, bRh: { sq: 'h8', code: 'bR' },
-  bPa: { sq: 'a7', code: 'bP' }, bPb: { sq: 'b7', code: 'bP' }, bPc: { sq: 'c6', code: 'bP' },
-  bPd: { sq: 'd5', code: 'bP' },
-  bPe: { sq: 'e7', code: 'bP' }, bPf: { sq: 'f7', code: 'bP' }, bPg: { sq: 'g7', code: 'bP' }, bPh: { sq: 'h7', code: 'bP' },
-};
+type Nav = NativeStackNavigationProp<RootStackParamList, 'Openings'>;
 
-const LIBRARY = [
-  { name: 'Italian Game', sub: 'As white · main line', pct: 62, good: false },
-  { name: 'Ruy Lopez', sub: 'As white · Berlin', pct: 40, good: false },
-  { name: 'London System', sub: 'As white · solid', pct: 88, good: true },
-  { name: 'Sicilian Najdorf', sub: 'As black', pct: 12, good: false },
-];
+function getMastery(played: number, correct: number): number {
+  if (played === 0) return 0;
+  return Math.round((correct / played) * 100);
+}
 
-function OpeningRow({ name, sub, pct, good }: { name: string; sub: string; pct: number; good: boolean }) {
+function getOpeningFen(openingId: string): string {
+  const opening = OPENINGS.find(o => o.id === openingId);
+  if (!opening) return 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
+  const chess = new Chess();
+  const playLine = (moves: typeof opening.moves) => {
+    for (const m of moves) {
+      try { chess.move(m.san); } catch { break; }
+      if (m.children.length === 0) break;
+      playLine(m.children);
+      break; // only follow first child
+    }
+  };
+  playLine(opening.moves);
+  return chess.fen();
+}
+
+function OpeningRow({
+  id, name, side, onPress, played, correct,
+}: {
+  id: string; name: string; side: 'w' | 'b';
+  onPress: () => void; played: number; correct: number;
+}) {
   const { colors } = useTheme();
+  const mastery = getMastery(played, correct);
+  const good = mastery >= 70;
+
   return (
-    <View style={[styles.row, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+    <TouchableOpacity
+      style={[styles.row, { backgroundColor: colors.surface, borderColor: colors.border }]}
+      onPress={onPress}
+      activeOpacity={0.7}
+    >
       <View style={{ flex: 1 }}>
         <Text style={[styles.rowTitle, { color: colors.ink }]}>{name}</Text>
-        <Text style={[styles.rowMeta, { color: colors.inkSoft }]}>{sub}</Text>
+        <Text style={[styles.rowMeta, { color: colors.inkSoft }]}>
+          As {side === 'w' ? 'White' : 'Black'} · {played} drilled
+        </Text>
         <View style={[styles.progressTrack, { backgroundColor: colors.surface3, marginTop: 6 }]}>
-          <View style={[styles.progressFill, { width: `${pct}%` as any, backgroundColor: good ? colors.good : colors.brand }]} />
+          <View style={[styles.progressFill, { width: `${mastery}%` as any, backgroundColor: good ? colors.good : colors.brand }]} />
         </View>
       </View>
       <View style={{ alignItems: 'flex-end' }}>
-        <Text style={[styles.pct, { color: good ? colors.good : colors.ink, fontFamily: 'monospace' }]}>{pct}%</Text>
+        <Text style={[styles.pct, { color: good ? colors.good : colors.ink, fontFamily: 'monospace' }]}>{mastery}%</Text>
         <Text style={[styles.pctLabel, { color: colors.inkMute }]}>mastery</Text>
       </View>
       <Text style={[styles.chev, { color: colors.inkMute }]}>›</Text>
-    </View>
+    </TouchableOpacity>
   );
 }
 
 export function OpeningsScreen() {
   const { colors } = useTheme();
-  const nav = useNavigation();
+  const nav = useNavigation<Nav>();
+  const { openingMastery } = useProgress();
+
+  // Find weakest opening (lowest mastery)
+  const recommended = useMemo(() => {
+    return OPENINGS.map(o => {
+      const m = openingMastery[o.id] ?? { played: 0, correct: 0 };
+      return { ...o, mastery: getMastery(m.played, m.correct) };
+    }).sort((a, b) => a.mastery - b.mastery)[0];
+  }, [openingMastery]);
+
+  const recFen = useMemo(() => getOpeningFen(recommended?.id ?? ''), [recommended]);
+  const recPieces = useMemo(() => fenToPieces(recFen), [recFen]);
+  const recMastery = openingMastery[recommended?.id ?? ''] ?? { played: 0, correct: 0 };
 
   return (
     <SafeAreaView style={[styles.safe, { backgroundColor: colors.bg }]}>
       <AppBar left="‹" title="Openings" right="+" onLeft={() => nav.goBack()} />
       <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
         {/* Recommendation */}
-        <Card variant="brand" loose>
-          <Text style={[styles.kicker, { color: colors.brand }]}>Recommended · weakness</Text>
-          <Text style={[styles.recTitle, { color: colors.brand2, fontFamily: 'serif' }]}>
-            Caro-Kann <Text style={{ fontStyle: 'italic', fontWeight: '400' }}>Advance</Text>
-          </Text>
-          <Text style={[styles.recSub, { color: colors.brand2 }]}>You stumbled in this line <Text style={{ fontWeight: '700' }}>3 times</Text> last week.</Text>
+        {recommended && (
+          <Card variant="brand" loose>
+            <Text style={[styles.kicker, { color: colors.brand }]}>
+              {getMastery(recMastery.played, recMastery.correct) === 0 ? 'Start here' : 'Recommended · weakness'}
+            </Text>
+            <Text style={[styles.recTitle, { color: colors.brand2, fontFamily: 'serif' }]}>
+              {recommended.name}
+            </Text>
+            <Text style={[styles.recSub, { color: colors.brand2 }]}>
+              {recMastery.played === 0
+                ? 'You haven\'t practiced this opening yet.'
+                : `${getMastery(recMastery.played, recMastery.correct)}% mastery — keep drilling.`}
+            </Text>
 
-          <View style={styles.recContent}>
-            <View style={{ width: 124 }}>
-              <Board pieces={CARO_KANN} highlights={[{ sq: 'd5', kind: 'good' }, { sq: 'e5', kind: 'good' }]} />
-            </View>
-            <View style={styles.recMoves}>
-              {['1. e4 c6', '2. d4 d5', '3. e5  locks center'].map((line, i) => (
-                <Text key={i} style={[styles.moveLine, { color: colors.brand2, fontFamily: 'monospace' }]}>{line}</Text>
-              ))}
-              <Text style={[styles.masteryLabel, { color: colors.brand2 }]}>Mastery</Text>
-              <View style={[styles.masteryTrack, { backgroundColor: 'rgba(0,0,0,0.08)' }]}>
-                <View style={[styles.masteryFill, { backgroundColor: colors.brand, width: '32%' }]} />
+            <View style={styles.recContent}>
+              <View style={{ width: 124 }}>
+                <Board pieces={recPieces} flipped={recommended.side === 'b'} />
+              </View>
+              <View style={styles.recMoves}>
+                {recommended.moves.slice(0, 3).map((m, i) => (
+                  <Text key={i} style={[styles.moveLine, { color: colors.brand2, fontFamily: 'monospace' }]}>
+                    {i + 1}. {m.san}
+                    {m.children[0] ? `  ${m.children[0].san}` : ''}
+                  </Text>
+                ))}
+                <Text style={[styles.masteryLabel, { color: colors.brand2 }]}>Mastery</Text>
+                <View style={[styles.masteryTrack, { backgroundColor: 'rgba(0,0,0,0.08)' }]}>
+                  <View style={[styles.masteryFill, {
+                    backgroundColor: colors.brand,
+                    width: `${getMastery(recMastery.played, recMastery.correct)}%`,
+                  }]} />
+                </View>
               </View>
             </View>
-          </View>
 
-          <View style={styles.recBtns}>
-            <TouchableOpacity style={[styles.btn, { backgroundColor: colors.brand }]}>
-              <Text style={[styles.btnText, { color: colors.onBrand }]}>Start drill · 5 min</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={[styles.btnOutline, { borderColor: colors.brand }]}>
-              <Text style={[styles.btnText, { color: colors.brand2 }]}>Skip</Text>
-            </TouchableOpacity>
-          </View>
-        </Card>
+            <View style={styles.recBtns}>
+              <TouchableOpacity
+                style={[styles.btn, { backgroundColor: colors.brand }]}
+                onPress={() => nav.navigate('OpeningDrill', { openingId: recommended.id })}
+              >
+                <Text style={[styles.btnText, { color: colors.onBrand }]}>Start drill</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={[styles.btnOutline, { borderColor: colors.brand }]}>
+                <Text style={[styles.btnText, { color: colors.brand2 }]}>Skip</Text>
+              </TouchableOpacity>
+            </View>
+          </Card>
+        )}
 
-        {/* Library header */}
+        {/* Library */}
         <View style={styles.libraryHeader}>
-          <Text style={[styles.libraryTitle, { color: colors.ink, fontFamily: 'serif' }]}>Or browse</Text>
-          <Text style={[styles.kicker, { color: colors.inkMute }]}>18 openings</Text>
+          <Text style={[styles.libraryTitle, { color: colors.ink, fontFamily: 'serif' }]}>All openings</Text>
+          <Text style={[styles.kicker, { color: colors.inkMute }]}>{OPENINGS.length} openings</Text>
         </View>
 
-        {LIBRARY.map(o => <OpeningRow key={o.name} {...o} />)}
+        {OPENINGS.map(o => {
+          const m = openingMastery[o.id] ?? { played: 0, correct: 0 };
+          return (
+            <OpeningRow
+              key={o.id}
+              id={o.id}
+              name={o.name}
+              side={o.side}
+              played={m.played}
+              correct={m.correct}
+              onPress={() => nav.navigate('OpeningDrill', { openingId: o.id })}
+            />
+          );
+        })}
       </ScrollView>
     </SafeAreaView>
   );

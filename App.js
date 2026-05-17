@@ -1,5 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { ThemeProvider, useTheme } from './src/context/ThemeContext';
+import { GameProvider } from './src/context/GameContext';
+import { ProgressProvider } from './src/context/ProgressContext';
 import { AppNavigator } from './src/navigation/AppNavigator';
 
 function Root() {
@@ -15,7 +17,11 @@ function Root() {
 export default function App() {
   return (
     <ThemeProvider>
-      <Root />
+      <ProgressProvider>
+        <GameProvider>
+          <Root />
+        </GameProvider>
+      </ProgressProvider>
     </ThemeProvider>
   );
 }

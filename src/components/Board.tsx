@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useTheme } from '../context/ThemeContext';
 
 const FILES = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
@@ -18,7 +18,7 @@ export interface PieceData {
 
 export interface Highlight {
   sq: string;
-  kind: 'good' | 'bad' | 'warn' | 'brand';
+  kind: 'good' | 'bad' | 'warn' | 'brand' | 'selected' | 'legal';
 }
 
 interface BoardProps {
@@ -26,9 +26,22 @@ interface BoardProps {
   highlights?: Highlight[];
   coords?: boolean;
   size?: number;
+  flipped?: boolean;            // true = board flipped (black at bottom)
+  onSquarePress?: (sq: string) => void;
+  selectedSquare?: string | null;
+  legalMoves?: string[];
 }
 
-export function Board({ pieces = {}, highlights = [], coords = false, size }: BoardProps) {
+export function Board({
+  pieces = {},
+  highlights = [],
+  coords = false,
+  size,
+  flipped = false,
+  onSquarePress,
+  selectedSquare,
+  legalMoves = [],
+}: BoardProps) {
   const { colors } = useTheme();
 
   const squareMap = useMemo(() => {
@@ -42,53 +55,86 @@ export function Board({ pieces = {}, highlights = [], coords = false, size }: Bo
   const hlMap = useMemo(() => {
     const m: Record<string, string> = {};
     highlights.forEach(h => { m[h.sq] = h.kind; });
+    if (selectedSquare) m[selectedSquare] = 'selected';
+    legalMoves.forEach(sq => { if (!m[sq]) m[sq] = 'legal'; });
     return m;
-  }, [highlights]);
+  }, [highlights, selectedSquare, legalMoves]);
 
   const hlColors: Record<string, string> = {
-    good:  'rgba(77, 124, 69, 0.35)',
-    bad:   'rgba(196, 69, 58, 0.35)',
-    warn:  'rgba(184, 128, 31, 0.35)',
-    brand: colors.brandTint,
+    good:     'rgba(77, 124, 69, 0.40)',
+    bad:      'rgba(196, 69, 58, 0.40)',
+    warn:     'rgba(184, 128, 31, 0.40)',
+    brand:    colors.brandTint,
+    selected: 'rgba(100, 160, 220, 0.55)',
+    legal:    'rgba(100, 160, 220, 0.25)',
   };
 
   const hlBorders: Record<string, string> = {
-    good:  colors.good,
-    bad:   colors.bad,
-    warn:  colors.warn,
-    brand: colors.brand,
+    good:     colors.good,
+    bad:      colors.bad,
+    warn:     colors.warn,
+    brand:    colors.brand,
+    selected: '#4a9fd4',
+    legal:    'transparent',
   };
 
+  const ranks = flipped ? [...RANKS].reverse() : RANKS;
+  const files = flipped ? [...FILES].reverse() : FILES;
+
   return (
-    <View style={[styles.board, { backgroundColor: colors.boardDark }, size ? { width: size, height: size } : null]}>
-      {RANKS.map((rank, ri) =>
-        FILES.map((file, fi) => {
+    <View style={[
+      styles.board,
+      { backgroundColor: colors.boardDark },
+      size ? { width: size, height: size } : null,
+    ]}>
+      {ranks.map((rank, ri) =>
+        files.map((file, fi) => {
           const sq = `${file}${rank}`;
-          const isLight = (ri + fi) % 2 === 0;
+          // Light square when (original rank index + file index) is even
+          const origRi = RANKS.indexOf(rank);
+          const origFi = FILES.indexOf(file);
+          const isLight = (origRi + origFi) % 2 === 0;
           const squareBg = isLight ? colors.boardLight : colors.boardDark;
           const hl = hlMap[sq];
           const piece = squareMap[sq];
           const isWhite = piece && piece[0] === 'w';
+          const isLegalDot = hl === 'legal' && !piece;
 
           return (
-            <View
+            <TouchableOpacity
               key={sq}
+              activeOpacity={onSquarePress ? 0.7 : 1}
+              onPress={() => onSquarePress?.(sq)}
               style={[
                 styles.square,
                 { backgroundColor: squareBg },
-                hl && { backgroundColor: hlColors[hl], borderColor: hlBorders[hl], borderWidth: 2 },
+                hl && hl !== 'legal' && {
+                  backgroundColor: hlColors[hl],
+                  borderColor: hlBorders[hl],
+                  borderWidth: 2,
+                },
+                hl === 'legal' && piece && {
+                  backgroundColor: hlColors['legal'],
+                  borderColor: '#4a9fd4',
+                  borderWidth: 2,
+                },
               ]}
             >
-              {coords && fi === 0 && (
+              {coords && origFi === 0 && (
                 <Text style={[styles.coordRank, { color: isLight ? colors.boardDark : colors.boardLight }]}>
                   {rank}
                 </Text>
               )}
-              {coords && ri === 7 && (
+              {coords && origRi === 7 && (
                 <Text style={[styles.coordFile, { color: isLight ? colors.boardDark : colors.boardLight }]}>
                   {file}
                 </Text>
               )}
+
+              {isLegalDot && (
+                <View style={[styles.legalDot, { backgroundColor: 'rgba(70, 130, 200, 0.55)' }]} />
+              )}
+
               {piece && (
                 <Text style={[
                   styles.piece,
@@ -97,7 +143,7 @@ export function Board({ pieces = {}, highlights = [], coords = false, size }: Bo
                   {PIECE_GLYPHS[piece] ?? piece}
                 </Text>
               )}
-            </View>
+            </TouchableOpacity>
           );
         })
       )}
@@ -122,9 +168,14 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   piece: {
-    fontSize: 20,
-    lineHeight: 24,
+    fontSize: 22,
+    lineHeight: 26,
     fontFamily: 'System',
+  },
+  legalDot: {
+    width: '35%',
+    aspectRatio: 1,
+    borderRadius: 999,
   },
   coordRank: {
     position: 'absolute',
