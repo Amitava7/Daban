@@ -181,7 +181,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const [level, setLevel] = useState(4);
   const [status, setStatus] = useState<GameStatus>('idle');
   const [result, setResult] = useState<GameResult>(null);
-  const [moveHistory, setMoveHistory] = useState<MoveRecord[]>([]);
+  const [moveHistory, setMoveHistoryState] = useState<MoveRecord[]>([]);
   const [lastAnalysis, setLastAnalysis] = useState<MoveAnalysis | null>(null);
   const [currentEval, setCurrentEval] = useState(0);
   const [selectedSquare, setSelectedSquare] = useState<string | null>(null);
@@ -195,6 +195,22 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const [captureFlash, setCaptureFlash] = useState<CaptureFlashState | null>(null);
 
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  // Mirror of moveHistory that updates synchronously, so async callbacks
+  // (engine move, deferred analysis) can read the latest history without
+  // having to embed side effects inside a setState updater.
+  const moveHistoryRef = useRef<MoveRecord[]>(moveHistory);
+  const setMoveHistory = useCallback(
+    (next: MoveRecord[] | ((prev: MoveRecord[]) => MoveRecord[])) => {
+      const resolved =
+        typeof next === 'function'
+          ? (next as (p: MoveRecord[]) => MoveRecord[])(moveHistoryRef.current)
+          : next;
+      moveHistoryRef.current = resolved;
+      setMoveHistoryState(resolved);
+    },
+    [],
+  );
 
   const clearTimer = () => {
     if (timerRef.current) clearInterval(timerRef.current);
@@ -259,24 +275,25 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       setLastMove({ from: moveData.from, to: moveData.to });
       const flash = captureFlashForMove(moveData, /*isPlayerMove*/ false);
       if (flash) setCaptureFlash(flash);
-      setMoveHistory(prev => {
-        const updated = [...prev, engineRecord];
-        if (chess.isGameOver()) {
-          let res: GameResult = 'draw';
-          if (chess.isCheckmate()) res = playerColor === chess.turn() ? 'loss' : 'win';
-          endGame(res, chess, updated);
-        } else {
-          setStatus('playing');
-        }
-        return updated;
-      });
+
+      // Pure history update, then side effects outside the updater.
+      const updated = [...moveHistoryRef.current, engineRecord];
+      setMoveHistory(updated);
+      if (chess.isGameOver()) {
+        let res: GameResult = 'draw';
+        if (chess.isCheckmate()) res = playerColor === chess.turn() ? 'loss' : 'win';
+        endGame(res, chess, updated);
+      } else {
+        setStatus('playing');
+      }
+
       // Defer eval (shallow) one more tick so the piece animation has begun
       setTimeout(() => {
         const evalNow = getEvaluation(chess, 1);
         setCurrentEval(evalNow);
       }, 0);
     }, 0);
-  }, [chess, level, playerColor, endGame]);
+  }, [chess, level, playerColor, endGame, setMoveHistory]);
 
   const startNewGame = useCallback((
     color: 'w' | 'b',
@@ -380,28 +397,23 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         playerMove: true,
       };
 
-      setMoveHistory(prev => {
-        const updated = [...prev, record];
+      // Pure history update, then side effects outside the updater.
+      const updated = [...moveHistoryRef.current, record];
+      setMoveHistory(updated);
 
-        if (chess.isGameOver()) {
-          let res: GameResult = 'draw';
-          if (chess.isCheckmate()) res = playerColor === chess.turn() ? 'loss' : 'win';
-          endGame(res, chess, updated);
-          return updated;
-        }
-
-        if (analysis.quality === 'blunder' || analysis.quality === 'mistake') {
-          setStatus('player_blundered');
-        } else {
-          setStatus('engine_thinking');
-          // Small thinking delay for natural feel, then engine moves
-          setTimeout(() => runEngineMove(), 280 + Math.random() * 220);
-        }
-
-        return updated;
-      });
+      if (chess.isGameOver()) {
+        let res: GameResult = 'draw';
+        if (chess.isCheckmate()) res = playerColor === chess.turn() ? 'loss' : 'win';
+        endGame(res, chess, updated);
+      } else if (analysis.quality === 'blunder' || analysis.quality === 'mistake') {
+        setStatus('player_blundered');
+      } else {
+        setStatus('engine_thinking');
+        // Small thinking delay for natural feel, then engine moves
+        setTimeout(() => runEngineMove(), 280 + Math.random() * 220);
+      }
     }, 0);
-  }, [status, chess, playerColor, endGame, runEngineMove]);
+  }, [status, chess, playerColor, endGame, runEngineMove, setMoveHistory]);
 
   const clearBlunderAlert = useCallback(() => {
     if (status !== 'player_blundered') return;

@@ -3,13 +3,15 @@ import { View, Text, Pressable, StyleSheet, LayoutChangeEvent } from 'react-nati
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
-  useDerivedValue,
   withTiming,
   withDelay,
   Easing,
 } from 'react-native-reanimated';
 import { useTheme } from '../context/ThemeContext';
 import { ChessPiece } from './ChessPiece';
+
+const MOVE_DURATION = 220;
+const MOVE_EASING = Easing.inOut(Easing.cubic);
 
 const FILES = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 const RANKS = [8, 7, 6, 5, 4, 3, 2, 1];
@@ -60,56 +62,47 @@ interface AnimatedPieceProps {
   animate: boolean;
 }
 
-function AnimatedPiece({ piece, squareSize, flipped, animate }: AnimatedPieceProps) {
+function AnimatedPieceImpl({ piece, squareSize, flipped, animate }: AnimatedPieceProps) {
   const { col, row } = sqToCoord(piece.sq, flipped);
   const targetX = col * squareSize;
   const targetY = row * squareSize;
   const captured = !!piece.captured;
 
-  // === Target shared values ===
-  // These mirror the latest target position from props. They are written
-  // synchronously on every render (no deps) so they can never lag behind
-  // boardPieces — even if React produces extra re-renders or this component
-  // is unmounted and remounted by a layout flicker.
-  const targetXSV = useSharedValue(targetX);
-  const targetYSV = useSharedValue(targetY);
-  const capturedSV = useSharedValue(captured);
+  // Initialize directly at the target so a freshly-mounted piece never slides
+  // in from the corner. useSharedValue's initial value is used only once.
+  const x = useSharedValue(targetX);
+  const y = useSharedValue(targetY);
+  const opacity = useSharedValue(captured ? 0 : 1);
+  const scale = useSharedValue(captured ? 0.4 : 1);
+
+  // Drive position from props. The dependency array is [targetX, targetY,
+  // animate] so this fires whenever the piece's destination square (or the
+  // board size) changes — and never re-issues an animation toward a stale
+  // value. Because this component is never wrapped in a stale-prop guard and
+  // its parent always re-renders on a board change, targetX/Y here are always
+  // the latest committed values, so the rendered position can't diverge from
+  // the game state.
   useEffect(() => {
-    targetXSV.value = targetX;
-    targetYSV.value = targetY;
-    capturedSV.value = captured;
-  });
+    if (animate) {
+      x.value = withTiming(targetX, { duration: MOVE_DURATION, easing: MOVE_EASING });
+      y.value = withTiming(targetY, { duration: MOVE_DURATION, easing: MOVE_EASING });
+    } else {
+      x.value = targetX;
+      y.value = targetY;
+    }
+  }, [targetX, targetY, animate]);
 
-  // === Displayed shared values ===
-  // useDerivedValue runs its worklet on the UI thread whenever the targets
-  // change. We wrap the assignment in withTiming so the View interpolates
-  // toward the latest target. Because the worklet always reads
-  // `targetXSV.value` (a shared value, not a JS closure capture), the
-  // animation can never aim at a stale position.
-  const x = useDerivedValue(() =>
-    animate
-      ? withTiming(targetXSV.value, { duration: 230, easing: Easing.out(Easing.cubic) })
-      : targetXSV.value
-  );
-  const y = useDerivedValue(() =>
-    animate
-      ? withTiming(targetYSV.value, { duration: 230, easing: Easing.out(Easing.cubic) })
-      : targetYSV.value
-  );
-
-  // === Capture (fade + shrink) ===
-  const opacity = useDerivedValue(() => {
-    if (!capturedSV.value) return 1;
-    return animate
-      ? withDelay(80, withTiming(0, { duration: 200 }))
-      : 0;
-  });
-  const scale = useDerivedValue(() => {
-    if (!capturedSV.value) return 1;
-    return animate
-      ? withDelay(80, withTiming(0.4, { duration: 220 }))
-      : 0.4;
-  });
+  // Capture: fade + shrink out. Restore instantly if a piece is "uncaptured"
+  // (e.g. after an undo rebuilds the board).
+  useEffect(() => {
+    if (captured) {
+      opacity.value = animate ? withDelay(60, withTiming(0, { duration: 180 })) : 0;
+      scale.value = animate ? withDelay(60, withTiming(0.4, { duration: 200 })) : 0.4;
+    } else {
+      opacity.value = 1;
+      scale.value = 1;
+    }
+  }, [captured, animate]);
 
   const half = squareSize / 2;
   const style = useAnimatedStyle(() => ({
@@ -141,6 +134,12 @@ function AnimatedPiece({ piece, squareSize, flipped, animate }: AnimatedPiecePro
     </Animated.View>
   );
 }
+
+// Memoized so unrelated parent re-renders (e.g. the 1s clock tick or an eval
+// update) don't re-render all 32 pieces. The piece object reference changes on
+// every move (applyMoveToPieces clones each entry), so a real move always
+// re-renders; a clock tick leaves the references untouched and is skipped.
+const AnimatedPiece = React.memo(AnimatedPieceImpl);
 
 export function Board({
   pieces,
@@ -191,23 +190,23 @@ export function Board({
     return s;
   }, [pieceList]);
 
-  const hlColors: Record<string, string> = {
+  const hlColors = useMemo<Record<string, string>>(() => ({
     good:     'rgba(77, 124, 69, 0.40)',
     bad:      'rgba(196, 69, 58, 0.40)',
     warn:     'rgba(184, 128, 31, 0.40)',
     brand:    colors.brandTint,
     selected: colors.selectedTint,
     lastmove: colors.lastMoveTint,
-  };
+  }), [colors]);
 
-  const hlBorders: Record<string, string> = {
+  const hlBorders = useMemo<Record<string, string>>(() => ({
     good:     colors.good,
     bad:      colors.bad,
     warn:     colors.warn,
     brand:    colors.brand,
     selected: colors.brand,
     lastmove: 'transparent',
-  };
+  }), [colors]);
 
   return (
     <View
@@ -272,8 +271,10 @@ export function Board({
                     />
                   )}
 
-                  {/* Coordinate labels */}
-                  {coords && fi === 0 && (
+                  {/* Coordinate labels — anchored to the visual left column
+                      (col 0) and bottom row (row 7) so they read correctly
+                      whether or not the board is flipped. */}
+                  {coords && col === 0 && (
                     <Text
                       style={[
                         styles.coordRank,
@@ -286,7 +287,7 @@ export function Board({
                       {rank}
                     </Text>
                   )}
-                  {coords && ri === 7 && (
+                  {coords && row === 7 && (
                     <Text
                       style={[
                         styles.coordFile,
