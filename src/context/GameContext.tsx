@@ -6,6 +6,7 @@ import { Chess } from 'chess.js';
 import { getBestMove, getEvaluation, levelToDepth, levelToElo } from '../engine/ChessEngine';
 import { classifyMove, MoveAnalysis } from '../engine/MoveClassifier';
 import { Storage, computeAccuracy } from '../services/StorageService';
+import { dlog } from '../utils/debugLog';
 import type { PieceData } from '../components/Board';
 
 export interface MoveRecord {
@@ -114,6 +115,18 @@ function applyMoveToPieces(prev: PieceData[], move: any): PieceData[] {
   const from = move.from as string;
   const to = move.to as string;
   const flags: string = move.flags ?? '';
+  const san: string = move.san ?? `${from}${to}`;
+
+  // Snapshot what's at `from` and `to` BEFORE we touch anything, so any
+  // mismatch between chess.js and our tracked pieces shows up in the log.
+  const pieceAtFrom = prev.find(p => !p.captured && p.sq === from);
+  const pieceAtTo = prev.find(p => !p.captured && p.sq === to);
+  dlog(
+    'applyMove',
+    `IN  san=${san} from=${from} to=${to} flags=${flags} ` +
+    `prev[from]=${pieceAtFrom ? `${pieceAtFrom.id}/${pieceAtFrom.code}` : 'NONE'} ` +
+    `prev[to]=${pieceAtTo ? `${pieceAtTo.id}/${pieceAtTo.code}` : 'NONE'}`,
+  );
 
   // Identify capture square (en passant differs)
   let captureSq: string | null = null;
@@ -128,7 +141,12 @@ function applyMoveToPieces(prev: PieceData[], move: any): PieceData[] {
 
   if (captureSq) {
     const cap = next.find(p => !p.captured && p.sq === captureSq);
-    if (cap) cap.captured = true;
+    if (cap) {
+      cap.captured = true;
+      dlog('applyMove', `  CAPTURED id=${cap.id}/${cap.code} at ${captureSq}`);
+    } else {
+      dlog('applyMove', `  WARN capture flagged but no piece at ${captureSq}`);
+    }
   }
 
   const moving = next.find(p => !p.captured && p.sq === from);
@@ -137,19 +155,26 @@ function applyMoveToPieces(prev: PieceData[], move: any): PieceData[] {
     if (move.promotion) {
       moving.code = moving.code[0] + move.promotion.toUpperCase();
     }
+    dlog('applyMove', `  MOVED id=${moving.id}/${moving.code} from=${from} -> to=${to}`);
+  } else {
+    dlog('applyMove', `  !! BUG: NO piece found at from=${from} — visual will desync from chess.js`);
   }
 
   // Castling: also move the rook
   if (flags.includes('k')) {
     const rank = from[1];
     const rook = next.find(p => !p.captured && p.sq === `h${rank}`);
-    if (rook) rook.sq = `f${rank}`;
+    if (rook) { rook.sq = `f${rank}`; dlog('applyMove', `  CASTLE-K rook ${rook.id} h${rank}->f${rank}`); }
   } else if (flags.includes('q')) {
     const rank = from[1];
     const rook = next.find(p => !p.captured && p.sq === `a${rank}`);
-    if (rook) rook.sq = `d${rank}`;
+    if (rook) { rook.sq = `d${rank}`; dlog('applyMove', `  CASTLE-Q rook ${rook.id} a${rank}->d${rank}`); }
   }
 
+  // Summary of where every non-captured piece is now (sorted). Lets us spot
+  // any unexpected diff between two consecutive renders.
+  const summary = next.filter(p => !p.captured).map(p => p.sq).sort().join(',');
+  dlog('applyMove', `OUT count=${next.filter(p => !p.captured).length} sqs=${summary}`);
   return next;
 }
 
@@ -231,6 +256,25 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => { return () => clearTimer(); }, []);
 
+  // === Diagnostic state watchers ===
+  // These log every commit of boardPieces / fen / status so we can correlate
+  // what React actually rendered with what the engine and our piece tracker
+  // each think the position is. A desync — boardPieces says one thing, fen
+  // says another — pinpoints exactly which state path is wrong.
+  useEffect(() => {
+    const live = boardPieces.filter(p => !p.captured);
+    const sqs = live.map(p => `${p.id}:${p.sq}`).sort().join(',');
+    dlog('state', `boardPieces commit count=${live.length} ${sqs}`);
+  }, [boardPieces]);
+
+  useEffect(() => {
+    dlog('state', `fen commit ${fen}`);
+  }, [fen]);
+
+  useEffect(() => {
+    dlog('state', `status=${status}`);
+  }, [status]);
+
   const endGame = useCallback((res: GameResult, chessInstance: Chess, history: MoveRecord[]) => {
     clearTimer();
     setResult(res);
@@ -253,16 +297,20 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
   // Helper: run engine move asynchronously (off the render path).
   const runEngineMove = useCallback(() => {
+    dlog('engine', `runEngineMove scheduled (level=${level}, depth=${levelToDepth(level)})`);
     // Defer to next tick so the "Thinking..." UI updates first; then the
     // engine computes in a follow-up tick so the JS thread can interleave.
     setTimeout(() => {
+      dlog('engine', `engine compute starting; chessTurn=${chess.turn()} fen=${chess.fen()}`);
       const depth = levelToDepth(level);
       const engineResult = getBestMove(chess, depth);
+      dlog('engine', `getBestMove -> san=${engineResult.san} from=${engineResult.from} to=${engineResult.to} promotion=${engineResult.promotion ?? '-'}`);
       const moveData = chess.move({
         from: engineResult.from,
         to: engineResult.to,
         promotion: engineResult.promotion,
       });
+      dlog('engine', `chess.move OK san=${moveData.san} flags=${moveData.flags} captured=${moveData.captured ?? '-'}`);
       const engineFen = chess.fen();
       const engineRecord: MoveRecord = {
         san: engineResult.san,
@@ -271,7 +319,10 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         playerMove: false,
       };
       setFen(engineFen);
-      setBoardPieces(prev => applyMoveToPieces(prev, moveData));
+      setBoardPieces(prev => {
+        dlog('engine', `setBoardPieces(engine) updater fires; prev.count=${prev.filter(p => !p.captured).length}`);
+        return applyMoveToPieces(prev, moveData);
+      });
       setLastMove({ from: moveData.from, to: moveData.to });
       const flash = captureFlashForMove(moveData, /*isPlayerMove*/ false);
       if (flash) setCaptureFlash(flash);
@@ -357,26 +408,32 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   }, [status, chess, playerColor, selectedSquare, legalMoves]);
 
   const makeMove = useCallback(async (from: string, to: string, promotion?: string) => {
-    if (status !== 'playing') return;
-    if (chess.turn() !== playerColor) return;
+    dlog('makeMove', `ENTRY from=${from} to=${to} promotion=${promotion ?? '-'} status=${status} chessTurn=${chess.turn()} playerColor=${playerColor}`);
+    if (status !== 'playing') { dlog('makeMove', `EXIT: status=${status}`); return; }
+    if (chess.turn() !== playerColor) { dlog('makeMove', `EXIT: not player's turn`); return; }
 
     const chessBefore = new Chess(chess.fen());
 
     let moveResult: any;
     try {
       moveResult = chess.move({ from, to, promotion: promotion ?? 'q' });
-    } catch {
+    } catch (e) {
+      dlog('makeMove', `EXIT: chess.move threw ${String(e)}`);
       setSelectedSquare(null);
       setLegalMoves([]);
       return;
     }
+    dlog('makeMove', `chess.move OK san=${moveResult.san} from=${moveResult.from} to=${moveResult.to} flags=${moveResult.flags} captured=${moveResult.captured ?? '-'} promotion=${moveResult.promotion ?? '-'}`);
 
     // === FAST PATH: update UI immediately ===
     setSelectedSquare(null);
     setLegalMoves([]);
     const newFen = chess.fen();
     setFen(newFen);
-    setBoardPieces(prev => applyMoveToPieces(prev, moveResult));
+    setBoardPieces(prev => {
+      dlog('makeMove', `setBoardPieces(player) updater fires; prev.count=${prev.filter(p => !p.captured).length}`);
+      return applyMoveToPieces(prev, moveResult);
+    });
     setLastMove({ from: moveResult.from, to: moveResult.to });
     const flash = captureFlashForMove(moveResult, /*isPlayerMove*/ true);
     if (flash) setCaptureFlash(flash);

@@ -5,6 +5,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import * as Clipboard from 'expo-clipboard';
 import { useTheme } from '../context/ThemeContext';
 import { useGame } from '../context/GameContext';
 import { useProgress } from '../context/ProgressContext';
@@ -19,6 +20,7 @@ import { ChessPiece } from '../components/ChessPiece';
 import { formatEval, qualityLabel, qualityTone } from '../engine/MoveClassifier';
 import { levelToElo } from '../engine/ChessEngine';
 import { fenToPieces } from '../utils/fenUtils';
+import { dlog, getLogsText, getLogsCount, clearLogs } from '../utils/debugLog';
 
 type Nav = NativeStackNavigationProp<RootStackParamList, 'Game'>;
 
@@ -70,6 +72,7 @@ export function GameScreen() {
   }, [status, result]);
 
   const handleSquarePress = (sq: string) => {
+    dlog('tap', `square=${sq} selectedSquare=${selectedSquare ?? '-'} legalMoves=[${legalMoves.join(',')}] status=${status}`);
     if (status !== 'playing') return;
     // If we have a selected square and tap a legal move destination
     if (selectedSquare && legalMoves.includes(sq)) {
@@ -84,6 +87,24 @@ export function GameScreen() {
       }
     } else {
       selectSquare(sq);
+    }
+  };
+
+  const handleCopyLogs = async () => {
+    const text = getLogsText();
+    const count = getLogsCount();
+    try {
+      await Clipboard.setStringAsync(text);
+      Alert.alert(
+        'Logs copied',
+        `${count} entries (${text.length} chars) copied to clipboard.`,
+        [
+          { text: 'Clear logs', onPress: () => clearLogs(), style: 'destructive' },
+          { text: 'OK', style: 'cancel' },
+        ],
+      );
+    } catch (e) {
+      Alert.alert('Copy failed', String(e));
     }
   };
 
@@ -240,39 +261,52 @@ export function GameScreen() {
 
         {/* Actions */}
         {!isOver && (
-          <View style={styles.btnRow}>
+          <>
+            <View style={styles.btnRow}>
+              <TouchableOpacity
+                style={[styles.btn, styles.btnBrand, { backgroundColor: colors.brand, opacity: hintsUsed >= maxHints ? 0.4 : 1 }]}
+                onPress={() => { if (hintsUsed < maxHints) { useHint(); nav.navigate('Hint'); } }}
+                disabled={hintsUsed >= maxHints}
+              >
+                <Text style={[styles.btnText, { color: colors.onBrand }]}>
+                  Hint {maxHints < 99 ? `(${maxHints - hintsUsed})` : ''}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  styles.btn,
+                  { backgroundColor: colors.surface, borderColor: colors.border, opacity: canUndo() ? 1 : 0.4 },
+                ]}
+                onPress={() => { if (canUndo()) undoLastMove(); }}
+                disabled={!canUndo()}
+              >
+                <Text style={[styles.btnText, { color: colors.ink }]}>Undo</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.btn, { backgroundColor: colors.surface, borderColor: colors.border }]}
+                onPress={() => setShowResignModal(true)}
+              >
+                <Text style={[styles.btnText, { color: colors.ink }]}>Resign</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.btn, { backgroundColor: colors.surface, borderColor: colors.border }]}
+                onPress={offerDraw}
+              >
+                <Text style={[styles.btnText, { color: colors.ink }]}>½</Text>
+              </TouchableOpacity>
+            </View>
+            {/* Debug row — tap after reproducing the ghost-piece bug to copy a
+                full trace to the clipboard. Long-press to clear logs. */}
             <TouchableOpacity
-              style={[styles.btn, styles.btnBrand, { backgroundColor: colors.brand, opacity: hintsUsed >= maxHints ? 0.4 : 1 }]}
-              onPress={() => { if (hintsUsed < maxHints) { useHint(); nav.navigate('Hint'); } }}
-              disabled={hintsUsed >= maxHints}
+              onPress={handleCopyLogs}
+              onLongPress={() => { clearLogs(); Alert.alert('Logs cleared'); }}
+              style={[styles.debugBtn, { borderColor: colors.border, backgroundColor: colors.surface2 }]}
             >
-              <Text style={[styles.btnText, { color: colors.onBrand }]}>
-                Hint {maxHints < 99 ? `(${maxHints - hintsUsed})` : ''}
+              <Text style={[styles.debugBtnText, { color: colors.inkSoft }]}>
+                🐛 Copy debug log to clipboard  ·  long-press to clear
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              style={[
-                styles.btn,
-                { backgroundColor: colors.surface, borderColor: colors.border, opacity: canUndo() ? 1 : 0.4 },
-              ]}
-              onPress={() => { if (canUndo()) undoLastMove(); }}
-              disabled={!canUndo()}
-            >
-              <Text style={[styles.btnText, { color: colors.ink }]}>Undo</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.btn, { backgroundColor: colors.surface, borderColor: colors.border }]}
-              onPress={() => setShowResignModal(true)}
-            >
-              <Text style={[styles.btnText, { color: colors.ink }]}>Resign</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.btn, { backgroundColor: colors.surface, borderColor: colors.border }]}
-              onPress={offerDraw}
-            >
-              <Text style={[styles.btnText, { color: colors.ink }]}>½</Text>
-            </TouchableOpacity>
-          </View>
+          </>
         )}
 
         {isOver && (
@@ -382,6 +416,15 @@ const styles = StyleSheet.create({
   btnFull: { borderWidth: 0 },
   btnBrand: { borderWidth: 0 },
   btnText: { fontSize: 14, fontWeight: '600' },
+  debugBtn: {
+    marginTop: 6,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+    borderWidth: 1,
+    alignItems: 'center',
+  },
+  debugBtnText: { fontSize: 11, fontWeight: '500', letterSpacing: 0.2 },
   modalOverlay: {
     flex: 1, backgroundColor: 'rgba(0,0,0,0.5)',
     alignItems: 'center', justifyContent: 'center',

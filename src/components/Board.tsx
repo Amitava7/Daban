@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { View, Text, Pressable, StyleSheet, LayoutChangeEvent } from 'react-native';
 import Animated, {
   useSharedValue,
@@ -9,6 +9,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { useTheme } from '../context/ThemeContext';
 import { ChessPiece } from './ChessPiece';
+import { dlog } from '../utils/debugLog';
 
 const MOVE_DURATION = 220;
 const MOVE_EASING = Easing.inOut(Easing.cubic);
@@ -75,6 +76,25 @@ function AnimatedPieceImpl({ piece, squareSize, flipped, animate }: AnimatedPiec
   const opacity = useSharedValue(captured ? 0 : 1);
   const scale = useSharedValue(captured ? 0.4 : 1);
 
+  // Log mounts and prop changes for the moving piece so we can match a piece's
+  // displayed position against the boardPieces commits in the same trace.
+  const mountedRef = useRef(false);
+  useEffect(() => {
+    if (!mountedRef.current) {
+      mountedRef.current = true;
+      dlog('anim', `MOUNT id=${piece.id} code=${piece.code} sq=${piece.sq} captured=${captured}`);
+      return () => {
+        dlog('anim', `UNMOUNT id=${piece.id} code=${piece.code} sq=${piece.sq}`);
+      };
+    }
+  }, []);
+
+  const prevSqRef = useRef(piece.sq);
+  if (prevSqRef.current !== piece.sq) {
+    dlog('anim', `SQ-CHG id=${piece.id} ${prevSqRef.current} -> ${piece.sq}`);
+    prevSqRef.current = piece.sq;
+  }
+
   // Drive position from props. The dependency array is [targetX, targetY,
   // animate] so this fires whenever the piece's destination square (or the
   // board size) changes — and never re-issues an animation toward a stale
@@ -83,6 +103,7 @@ function AnimatedPieceImpl({ piece, squareSize, flipped, animate }: AnimatedPiec
   // the latest committed values, so the rendered position can't diverge from
   // the game state.
   useEffect(() => {
+    dlog('anim', `EFFECT id=${piece.id} sq=${piece.sq} target=(${Math.round(targetX)},${Math.round(targetY)}) animate=${animate}`);
     if (animate) {
       x.value = withTiming(targetX, { duration: MOVE_DURATION, easing: MOVE_EASING });
       y.value = withTiming(targetY, { duration: MOVE_DURATION, easing: MOVE_EASING });
