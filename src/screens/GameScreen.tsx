@@ -1,11 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import {
-  View, Text, TouchableOpacity, StyleSheet, Modal, Alert,
+  View, Text, TouchableOpacity, StyleSheet, Modal, Alert, Share, ScrollView, TextInput,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import * as Clipboard from 'expo-clipboard';
 import { useTheme } from '../context/ThemeContext';
 import { useGame } from '../context/GameContext';
 import { useProgress } from '../context/ProgressContext';
@@ -51,6 +50,7 @@ export function GameScreen() {
   const [showResignModal, setShowResignModal] = useState(false);
   const [promotionPending, setPromotionPending] = useState<{ from: string; to: string } | null>(null);
   const [boardWidth, setBoardWidth] = useState(0);
+  const [logModal, setLogModal] = useState<{ text: string; count: number } | null>(null);
 
   // Static fallback when the live tracked list isn't ready
   const fallbackPieces = useMemo(() => fenToPieces(fen), [fen]);
@@ -90,21 +90,19 @@ export function GameScreen() {
     }
   };
 
-  const handleCopyLogs = async () => {
-    const text = getLogsText();
-    const count = getLogsCount();
+  // Open a modal showing the full trace in a selectable text box. Uses only
+  // core React Native (no native clipboard module), so it can't crash a build.
+  const handleShowLogs = () => {
+    setLogModal({ text: getLogsText(), count: getLogsCount() });
+  };
+
+  // Hand the log off to the OS share sheet (core RN Share, no native module),
+  // from which the user can copy it or send it to themselves.
+  const handleShareLogs = async () => {
     try {
-      await Clipboard.setStringAsync(text);
-      Alert.alert(
-        'Logs copied',
-        `${count} entries (${text.length} chars) copied to clipboard.`,
-        [
-          { text: 'Clear logs', onPress: () => clearLogs(), style: 'destructive' },
-          { text: 'OK', style: 'cancel' },
-        ],
-      );
+      await Share.share({ message: getLogsText() });
     } catch (e) {
-      Alert.alert('Copy failed', String(e));
+      Alert.alert('Share failed', String(e));
     }
   };
 
@@ -295,15 +293,15 @@ export function GameScreen() {
                 <Text style={[styles.btnText, { color: colors.ink }]}>½</Text>
               </TouchableOpacity>
             </View>
-            {/* Debug row — tap after reproducing the ghost-piece bug to copy a
-                full trace to the clipboard. Long-press to clear logs. */}
+            {/* Debug row — tap after reproducing the ghost-piece bug to view a
+                full trace you can select/copy or share. Long-press to clear. */}
             <TouchableOpacity
-              onPress={handleCopyLogs}
+              onPress={handleShowLogs}
               onLongPress={() => { clearLogs(); Alert.alert('Logs cleared'); }}
               style={[styles.debugBtn, { borderColor: colors.border, backgroundColor: colors.surface2 }]}
             >
               <Text style={[styles.debugBtnText, { color: colors.inkSoft }]}>
-                🐛 Copy debug log to clipboard  ·  long-press to clear
+                🐛 View debug log  ·  long-press to clear
               </Text>
             </TouchableOpacity>
           </>
@@ -318,6 +316,48 @@ export function GameScreen() {
           </TouchableOpacity>
         )}
       </View>
+
+      {/* Debug log modal — selectable text + Share, no native clipboard module */}
+      <Modal visible={!!logModal} transparent animationType="fade" onRequestClose={() => setLogModal(null)}>
+        <View style={styles.modalOverlay}>
+          <View style={[styles.logModal, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+            <Text style={[styles.modalTitle, { color: colors.ink }]}>Debug log</Text>
+            <Text style={[styles.modalSub, { color: colors.inkSoft }]}>
+              {logModal?.count ?? 0} entries · {logModal?.text.length ?? 0} chars.
+              Long-press the text to Select all → Copy, or use Share.
+            </Text>
+            <ScrollView
+              style={[styles.logScroll, { borderColor: colors.border, backgroundColor: colors.bg }]}
+              contentContainerStyle={{ padding: 8 }}
+            >
+              <TextInput
+                // Left editable (default) so Android shows the "Select all →
+                // Copy" context menu on long-press. Controlled value keeps the
+                // text fresh and simply snaps back if accidentally edited.
+                value={logModal?.text ?? ''}
+                onChangeText={() => { /* ignore edits; this is a read-only view */ }}
+                multiline
+                scrollEnabled={false}
+                style={[styles.logText, { color: colors.ink }]}
+              />
+            </ScrollView>
+            <View style={styles.modalBtns}>
+              <TouchableOpacity
+                style={[styles.modalBtn, { backgroundColor: colors.brand }]}
+                onPress={handleShareLogs}
+              >
+                <Text style={{ color: colors.onBrand, fontWeight: '600' }}>Share</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.modalBtn, { backgroundColor: colors.surface, borderColor: colors.border }]}
+                onPress={() => setLogModal(null)}
+              >
+                <Text style={{ color: colors.ink, fontWeight: '600' }}>Close</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
 
       {/* Resign modal */}
       <Modal visible={showResignModal} transparent animationType="fade">
@@ -432,6 +472,17 @@ const styles = StyleSheet.create({
   modal: {
     width: 280, borderRadius: 20, padding: 24,
     borderWidth: 1, gap: 12,
+  },
+  logModal: {
+    width: '90%', maxWidth: 460, maxHeight: '82%', borderRadius: 18, padding: 18,
+    borderWidth: 1, gap: 10,
+  },
+  logScroll: {
+    flexGrow: 0, maxHeight: 380, borderWidth: 1, borderRadius: 10,
+  },
+  logText: {
+    fontFamily: 'monospace', fontSize: 10, lineHeight: 14,
+    padding: 0, margin: 0,
   },
   modalTitle: { fontSize: 20, fontWeight: '600', fontFamily: 'serif' },
   modalSub: { fontSize: 13 },
