@@ -94,10 +94,12 @@ function isEndgame(chess: Chess): boolean {
   return queens === 0 || (queens <= 2 && minors <= 2);
 }
 
+// Static material + piece-square evaluation, white-positive. Terminal
+// positions (checkmate / stalemate) are detected by the search from the
+// (empty) move list, so this never needs to run the expensive
+// isCheckmate()/isDraw() probes — it is only ever called on a position that
+// still has legal moves.
 function evaluate(chess: Chess): number {
-  if (chess.isCheckmate()) return chess.turn() === 'w' ? -100000 : 100000;
-  if (chess.isDraw()) return 0;
-
   const board = chess.board();
   const endgame = isEndgame(chess);
   let score = 0;
@@ -129,14 +131,20 @@ export function getSearchNodes(): number { return searchNodes; }
 // Negamax with alpha-beta: returns score relative to side to move
 function negamax(chess: Chess, depth: number, alpha: number, beta: number): number {
   searchNodes++;
+
+  // Generate legal moves once. An empty list means the position is terminal:
+  // checkmate if the side to move is in check, otherwise stalemate. Detecting
+  // it here lets us skip chess.isCheckmate() and chess.isDraw() — each of which
+  // runs a full move generation internally — at every node. That redundant
+  // generation (chess.js's hot path) was a large slice of the per-node cost.
+  const moves = chess.moves({ verbose: true });
+  if (moves.length === 0) {
+    return chess.isCheck() ? -100000 - depth : 0;
+  }
   if (depth === 0) {
     const raw = evaluate(chess);
     return chess.turn() === 'w' ? raw : -raw;
   }
-  if (chess.isCheckmate()) return -100000 - depth;
-  if (chess.isDraw()) return 0;
-
-  const moves = chess.moves({ verbose: true });
 
   // Move ordering: captures > promotions > others (by MVV-LVA)
   moves.sort((a, b) => {
@@ -217,15 +225,20 @@ export function getBestMove(chess: Chess, depth: number): EngineResult {
 
   let bestMove = moves[0];
   let bestScore = -Infinity;
+  let alpha = -Infinity;
   const isWhite = chess.turn() === 'w';
 
   for (const move of moves) {
     chess.move(move);
-    const score = -negamax(chess, depth - 1, -Infinity, Infinity);
+    // Root alpha-beta: search each move with the running best score as the
+    // lower bound so clearly-worse replies get pruned. Previously every root
+    // move used a full window, so the top ply got no pruning at all.
+    const score = -negamax(chess, depth - 1, -Infinity, -alpha);
     chess.undo();
     if (score > bestScore) {
       bestScore = score;
       bestMove = move;
+      alpha = score;
     }
   }
 
