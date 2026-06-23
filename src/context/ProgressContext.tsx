@@ -28,7 +28,7 @@ type ProgressCtx = ProgressState & ProgressActions;
 const Ctx = createContext<ProgressCtx | null>(null);
 
 export function ProgressProvider({ children }: { children: React.ReactNode }) {
-  const [progress, setProgress] = useState<Progress>({ elo: 1200, games: [] });
+  const [progress, setProgress] = useState<Progress>({ elo: 1000, games: [] });
   const [settings, setSettings] = useState<Settings>({
     level: 4, mode: 'light', personality: 'Balanced', timeControl: '10min',
   });

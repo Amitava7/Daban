@@ -41,7 +41,7 @@ export function GameScreen() {
   const nav = useNavigation<Nav>();
   const {
     fen, status, result, moveHistory, lastAnalysis, currentEval,
-    selectedSquare, legalMoves, playerColor, level, timeWhite, timeBlack,
+    selectedSquare, legalMoves, playerColor, level, playerTime,
     hintsUsed, selectSquare, makeMove, resign, offerDraw, useHint,
     clearBlunderAlert, boardPieces, lastMove, captureFlash, clearCaptureFlash,
     undoLastMove, canUndo,
@@ -139,7 +139,10 @@ export function GameScreen() {
         <View style={[styles.coachQuote, { backgroundColor: colors.brandSoft, borderColor: colors.brandTint }]}>
           <Text style={[styles.quoteMark, { color: colors.brand }]}>"</Text>
           <View style={styles.quoteContent}>
-            <Text style={[styles.quoteMain, { color: colors.brand2, fontFamily: 'serif', fontStyle: 'italic' }]}>
+            <Text
+              numberOfLines={2}
+              style={[styles.quoteMain, { color: colors.brand2, fontFamily: 'serif', fontStyle: 'italic' }]}
+            >
               {isThinking ? 'Thinking...' : isOver
                 ? (result === 'win' ? 'Well played — you won!' : result === 'draw' ? 'Draw agreed.' : 'Game over.')
                 : coachComment}
@@ -155,20 +158,24 @@ export function GameScreen() {
           </Pill>
         </View>
 
-        {/* Clock (if enabled) */}
-        {timeWhite !== null && (
+        {/* Player clock (if enabled) — coach is the computer and has no clock.
+            The clock only counts down while it's your turn to move. */}
+        {playerTime !== null && (
           <View style={styles.clockRow}>
-            <View style={[styles.clock, { backgroundColor: playerColor === 'b' ? colors.ink : colors.surface, borderColor: colors.border }]}>
-              <Text style={[styles.clockText, { color: playerColor === 'b' ? colors.surface : colors.ink, fontFamily: 'monospace' }]}>
-                {formatTime(playerColor === 'b' ? timeBlack : timeWhite)}
+            <View style={[
+              styles.clock,
+              {
+                backgroundColor: isPlayerTurn ? colors.ink : colors.surface,
+                borderColor: playerTime <= 30 ? colors.bad : colors.border,
+                opacity: isPlayerTurn ? 1 : 0.85,
+              },
+            ]}>
+              <Text style={[styles.clockText, { color: isPlayerTurn ? colors.surface : colors.ink, fontFamily: 'monospace' }]}>
+                {formatTime(playerTime)}
               </Text>
-              <Text style={[styles.clockLabel, { color: playerColor === 'b' ? colors.surface : colors.inkMute }]}>You</Text>
-            </View>
-            <View style={[styles.clock, { backgroundColor: playerColor === 'w' ? colors.ink : colors.surface, borderColor: colors.border }]}>
-              <Text style={[styles.clockText, { color: playerColor === 'w' ? colors.surface : colors.ink, fontFamily: 'monospace' }]}>
-                {formatTime(playerColor === 'w' ? timeBlack : timeWhite)}
+              <Text style={[styles.clockLabel, { color: isPlayerTurn ? colors.surface : colors.inkMute }]}>
+                {isPlayerTurn ? 'Your move' : 'Coach thinking…'}
               </Text>
-              <Text style={[styles.clockLabel, { color: playerColor === 'w' ? colors.surface : colors.inkMute }]}>Coach</Text>
             </View>
           </View>
         )}
@@ -420,6 +427,9 @@ const styles = StyleSheet.create({
   coachQuote: {
     flexDirection: 'row', alignItems: 'flex-start', gap: 8,
     padding: 12, paddingLeft: 40, borderWidth: 1, borderRadius: 18, position: 'relative',
+    // Fixed height so the header doesn't jump when the tip wraps to two lines
+    // or the move-quality subline appears/disappears.
+    minHeight: 92,
   },
   quoteMark: {
     position: 'absolute', left: 10, top: 0, fontSize: 44,

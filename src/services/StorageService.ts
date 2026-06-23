@@ -52,7 +52,7 @@ const DEFAULT_SETTINGS: Settings = {
 };
 
 const DEFAULT_PROGRESS: Progress = {
-  elo: 1200,
+  elo: 1000,
   games: [],
 };
 

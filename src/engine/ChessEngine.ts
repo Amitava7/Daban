@@ -159,9 +159,25 @@ export function levelToDepth(level: number): number {
   return 4; // cap at 4 for performance
 }
 
+const LEVEL_ELOS = [600, 700, 850, 1000, 1100, 1250, 1400, 1550, 1700, 1900];
+
 export function levelToElo(level: number): number {
-  const elos = [600, 700, 850, 1000, 1100, 1250, 1400, 1550, 1700, 1900];
-  return elos[Math.min(level - 1, 9)];
+  return LEVEL_ELOS[Math.min(level - 1, 9)];
+}
+
+// Pick the engine level whose rating is closest to the given Elo, so the
+// coach plays at roughly the same strength as the player.
+export function eloToLevel(elo: number): number {
+  let best = 0;
+  let bestDiff = Infinity;
+  for (let i = 0; i < LEVEL_ELOS.length; i++) {
+    const diff = Math.abs(LEVEL_ELOS[i] - elo);
+    if (diff < bestDiff) {
+      bestDiff = diff;
+      best = i;
+    }
+  }
+  return best + 1;
 }
 
 export interface EngineResult {

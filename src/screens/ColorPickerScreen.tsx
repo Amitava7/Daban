@@ -7,6 +7,7 @@ import { useTheme } from '../context/ThemeContext';
 import { useGame } from '../context/GameContext';
 import { useProgress } from '../context/ProgressContext';
 import { RootStackParamList } from '../navigation/types';
+import { eloToLevel } from '../engine/ChessEngine';
 
 type Nav = NativeStackNavigationProp<RootStackParamList, 'ColorPicker'>;
 
@@ -20,17 +21,21 @@ export function ColorPickerScreen() {
   const { colors } = useTheme();
   const nav = useNavigation<Nav>();
   const { startNewGame } = useGame();
-  const { settings } = useProgress();
+  const { settings, progress } = useProgress();
   const [color, setColor] = useState<'w' | 'b' | 'random'>('w');
   const [timeControl, setTimeControl] = useState<'none' | '5min' | '10min'>(
     settings.timeControl ?? '10min'
   );
 
+  // The coach plays at the same strength as the player: map the player's
+  // current Elo to the nearest engine level.
+  const coachLevel = eloToLevel(progress.elo);
+
   const launch = () => {
     const chosen = color === 'random'
       ? (Math.random() < 0.5 ? 'w' : 'b')
       : color;
-    startNewGame(chosen, settings.level, timeControl);
+    startNewGame(chosen, coachLevel, timeControl);
     nav.navigate('Game');
   };
 
@@ -45,7 +50,7 @@ export function ColorPickerScreen() {
           New game
         </Text>
         <Text style={[styles.sub, { color: colors.inkSoft }]}>
-          vs Coach · Level {settings.level}
+          vs Coach · matches your {progress.elo} ELO
         </Text>
 
         {/* Color choice */}
