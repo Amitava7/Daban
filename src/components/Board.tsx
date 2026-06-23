@@ -5,6 +5,7 @@ import Animated, {
   useAnimatedStyle,
   withTiming,
   withDelay,
+  cancelAnimation,
   Easing,
 } from 'react-native-reanimated';
 import { useTheme } from '../context/ThemeContext';
@@ -76,37 +77,58 @@ function AnimatedPieceImpl({ piece, squareSize, flipped, animate }: AnimatedPiec
   const opacity = useSharedValue(captured ? 0 : 1);
   const scale = useSharedValue(captured ? 0.4 : 1);
 
-  // Log mounts and prop changes for the moving piece so we can match a piece's
-  // displayed position against the boardPieces commits in the same trace.
+  // Log mounts and prop changes only for the live game board (animate=true).
+  // The static HomeScreen preview re-keys all 32 pieces on every fen change
+  // and would otherwise flood the log with ~30 lines per move.
   const mountedRef = useRef(false);
   useEffect(() => {
     if (!mountedRef.current) {
       mountedRef.current = true;
-      dlog('anim', `MOUNT id=${piece.id} code=${piece.code} sq=${piece.sq} captured=${captured}`);
-      return () => {
-        dlog('anim', `UNMOUNT id=${piece.id} code=${piece.code} sq=${piece.sq}`);
-      };
+      if (animate) {
+        dlog('anim', `MOUNT id=${piece.id} code=${piece.code} sq=${piece.sq} captured=${captured}`);
+        return () => {
+          dlog('anim', `UNMOUNT id=${piece.id} code=${piece.code} sq=${piece.sq}`);
+        };
+      }
     }
   }, []);
 
   const prevSqRef = useRef(piece.sq);
   if (prevSqRef.current !== piece.sq) {
-    dlog('anim', `SQ-CHG id=${piece.id} ${prevSqRef.current} -> ${piece.sq}`);
+    if (animate) {
+      dlog('anim', `SQ-CHG id=${piece.id} ${prevSqRef.current} -> ${piece.sq}`);
+    }
     prevSqRef.current = piece.sq;
   }
 
-  // Drive position from props. The dependency array is [targetX, targetY,
-  // animate] so this fires whenever the piece's destination square (or the
-  // board size) changes — and never re-issues an animation toward a stale
-  // value. Because this component is never wrapped in a stale-prop guard and
-  // its parent always re-renders on a board change, targetX/Y here are always
-  // the latest committed values, so the rendered position can't diverge from
-  // the game state.
+  // Drive position from props. Defensive against an occasional Reanimated v4
+  // glitch we've observed where, during a busy render in which many other
+  // components are unmounting/mounting (e.g. the HomeScreen preview's
+  // 30-piece re-key fires in the same commit), a freshly-issued withTiming
+  // message can be dropped on the UI thread and the shared value stays at
+  // its old position — the piece appears to "snap back" to where it was.
+  //
+  // Two safeguards:
+  //   1. cancelAnimation() on x/y first, so any half-issued previous animation
+  //      can't fight the new target.
+  //   2. A setTimeout that hard-sets x/y to the target after the animation
+  //      duration. If Reanimated ran the animation correctly, this is a
+  //      no-op. If it dropped the animation, this snaps the piece to the
+  //      correct square instead of leaving a ghost.
   useEffect(() => {
-    dlog('anim', `EFFECT id=${piece.id} sq=${piece.sq} target=(${Math.round(targetX)},${Math.round(targetY)}) animate=${animate}`);
     if (animate) {
+      dlog('anim', `EFFECT id=${piece.id} sq=${piece.sq} target=(${Math.round(targetX)},${Math.round(targetY)}) animate=true`);
+      cancelAnimation(x);
+      cancelAnimation(y);
       x.value = withTiming(targetX, { duration: MOVE_DURATION, easing: MOVE_EASING });
       y.value = withTiming(targetY, { duration: MOVE_DURATION, easing: MOVE_EASING });
+      const settleId = setTimeout(() => {
+        // Force the final position. If we're already there this is a no-op;
+        // if Reanimated lost the message, this rescues the piece.
+        x.value = targetX;
+        y.value = targetY;
+      }, MOVE_DURATION + 80);
+      return () => clearTimeout(settleId);
     } else {
       x.value = targetX;
       y.value = targetY;

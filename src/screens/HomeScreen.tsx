@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useIsFocused } from '@react-navigation/native';
 import { useTheme } from '../context/ThemeContext';
 import { useGame } from '../context/GameContext';
 import { useProgress } from '../context/ProgressContext';
@@ -46,8 +46,21 @@ export function HomeScreen() {
   const { progress, settings, openingMastery, endgameCompleted, weeklyEloChange } = useProgress();
 
   const hasActiveGame = status === 'playing' || status === 'engine_thinking' || status === 'player_blundered';
-  const currentFen = hasActiveGame ? fen : INITIAL_FEN;
-  const resumePieces = fenToPieces(currentFen);
+  const liveFen = hasActiveGame ? fen : INITIAL_FEN;
+
+  // The HomeScreen stays mounted while the user plays on GameScreen, so every
+  // engine/player move would otherwise re-render this screen, re-run
+  // fenToPieces (~32 brand-new keys), and force ~30 AnimatedPiece unmount/
+  // mount pairs on the same UI thread that Reanimated is using to animate
+  // the live board. We observed this churn coinciding with the live board's
+  // withTiming being dropped (the "ghost piece" symptom). Freeze the
+  // offscreen preview at the FEN it was last showing while focused, so
+  // there's no work on the UI thread for the offscreen preview between moves.
+  const isFocused = useIsFocused();
+  const previewFenRef = useRef(liveFen);
+  if (isFocused) previewFenRef.current = liveFen;
+  const previewFen = previewFenRef.current;
+  const resumePieces = useMemo(() => fenToPieces(previewFen), [previewFen]);
   const wEloChange = weeklyEloChange();
   const streak = getDayStreak(progress.games);
   const accuracy = (() => {
