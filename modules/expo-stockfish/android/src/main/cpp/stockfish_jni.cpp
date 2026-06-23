@@ -14,7 +14,9 @@
 #define LOGE(...) __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__)
 
 // Stockfish entry point (main.cpp is compiled with -Dmain=stockfish_main).
-extern "C" int stockfish_main(int argc, char* argv[]);
+// Declared as a normal C++ function (NOT extern "C") so its mangled name
+// matches the definition emitted by the C++ main.cpp translation unit.
+int stockfish_main(int argc, char* argv[]);
 
 static int s_inPipe[2]  = {-1, -1};   // JS  -> Stockfish stdin
 static int s_outPipe[2] = {-1, -1};   // Stockfish stdout -> JS
