@@ -119,8 +119,16 @@ function evaluate(chess: Chess): number {
   return score;
 }
 
+// Lightweight search instrumentation. negamax increments a node counter so
+// the move pipeline can log how much work a single coach move actually cost on
+// the real device (see GameContext.runEngineMove). Zero-cost when unused.
+let searchNodes = 0;
+export function resetSearchNodes(): void { searchNodes = 0; }
+export function getSearchNodes(): number { return searchNodes; }
+
 // Negamax with alpha-beta: returns score relative to side to move
 function negamax(chess: Chess, depth: number, alpha: number, beta: number): number {
+  searchNodes++;
   if (depth === 0) {
     const raw = evaluate(chess);
     return chess.turn() === 'w' ? raw : -raw;

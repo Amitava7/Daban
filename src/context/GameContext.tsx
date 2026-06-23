@@ -3,7 +3,10 @@ import React, {
 } from 'react';
 import { InteractionManager } from 'react-native';
 import { Chess } from 'chess.js';
-import { getBestMove, getEvaluation, levelToDepth, levelToElo } from '../engine/ChessEngine';
+import {
+  getBestMove, getEvaluation, levelToDepth, levelToElo,
+  resetSearchNodes, getSearchNodes,
+} from '../engine/ChessEngine';
 import { classifyMove, MoveAnalysis } from '../engine/MoveClassifier';
 import { Storage, computeAccuracy } from '../services/StorageService';
 import { dlog } from '../utils/debugLog';
@@ -301,7 +304,15 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     setTimeout(() => {
       dlog('engine', `engine compute starting; chessTurn=${chess.turn()} fen=${chess.fen()}`);
       const depth = levelToDepth(level);
+      // Time the search and count nodes so we can see, on the real device,
+      // exactly how long the coach takes and how much work it did.
+      resetSearchNodes();
+      const tStart = Date.now();
       const engineResult = getBestMove(chess, depth);
+      const elapsedMs = Date.now() - tStart;
+      const nodes = getSearchNodes();
+      const ply = chess.history().length;
+      dlog('perf', `coach search level=${level} depth=${depth} ply=${ply} took=${elapsedMs}ms nodes=${nodes} (${(nodes / Math.max(1, elapsedMs)).toFixed(1)} nodes/ms)`);
       dlog('engine', `getBestMove -> san=${engineResult.san} from=${engineResult.from} to=${engineResult.to} promotion=${engineResult.promotion ?? '-'}`);
       const moveData = chess.move({
         from: engineResult.from,
