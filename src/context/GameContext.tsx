@@ -45,8 +45,7 @@ export interface GameState {
   currentEval: number;
   selectedSquare: string | null;
   legalMoves: string[];
-  timeWhite: number | null;
-  timeBlack: number | null;
+  playerTime: number | null;   // single clock — counts down on the player's turn
   hintsUsed: number;
   pendingRefutation: string[] | null;
   boardPieces: PieceData[];           // stable-id piece list for animated board
@@ -211,15 +210,12 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const [currentEval, setCurrentEval] = useState(0);
   const [selectedSquare, setSelectedSquare] = useState<string | null>(null);
   const [legalMoves, setLegalMoves] = useState<string[]>([]);
-  const [timeWhite, setTimeWhite] = useState<number | null>(null);
-  const [timeBlack, setTimeBlack] = useState<number | null>(null);
+  const [playerTime, setPlayerTime] = useState<number | null>(null);
   const [hintsUsed, setHintsUsed] = useState(0);
   const [pendingRefutation, setPendingRefutation] = useState<string[] | null>(null);
   const [boardPieces, setBoardPieces] = useState<PieceData[]>(buildInitialPieces);
   const [lastMove, setLastMove] = useState<{ from: string; to: string } | null>(null);
   const [captureFlash, setCaptureFlash] = useState<CaptureFlashState | null>(null);
-
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // Mirror of moveHistory that updates synchronously, so async callbacks
   // (engine move, deferred analysis) can read the latest history without
@@ -237,24 +233,27 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     [],
   );
 
-  const clearTimer = () => {
-    if (timerRef.current) clearInterval(timerRef.current);
-    timerRef.current = null;
-  };
+  // The single player clock ticks down once per second, but only while it is
+  // the player's turn to move and the game is live. The coach is the computer
+  // and has no clock, so its thinking time is never charged to anyone.
+  const playerOnMove = status === 'playing' && fen.split(' ')[1] === playerColor;
 
-  const startTimer = useCallback((playerTurn: 'w' | 'b') => {
-    clearTimer();
-    if (timeWhite === null) return;
-    timerRef.current = setInterval(() => {
-      if (playerTurn === 'w') {
-        setTimeWhite(t => (t === null || t <= 0 ? 0 : t - 1));
-      } else {
-        setTimeBlack(t => (t === null || t <= 0 ? 0 : t - 1));
-      }
+  useEffect(() => {
+    if (playerTime === null) return;     // clock disabled (No clock mode)
+    if (!playerOnMove) return;           // pause while the coach is thinking
+    const id = setInterval(() => {
+      setPlayerTime(t => (t === null ? t : Math.max(0, t - 1)));
     }, 1000);
-  }, [timeWhite]);
+    return () => clearInterval(id);
+  }, [playerOnMove, playerTime === null]);
 
-  useEffect(() => { return () => clearTimer(); }, []);
+  // Flag fall: if the player's clock hits zero, they lose on time.
+  useEffect(() => {
+    if (playerTime === 0 && status !== 'game_over' && status !== 'idle') {
+      setStatus('game_over');
+      setResult('loss');
+    }
+  }, [playerTime, status]);
 
   // === Diagnostic state watchers ===
   // These log every commit of boardPieces / fen / status so we can correlate
@@ -276,7 +275,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   }, [status]);
 
   const endGame = useCallback((res: GameResult, chessInstance: Chess, history: MoveRecord[]) => {
-    clearTimer();
     setResult(res);
     setStatus('game_over');
     setSelectedSquare(null);
@@ -351,7 +349,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     lvl: number,
     timeControl: 'none' | '10min' | '5min',
   ) => {
-    clearTimer();
     chess.reset();
     const initialEval = 0;
     const seconds = timeControl === '10min' ? 600 : timeControl === '5min' ? 300 : null;
@@ -366,8 +363,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     setCurrentEval(initialEval);
     setSelectedSquare(null);
     setLegalMoves([]);
-    setTimeWhite(seconds);
-    setTimeBlack(seconds);
+    setPlayerTime(seconds);
     setHintsUsed(0);
     setPendingRefutation(null);
     setBoardPieces(buildInitialPieces());
@@ -479,13 +475,11 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   }, [status, runEngineMove]);
 
   const resign = useCallback(() => {
-    clearTimer();
     setStatus('game_over');
     setResult('loss');
   }, []);
 
   const offerDraw = useCallback(() => {
-    clearTimer();
     setStatus('game_over');
     setResult('draw');
   }, []);
@@ -591,7 +585,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     <GameCtx.Provider value={{
       chess, fen, playerColor, level, status, result, moveHistory,
       lastAnalysis, currentEval, selectedSquare, legalMoves,
-      timeWhite, timeBlack, hintsUsed, pendingRefutation,
+      playerTime, hintsUsed, pendingRefutation,
       boardPieces, lastMove, captureFlash,
       startNewGame, selectSquare, makeMove, resign, offerDraw,
       useHint, clearBlunderAlert, clearCaptureFlash, loadSavedGame, saveCurrentGame,
