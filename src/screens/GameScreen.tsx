@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import {
-  View, Text, TouchableOpacity, StyleSheet, Modal, Alert,
+  View, Text, TouchableOpacity, StyleSheet, Modal, Alert, Share, ScrollView, TextInput,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
@@ -11,12 +11,15 @@ import { useProgress } from '../context/ProgressContext';
 import { RootStackParamList } from '../navigation/types';
 import { AppBar } from '../components/AppBar';
 import { Board } from '../components/Board';
+import { CapturePopup } from '../components/CapturePopup';
 import { EvalBar } from '../components/EvalBar';
 import { Pill } from '../components/Pill';
 import { Card } from '../components/Card';
+import { ChessPiece } from '../components/ChessPiece';
 import { formatEval, qualityLabel, qualityTone } from '../engine/MoveClassifier';
 import { levelToElo } from '../engine/ChessEngine';
 import { fenToPieces } from '../utils/fenUtils';
+import { dlog, getLogsText, getLogsCount, clearLogs } from '../utils/debugLog';
 
 type Nav = NativeStackNavigationProp<RootStackParamList, 'Game'>;
 
@@ -40,13 +43,17 @@ export function GameScreen() {
     fen, status, result, moveHistory, lastAnalysis, currentEval,
     selectedSquare, legalMoves, playerColor, level, timeWhite, timeBlack,
     hintsUsed, selectSquare, makeMove, resign, offerDraw, useHint,
-    clearBlunderAlert,
+    clearBlunderAlert, boardPieces, lastMove, captureFlash, clearCaptureFlash,
+    undoLastMove, canUndo,
   } = useGame();
   const { settings, recordGame } = useProgress();
   const [showResignModal, setShowResignModal] = useState(false);
   const [promotionPending, setPromotionPending] = useState<{ from: string; to: string } | null>(null);
+  const [boardWidth, setBoardWidth] = useState(0);
+  const [logModal, setLogModal] = useState<{ text: string; count: number } | null>(null);
 
-  const pieces = useMemo(() => fenToPieces(fen), [fen]);
+  // Static fallback when the live tracked list isn't ready
+  const fallbackPieces = useMemo(() => fenToPieces(fen), [fen]);
   const evalPct = evalBarPct(currentEval);
   const evalLabel = formatEval(currentEval);
 
@@ -65,11 +72,12 @@ export function GameScreen() {
   }, [status, result]);
 
   const handleSquarePress = (sq: string) => {
+    dlog('tap', `square=${sq} selectedSquare=${selectedSquare ?? '-'} legalMoves=[${legalMoves.join(',')}] status=${status}`);
     if (status !== 'playing') return;
     // If we have a selected square and tap a legal move destination
     if (selectedSquare && legalMoves.includes(sq)) {
       // Check if pawn promotion
-      const piece = pieces[Object.keys(pieces).find(k => pieces[k].sq === selectedSquare) ?? ''];
+      const piece = boardPieces.find(p => !p.captured && p.sq === selectedSquare);
       const isPromotion = piece?.code === (playerColor === 'w' ? 'wP' : 'bP') &&
         ((playerColor === 'w' && sq[1] === '8') || (playerColor === 'b' && sq[1] === '1'));
       if (isPromotion) {
@@ -82,7 +90,22 @@ export function GameScreen() {
     }
   };
 
-  const lastMove = moveHistory[moveHistory.length - 1];
+  // Open a modal showing the full trace in a selectable text box. Uses only
+  // core React Native (no native clipboard module), so it can't crash a build.
+  const handleShowLogs = () => {
+    setLogModal({ text: getLogsText(), count: getLogsCount() });
+  };
+
+  // Hand the log off to the OS share sheet (core RN Share, no native module),
+  // from which the user can copy it or send it to themselves.
+  const handleShareLogs = async () => {
+    try {
+      await Share.share({ message: getLogsText() });
+    } catch (e) {
+      Alert.alert('Share failed', String(e));
+    }
+  };
+
   const lastPlayerMove = [...moveHistory].reverse().find(m => m.playerMove);
   const lastNotation = moveHistory.slice(-4).map((m, i) => {
     const moveNum = Math.floor((moveHistory.length - moveHistory.slice(-4).length + i) / 2) + 1;
@@ -93,12 +116,7 @@ export function GameScreen() {
   const coachComment = lastAnalysis?.coachComment ?? 'Play your move.';
   const evalText = evalLabel;
 
-  const highlights = useMemo(() => {
-    if (!lastMove) return [];
-    return [
-      { sq: lastMove.san.slice(-2), kind: 'brand' as const },
-    ].filter(h => /^[a-h][1-8]$/.test(h.sq));
-  }, [lastMove]);
+  const highlights = useMemo(() => [], []);
 
   const isPlayerTurn = status === 'playing' && fen.split(' ')[1] === playerColor;
   const isThinking = status === 'engine_thinking';
@@ -158,15 +176,28 @@ export function GameScreen() {
         {/* Board + eval */}
         <View style={styles.boardRow}>
           <EvalBar pct={evalPct} label={evalLabel} />
-          <View style={styles.boardWrap}>
+          <View
+            style={styles.boardWrap}
+            onLayout={(e) => setBoardWidth(e.nativeEvent.layout.width)}
+          >
             <Board
-              pieces={pieces}
+              pieces={boardPieces.length > 0 ? boardPieces : fallbackPieces}
               highlights={highlights}
               coords
               flipped={playerColor === 'b'}
               onSquarePress={isPlayerTurn ? handleSquarePress : undefined}
               selectedSquare={selectedSquare}
               legalMoves={legalMoves}
+              lastMove={lastMove}
+              animate
+            />
+            <CapturePopup
+              flash={captureFlash}
+              boardSize={boardWidth}
+              flipped={playerColor === 'b'}
+              gainColor={colors.captureGain}
+              lossColor={colors.captureLoss}
+              onDone={clearCaptureFlash}
             />
           </View>
         </View>
@@ -228,29 +259,52 @@ export function GameScreen() {
 
         {/* Actions */}
         {!isOver && (
-          <View style={styles.btnRow}>
+          <>
+            <View style={styles.btnRow}>
+              <TouchableOpacity
+                style={[styles.btn, styles.btnBrand, { backgroundColor: colors.brand, opacity: hintsUsed >= maxHints ? 0.4 : 1 }]}
+                onPress={() => { if (hintsUsed < maxHints) { useHint(); nav.navigate('Hint'); } }}
+                disabled={hintsUsed >= maxHints}
+              >
+                <Text style={[styles.btnText, { color: colors.onBrand }]}>
+                  Hint {maxHints < 99 ? `(${maxHints - hintsUsed})` : ''}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  styles.btn,
+                  { backgroundColor: colors.surface, borderColor: colors.border, opacity: canUndo() ? 1 : 0.4 },
+                ]}
+                onPress={() => { if (canUndo()) undoLastMove(); }}
+                disabled={!canUndo()}
+              >
+                <Text style={[styles.btnText, { color: colors.ink }]}>Undo</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.btn, { backgroundColor: colors.surface, borderColor: colors.border }]}
+                onPress={() => setShowResignModal(true)}
+              >
+                <Text style={[styles.btnText, { color: colors.ink }]}>Resign</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.btn, { backgroundColor: colors.surface, borderColor: colors.border }]}
+                onPress={offerDraw}
+              >
+                <Text style={[styles.btnText, { color: colors.ink }]}>½</Text>
+              </TouchableOpacity>
+            </View>
+            {/* Debug row — tap after reproducing the ghost-piece bug to view a
+                full trace you can select/copy or share. Long-press to clear. */}
             <TouchableOpacity
-              style={[styles.btn, styles.btnBrand, { backgroundColor: colors.brand, opacity: hintsUsed >= maxHints ? 0.4 : 1 }]}
-              onPress={() => { if (hintsUsed < maxHints) { useHint(); nav.navigate('Hint'); } }}
-              disabled={hintsUsed >= maxHints}
+              onPress={handleShowLogs}
+              onLongPress={() => { clearLogs(); Alert.alert('Logs cleared'); }}
+              style={[styles.debugBtn, { borderColor: colors.border, backgroundColor: colors.surface2 }]}
             >
-              <Text style={[styles.btnText, { color: colors.onBrand }]}>
-                Hint {maxHints < 99 ? `(${maxHints - hintsUsed})` : ''}
+              <Text style={[styles.debugBtnText, { color: colors.inkSoft }]}>
+                🐛 View debug log  ·  long-press to clear
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.btn, { backgroundColor: colors.surface, borderColor: colors.border }]}
-              onPress={() => setShowResignModal(true)}
-            >
-              <Text style={[styles.btnText, { color: colors.ink }]}>Resign</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.btn, { backgroundColor: colors.surface, borderColor: colors.border }]}
-              onPress={offerDraw}
-            >
-              <Text style={[styles.btnText, { color: colors.ink }]}>½</Text>
-            </TouchableOpacity>
-          </View>
+          </>
         )}
 
         {isOver && (
@@ -262,6 +316,48 @@ export function GameScreen() {
           </TouchableOpacity>
         )}
       </View>
+
+      {/* Debug log modal — selectable text + Share, no native clipboard module */}
+      <Modal visible={!!logModal} transparent animationType="fade" onRequestClose={() => setLogModal(null)}>
+        <View style={styles.modalOverlay}>
+          <View style={[styles.logModal, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+            <Text style={[styles.modalTitle, { color: colors.ink }]}>Debug log</Text>
+            <Text style={[styles.modalSub, { color: colors.inkSoft }]}>
+              {logModal?.count ?? 0} entries · {logModal?.text.length ?? 0} chars.
+              Long-press the text to Select all → Copy, or use Share.
+            </Text>
+            <ScrollView
+              style={[styles.logScroll, { borderColor: colors.border, backgroundColor: colors.bg }]}
+              contentContainerStyle={{ padding: 8 }}
+            >
+              <TextInput
+                // Left editable (default) so Android shows the "Select all →
+                // Copy" context menu on long-press. Controlled value keeps the
+                // text fresh and simply snaps back if accidentally edited.
+                value={logModal?.text ?? ''}
+                onChangeText={() => { /* ignore edits; this is a read-only view */ }}
+                multiline
+                scrollEnabled={false}
+                style={[styles.logText, { color: colors.ink }]}
+              />
+            </ScrollView>
+            <View style={styles.modalBtns}>
+              <TouchableOpacity
+                style={[styles.modalBtn, { backgroundColor: colors.brand }]}
+                onPress={handleShareLogs}
+              >
+                <Text style={{ color: colors.onBrand, fontWeight: '600' }}>Share</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.modalBtn, { backgroundColor: colors.surface, borderColor: colors.border }]}
+                onPress={() => setLogModal(null)}
+              >
+                <Text style={{ color: colors.ink, fontWeight: '600' }}>Close</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
 
       {/* Resign modal */}
       <Modal visible={showResignModal} transparent animationType="fade">
@@ -294,9 +390,7 @@ export function GameScreen() {
             <Text style={[styles.modalTitle, { color: colors.ink }]}>Promote to?</Text>
             <View style={styles.promotionBtns}>
               {(['q', 'r', 'b', 'n'] as const).map(p => {
-                const glyph = playerColor === 'w'
-                  ? { q: '♕', r: '♖', b: '♗', n: '♘' }[p]
-                  : { q: '♛', r: '♜', b: '♝', n: '♞' }[p];
+                const code = (playerColor === 'w' ? 'w' : 'b') + p.toUpperCase();
                 return (
                   <TouchableOpacity
                     key={p}
@@ -308,7 +402,7 @@ export function GameScreen() {
                       }
                     }}
                   >
-                    <Text style={styles.promoGlyph}>{glyph}</Text>
+                    <ChessPiece code={code} size={52} />
                   </TouchableOpacity>
                 );
               })}
@@ -342,7 +436,7 @@ const styles = StyleSheet.create({
   clockText: { fontSize: 20, fontWeight: '700' },
   clockLabel: { fontSize: 11 },
   boardRow: { flexDirection: 'row', gap: 8 },
-  boardWrap: { flex: 1 },
+  boardWrap: { flex: 1, position: 'relative' },
   notation: { flexDirection: 'row', alignItems: 'center', gap: 12 },
   notationKicker: { fontSize: 10, fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: 1.2 },
   notationMoves: { flex: 1, fontSize: 12 },
@@ -362,6 +456,15 @@ const styles = StyleSheet.create({
   btnFull: { borderWidth: 0 },
   btnBrand: { borderWidth: 0 },
   btnText: { fontSize: 14, fontWeight: '600' },
+  debugBtn: {
+    marginTop: 6,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+    borderWidth: 1,
+    alignItems: 'center',
+  },
+  debugBtnText: { fontSize: 11, fontWeight: '500', letterSpacing: 0.2 },
   modalOverlay: {
     flex: 1, backgroundColor: 'rgba(0,0,0,0.5)',
     alignItems: 'center', justifyContent: 'center',
@@ -369,6 +472,17 @@ const styles = StyleSheet.create({
   modal: {
     width: 280, borderRadius: 20, padding: 24,
     borderWidth: 1, gap: 12,
+  },
+  logModal: {
+    width: '90%', maxWidth: 460, maxHeight: '82%', borderRadius: 18, padding: 18,
+    borderWidth: 1, gap: 10,
+  },
+  logScroll: {
+    flexGrow: 0, maxHeight: 380, borderWidth: 1, borderRadius: 10,
+  },
+  logText: {
+    fontFamily: 'monospace', fontSize: 10, lineHeight: 14,
+    padding: 0, margin: 0,
   },
   modalTitle: { fontSize: 20, fontWeight: '600', fontFamily: 'serif' },
   modalSub: { fontSize: 13 },
