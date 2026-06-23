@@ -2,7 +2,7 @@ name: Build APK
 
 on:
   push:
-    branches: [claude/setup-react-native-expo-zYWmj, main]
+    branches: [claude/setup-react-native-expo-zYWmj, main, "claude/**"]
   workflow_dispatch:
 
 jobs:
