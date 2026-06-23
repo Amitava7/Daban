@@ -1,19 +1,11 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { View, Text, Pressable, StyleSheet, LayoutChangeEvent } from 'react-native';
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withTiming,
-  withDelay,
-  cancelAnimation,
-  Easing,
-} from 'react-native-reanimated';
+import Animated, { LinearTransition } from 'react-native-reanimated';
 import { useTheme } from '../context/ThemeContext';
 import { ChessPiece } from './ChessPiece';
 import { dlog } from '../utils/debugLog';
 
 const MOVE_DURATION = 220;
-const MOVE_EASING = Easing.inOut(Easing.cubic);
 
 const FILES = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 const RANKS = [8, 7, 6, 5, 4, 3, 2, 1];
@@ -66,112 +58,45 @@ interface AnimatedPieceProps {
 
 function AnimatedPieceImpl({ piece, squareSize, flipped, animate }: AnimatedPieceProps) {
   const { col, row } = sqToCoord(piece.sq, flipped);
-  const targetX = col * squareSize;
-  const targetY = row * squareSize;
+  const left = col * squareSize;
+  const top = row * squareSize;
   const captured = !!piece.captured;
 
-  // Initialize directly at the target so a freshly-mounted piece never slides
-  // in from the corner. useSharedValue's initial value is used only once.
-  const x = useSharedValue(targetX);
-  const y = useSharedValue(targetY);
-  const opacity = useSharedValue(captured ? 0 : 1);
-  const scale = useSharedValue(captured ? 0.4 : 1);
-
-  // Log mounts and prop changes only for the live game board (animate=true).
-  // The static HomeScreen preview re-keys all 32 pieces on every fen change
-  // and would otherwise flood the log with ~30 lines per move.
-  const mountedRef = useRef(false);
-  useEffect(() => {
-    if (!mountedRef.current) {
-      mountedRef.current = true;
-      if (animate) {
-        dlog('anim', `MOUNT id=${piece.id} code=${piece.code} sq=${piece.sq} captured=${captured}`);
-        return () => {
-          dlog('anim', `UNMOUNT id=${piece.id} code=${piece.code} sq=${piece.sq}`);
-        };
-      }
-    }
-  }, []);
-
+  // Light tracing for the live board only (one or two lines per move now).
   const prevSqRef = useRef(piece.sq);
-  if (prevSqRef.current !== piece.sq) {
-    if (animate) {
-      dlog('anim', `SQ-CHG id=${piece.id} ${prevSqRef.current} -> ${piece.sq}`);
-    }
-    prevSqRef.current = piece.sq;
+  if (animate && prevSqRef.current !== piece.sq) {
+    dlog('anim', `SQ-CHG id=${piece.id} ${prevSqRef.current} -> ${piece.sq} left/top=(${Math.round(left)},${Math.round(top)})`);
   }
+  prevSqRef.current = piece.sq;
 
-  // Drive position from props. Defensive against an occasional Reanimated v4
-  // glitch we've observed where, during a busy render in which many other
-  // components are unmounting/mounting (e.g. the HomeScreen preview's
-  // 30-piece re-key fires in the same commit), a freshly-issued withTiming
-  // message can be dropped on the UI thread and the shared value stays at
-  // its old position — the piece appears to "snap back" to where it was.
+  // POSITION IS A PLAIN, REACT-COMMITTED STYLE.
   //
-  // Two safeguards:
-  //   1. cancelAnimation() on x/y first, so any half-issued previous animation
-  //      can't fight the new target.
-  //   2. A setTimeout that hard-sets x/y to the target after the animation
-  //      duration. If Reanimated ran the animation correctly, this is a
-  //      no-op. If it dropped the animation, this snaps the piece to the
-  //      correct square instead of leaving a ghost.
-  useEffect(() => {
-    if (animate) {
-      dlog('anim', `EFFECT id=${piece.id} sq=${piece.sq} target=(${Math.round(targetX)},${Math.round(targetY)}) animate=true`);
-      cancelAnimation(x);
-      cancelAnimation(y);
-      x.value = withTiming(targetX, { duration: MOVE_DURATION, easing: MOVE_EASING });
-      y.value = withTiming(targetY, { duration: MOVE_DURATION, easing: MOVE_EASING });
-      const settleId = setTimeout(() => {
-        // Force the final position. If we're already there this is a no-op;
-        // if Reanimated lost the message, this rescues the piece.
-        x.value = targetX;
-        y.value = targetY;
-      }, MOVE_DURATION + 80);
-      return () => clearTimeout(settleId);
-    } else {
-      x.value = targetX;
-      y.value = targetY;
-    }
-  }, [targetX, targetY, animate]);
-
-  // Capture: fade + shrink out. Restore instantly if a piece is "uncaptured"
-  // (e.g. after an undo rebuilds the board).
-  useEffect(() => {
-    if (captured) {
-      opacity.value = animate ? withDelay(60, withTiming(0, { duration: 180 })) : 0;
-      scale.value = animate ? withDelay(60, withTiming(0.4, { duration: 200 })) : 0.4;
-    } else {
-      opacity.value = 1;
-      scale.value = 1;
-    }
-  }, [captured, animate]);
-
-  const half = squareSize / 2;
-  const style = useAnimatedStyle(() => ({
-    transform: [
-      { translateX: x.value + half },
-      { translateY: y.value + half },
-      { scale: scale.value },
-      { translateX: -half },
-      { translateY: -half },
-    ],
-    opacity: opacity.value,
-  }));
-
+  // Earlier versions drove position through Reanimated shared values +
+  // withTiming. The debug trace proved that path was the bug: state, props,
+  // and the withTiming dispatch were all correct, yet the piece stayed at its
+  // old square — Reanimated (v4 + New Arch) was intermittently dropping the
+  // shared-value update on the UI thread, leaving a clickable-but-invisible
+  // "ghost". Even directly assigning x.value/y.value as a rescue failed,
+  // which means the useAnimatedStyle→view link itself was the weak point.
+  //
+  // Here `left`/`top` are ordinary layout props. React Native commits them on
+  // every render, so the rendered position can NEVER diverge from game state —
+  // a ghost is structurally impossible. `LinearTransition` animates the
+  // left/top change when the layout-animation machinery is healthy; if it ever
+  // misses, the piece simply snaps to the correct square. Correctness no
+  // longer depends on any animation succeeding.
   return (
     <Animated.View
       pointerEvents="none"
-      style={[
-        {
-          position: 'absolute',
-          left: 0,
-          top: 0,
-          width: squareSize,
-          height: squareSize,
-        },
-        style,
-      ]}
+      layout={animate ? LinearTransition.duration(MOVE_DURATION) : undefined}
+      style={{
+        position: 'absolute',
+        left,
+        top,
+        width: squareSize,
+        height: squareSize,
+        opacity: captured ? 0 : 1,
+      }}
     >
       <ChessPiece code={piece.code} size={squareSize} />
     </Animated.View>
