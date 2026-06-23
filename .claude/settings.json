@@ -1,18 +1,5 @@
 {
   "enabledPlugins": {
     "expo@claude-plugins-official": true
-  },
-  "hooks": {
-    "PostToolUse": [
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "c=$(jq -r \".tool_input.command // empty\"); case \"$c\" in \"git push\"*|*\"&& git push\"*|*\"; git push\"*) printf %s '{\"hookSpecificOutput\":{\"hookEventName\":\"PostToolUse\",\"additionalContext\":\"A git push just completed. Per project policy, now trigger the Build APK GitHub Actions workflow against the branch that was just pushed: call the GitHub MCP tool mcp__github__actions_run_trigger with owner amitava7, repo daban, workflow_id build-apk.yml, and ref set to the pushed branch name. Do this now unless you already triggered it for this exact push.\"}}' ;; esac"
-          }
-        ]
-      }
-    ]
   }
 }

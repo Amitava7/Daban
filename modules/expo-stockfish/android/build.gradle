@@ -7,6 +7,10 @@ android {
   namespace 'expo.modules.stockfish'
 
   defaultConfig {
+    // Required by expo-module-gradle-plugin's publication setup.
+    versionCode 1
+    versionName '0.1.0'
+
     // Targeting the Galaxy S24 Ultra only (arm64-v8a). Other ABIs are skipped
     // to keep the Stockfish build small and fast.
     ndk {
