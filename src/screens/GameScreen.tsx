@@ -17,7 +17,7 @@ import { Pill } from '../components/Pill';
 import { Card } from '../components/Card';
 import { ChessPiece } from '../components/ChessPiece';
 import { formatEval, qualityLabel, qualityTone } from '../engine/MoveClassifier';
-import { levelToElo } from '../engine/ChessEngine';
+import { levelToElo } from '../engine/rating';
 import { fenToPieces } from '../utils/fenUtils';
 import { dlog, getLogsText, getLogsCount, clearLogs } from '../utils/debugLog';
 

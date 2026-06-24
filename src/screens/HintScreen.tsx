@@ -8,9 +8,8 @@ import { AppBar } from '../components/AppBar';
 import { Board } from '../components/Board';
 import { Card } from '../components/Card';
 import { Pill } from '../components/Pill';
-import { getTopMoves, levelToDepth, EngineResult } from '../engine/ChessEngine';
+import { topMoves, EngineMove } from '../engine/engine';
 import { formatEval } from '../engine/MoveClassifier';
-import { Chess } from 'chess.js';
 import { fenToPieces } from '../utils/fenUtils';
 
 const MAX_HINTS = 3;
@@ -23,8 +22,8 @@ function moveQualityColor(i: number, colors: any): string {
 export function HintScreen() {
   const { colors } = useTheme();
   const nav = useNavigation();
-  const { fen, level, playerColor, hintsUsed, makeMove } = useGame();
-  const [hints, setHints] = useState<EngineResult[]>([]);
+  const { fen, playerColor, hintsUsed, makeMove } = useGame();
+  const [hints, setHints] = useState<EngineMove[]>([]);
   const [visibleCount, setVisibleCount] = useState(0);
   const [activeHint, setActiveHint] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -34,21 +33,23 @@ export function HintScreen() {
   const hintsLeft = MAX_HINTS - hintsUsed;
 
   useEffect(() => {
+    let cancelled = false;
     setLoading(true);
-    setTimeout(() => {
+    setVisibleCount(0);
+    (async () => {
       try {
-        const chess = new Chess(fen);
-        const depth = Math.max(1, levelToDepth(level) - 1);
-        const top = getTopMoves(chess, depth, 3);
+        const top = await topMoves(fen, 3);
+        if (cancelled) return;
         setHints(top);
         // Stagger reveal
         top.forEach((_, i) => {
-          setTimeout(() => setVisibleCount(i + 1), i * 800 + 300);
+          setTimeout(() => { if (!cancelled) setVisibleCount(i + 1); }, i * 800 + 300);
         });
       } catch {}
-      setLoading(false);
-    }, 0);
-  }, [fen, level]);
+      if (!cancelled) setLoading(false);
+    })();
+    return () => { cancelled = true; };
+  }, [fen]);
 
   const active = hints[activeHint];
 
@@ -60,7 +61,7 @@ export function HintScreen() {
     default: 'This move improves your position according to the engine.',
   };
 
-  const moveWhy = (h: EngineResult, i: number) => {
+  const moveWhy = (h: EngineMove, i: number) => {
     const eval_str = formatEval(h.score);
     if (i === 0) return `Best continuation. Eval: ${eval_str}.`;
     if (i === 1) return `Second choice. Solid but slightly less accurate. Eval: ${eval_str}.`;

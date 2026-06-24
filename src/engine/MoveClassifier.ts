@@ -1,5 +1,4 @@
-import { Chess } from 'chess.js';
-import { getEvaluation, getTopMoves } from './ChessEngine';
+import { Stockfish } from './StockfishUci';
 
 export type MoveQuality = 'brilliant' | 'best' | 'excellent' | 'good' | 'inaccuracy' | 'mistake' | 'blunder';
 
@@ -112,39 +111,18 @@ function pickRandom<T>(arr: T[]): T {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
-export function classifyMove(
-  chessBefore: Chess,
-  sanPlayed: string,
-  evalDepth = 2,
+// Build a MoveAnalysis from already-computed evaluations. All evals are in
+// centipawns from White's perspective. `isWhite` is whether the player who
+// just moved was White. Shared by the JS and Stockfish classifiers.
+export function finalizeAnalysis(
+  evalBefore: number,
+  bestEval: number,
+  evalAfter: number,
+  isWhite: boolean,
 ): MoveAnalysis {
-  const isWhite = chessBefore.turn() === 'w';
-
-  // Eval before the move
-  const evalBefore = getEvaluation(chessBefore, evalDepth);
-
-  // Best possible eval for side to move
-  const topMoves = getTopMoves(chessBefore, Math.max(1, evalDepth), 1);
-  const bestEval = topMoves.length > 0 ? topMoves[0].score : evalBefore;
-
-  // Make the move
-  const chessAfter = new Chess(chessBefore.fen());
-  chessAfter.move(sanPlayed);
-
-  // Eval after (negate because it's now opponent's turn)
-  const evalAfterRaw = getEvaluation(chessAfter, evalDepth);
-  const evalAfter = evalAfterRaw; // white-positive regardless
-
-  // Centipawn loss = how much worse than best move (from side-to-move perspective)
-  let cpLoss: number;
-  if (isWhite) {
-    cpLoss = bestEval - evalAfter;
-  } else {
-    cpLoss = (-bestEval) - (-evalAfter);
-  }
-
+  const cpLoss = isWhite ? bestEval - evalAfter : evalAfter - bestEval;
   const isBrilliant = cpLoss < THRESHOLDS.brilliant;
   const quality = cpLossToQuality(Math.max(0, cpLoss), isBrilliant);
-
   return {
     quality,
     evalBefore,
@@ -154,6 +132,56 @@ export function classifyMove(
     explanation: pickRandom(EXPLANATIONS[quality]),
     coachComment: pickRandom(COACH_COMMENTS[quality]),
   };
+}
+
+// Fallback when the native engine is unavailable (e.g. running outside the
+// native build): a neutral "good" analysis so the UI has something to show.
+export function neutralAnalysis(): MoveAnalysis {
+  return {
+    quality: 'good',
+    evalBefore: 0,
+    evalAfter: 0,
+    bestEval: 0,
+    centipawnLoss: 0,
+    explanation: pickRandom(EXPLANATIONS.good),
+    coachComment: pickRandom(COACH_COMMENTS.good),
+  };
+}
+
+function scoreToCp(r: { scoreCp: number | null; mate: number | null }): number {
+  if (r.mate !== null) return r.mate > 0 ? 100000 : -100000;
+  return r.scoreCp ?? 0;
+}
+
+// Stockfish-backed move classification. Runs two short searches (on the native
+// engine threads, off the JS thread) — one on the position before the move
+// (best line for the mover) and one after (best reply for the opponent) — then
+// derives the centipawn loss. Far faster and far more accurate than the JS
+// classifier, and it never blocks the UI thread.
+export async function classifyMoveStockfish(
+  fenBefore: string,
+  fenAfter: string,
+  isWhite: boolean,
+  movetimeMs = 300,
+): Promise<MoveAnalysis> {
+  // Analyse at full strength for an accurate eval (the coach search may have
+  // left the engine limited to the player's Elo).
+  Stockfish.setStrengthElo(null);
+  const before = await Stockfish.bestMove(fenBefore, { movetime: movetimeMs });
+  const after = await Stockfish.bestMove(fenAfter, { movetime: movetimeMs });
+
+  // Side-to-move centipawn scores.
+  const cpBefore = scoreToCp(before); // mover's POV at fenBefore
+  // If the opponent has no move, the player's move ended the game (mate/
+  // stalemate); treat as decisively good for the mover so it isn't flagged.
+  const afterTerminal = !after.bestmove || !/^[a-h][1-8][a-h][1-8]/.test(after.bestmove);
+  const cpAfter = afterTerminal ? -100000 : scoreToCp(after); // opponent's POV at fenAfter
+
+  // Convert to White-POV evals for display + the shared finalizer.
+  const bestEvalWhite = isWhite ? cpBefore : -cpBefore;
+  const evalAfterWhite = isWhite ? -cpAfter : cpAfter;
+
+  return finalizeAnalysis(bestEvalWhite, bestEvalWhite, evalAfterWhite, isWhite);
 }
 
 export function qualityTone(q: MoveQuality): 'good' | 'warn' | 'bad' | 'brand' {

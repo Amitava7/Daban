@@ -12,7 +12,7 @@ import { Board } from '../components/Board';
 import { Card } from '../components/Card';
 import { EvalBar } from '../components/EvalBar';
 import { getPuzzleById } from '../engine/EndgameGenerator';
-import { getBestMove, getEvaluation, levelToDepth } from '../engine/ChessEngine';
+import { bestMove, evaluate as evaluatePosition } from '../engine/engine';
 import { formatEval } from '../engine/MoveClassifier';
 import { fenToPieces } from '../utils/fenUtils';
 
@@ -31,7 +31,7 @@ export function EndgamePuzzleScreen() {
   const nav = useNavigation<Nav>();
   const route = useRoute<Route>();
   const { puzzleId } = route.params;
-  const { completeEndgame, settings } = useProgress();
+  const { completeEndgame } = useProgress();
 
   const puzzle = getPuzzleById(puzzleId);
   const [chess] = useState(() => {
@@ -43,7 +43,7 @@ export function EndgamePuzzleScreen() {
   const [status, setStatus] = useState<PuzzleStatus>('playing');
   const [selectedSquare, setSelectedSquare] = useState<string | null>(null);
   const [legalMoves, setLegalMoves] = useState<string[]>([]);
-  const [currentEval, setCurrentEval] = useState(() => getEvaluation(chess, 1));
+  const [currentEval, setCurrentEval] = useState(0);
   const [lastMove, setLastMove] = useState<{ from: string; to: string } | null>(null);
   const [moveCount, setMoveCount] = useState(0);
   const [showHint, setShowHint] = useState(false);
@@ -61,21 +61,27 @@ export function EndgamePuzzleScreen() {
       ]
     : [];
 
-  // Engine move
+  // Initial evaluation of the puzzle position.
+  useEffect(() => {
+    evaluatePosition(chess.fen()).then(setCurrentEval).catch(() => {});
+  }, []);
+
+  // Engine move (full-strength Stockfish — puzzles want best play).
   useEffect(() => {
     if (status !== 'engine_turn') return;
     if (chess.isGameOver()) return;
 
-    const timer = setTimeout(() => {
-      const depth = levelToDepth(Math.min(settings.level, 5));
+    let cancelled = false;
+    const timer = setTimeout(async () => {
       try {
-        const result = getBestMove(chess, depth);
+        const result = await bestMove(chess.fen(), 600);
+        if (cancelled) return;
+        if (!result) { setStatus('playing'); return; }
         chess.move({ from: result.from, to: result.to, promotion: result.promotion });
         const newFen = chess.fen();
-        const evalNow = getEvaluation(chess, 1);
         setFen(newFen);
-        setCurrentEval(evalNow);
         setLastMove({ from: result.from, to: result.to });
+        evaluatePosition(newFen).then(v => { if (!cancelled) setCurrentEval(v); }).catch(() => {});
 
         if (chess.isCheckmate()) {
           // Player won if their side is NOT the one checkmated
@@ -92,10 +98,10 @@ export function EndgamePuzzleScreen() {
           setStatus('playing');
         }
       } catch {
-        setStatus('playing');
+        if (!cancelled) setStatus('playing');
       }
-    }, 500);
-    return () => clearTimeout(timer);
+    }, 400);
+    return () => { cancelled = true; clearTimeout(timer); };
   }, [status]);
 
   const handleSquarePress = (sq: string) => {
@@ -105,9 +111,8 @@ export function EndgamePuzzleScreen() {
       try {
         const move = chess.move({ from: selectedSquare, to: sq, promotion: 'q' });
         const newFen = chess.fen();
-        const evalNow = getEvaluation(chess, 1);
         setFen(newFen);
-        setCurrentEval(evalNow);
+        evaluatePosition(newFen).then(setCurrentEval).catch(() => {});
         setLastMove({ from: selectedSquare, to: sq });
         setSelectedSquare(null);
         setLegalMoves([]);
@@ -142,13 +147,12 @@ export function EndgamePuzzleScreen() {
     }
   };
 
-  const getHint = () => {
-    const depth = levelToDepth(settings.level);
-    try {
-      const result = getBestMove(chess, depth);
+  const getHint = async () => {
+    const result = await bestMove(chess.fen(), 600);
+    if (result) {
       setHintMove(result.san);
       setShowHint(true);
-    } catch {}
+    }
   };
 
   const reset = () => {
@@ -160,7 +164,7 @@ export function EndgamePuzzleScreen() {
       setLegalMoves([]);
       setLastMove(null);
       setMoveCount(0);
-      setCurrentEval(getEvaluation(chess, 1));
+      evaluatePosition(chess.fen()).then(setCurrentEval).catch(() => {});
     }
   };
 
