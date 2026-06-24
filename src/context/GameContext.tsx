@@ -7,7 +7,7 @@ import {
   getBestMove, getEvaluation, levelToDepth, levelToElo,
   resetSearchNodes, getSearchNodes,
 } from '../engine/ChessEngine';
-import { classifyMove, MoveAnalysis } from '../engine/MoveClassifier';
+import { classifyMove, classifyMoveStockfish, MoveAnalysis } from '../engine/MoveClassifier';
 import { Stockfish } from '../engine/StockfishUci';
 import { Storage, computeAccuracy } from '../services/StorageService';
 import { dlog } from '../utils/debugLog';
@@ -79,6 +79,8 @@ const MAX_HINTS = 3;
 // Per-move thinking budget for the native Stockfish coach. ~1s gives very
 // strong play (depth ~20 on the S24 Ultra) while staying snappy.
 const COACH_MOVETIME_MS = 1000;
+// Budget per position for post-move analysis (two searches: before + after).
+const CLASSIFY_MOVETIME_MS = 300;
 
 const PIECE_POINTS: Record<string, number> = {
   P: 1, N: 3, B: 3, R: 5, Q: 9, K: 0,
@@ -472,10 +474,22 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     if (flash) setCaptureFlash(flash);
 
     // === SLOW PATH: defer heavy analysis so the board renders first ===
-    // setTimeout(0) yields to the event loop so React flushes the state
-    // updates above before the synchronous classifyMove runs.
-    setTimeout(() => {
-      const analysis = classifyMove(chessBefore, moveResult.san, 2);
+    // Prefer native Stockfish (runs off the JS thread, so the UI never
+    // freezes); fall back to the synchronous JS classifier otherwise.
+    setTimeout(async () => {
+      let analysis: MoveAnalysis;
+      if (Stockfish.available) {
+        try {
+          analysis = await classifyMoveStockfish(
+            chessBefore.fen(), newFen, playerColor === 'w', CLASSIFY_MOVETIME_MS,
+          );
+        } catch (e) {
+          dlog('makeMove', `Stockfish classify failed, JS fallback: ${String(e)}`);
+          analysis = classifyMove(chessBefore, moveResult.san, 2);
+        }
+      } else {
+        analysis = classifyMove(chessBefore, moveResult.san, 2);
+      }
       setLastAnalysis(analysis);
       setCurrentEval(analysis.evalAfter);
 

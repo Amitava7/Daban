@@ -1,5 +1,6 @@
 import { Chess } from 'chess.js';
 import { getEvaluation, getTopMoves } from './ChessEngine';
+import { Stockfish } from './StockfishUci';
 
 export type MoveQuality = 'brilliant' | 'best' | 'excellent' | 'good' | 'inaccuracy' | 'mistake' | 'blunder';
 
@@ -112,6 +113,29 @@ function pickRandom<T>(arr: T[]): T {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
+// Build a MoveAnalysis from already-computed evaluations. All evals are in
+// centipawns from White's perspective. `isWhite` is whether the player who
+// just moved was White. Shared by the JS and Stockfish classifiers.
+export function finalizeAnalysis(
+  evalBefore: number,
+  bestEval: number,
+  evalAfter: number,
+  isWhite: boolean,
+): MoveAnalysis {
+  const cpLoss = isWhite ? bestEval - evalAfter : evalAfter - bestEval;
+  const isBrilliant = cpLoss < THRESHOLDS.brilliant;
+  const quality = cpLossToQuality(Math.max(0, cpLoss), isBrilliant);
+  return {
+    quality,
+    evalBefore,
+    evalAfter,
+    bestEval,
+    centipawnLoss: Math.max(0, cpLoss),
+    explanation: pickRandom(EXPLANATIONS[quality]),
+    coachComment: pickRandom(COACH_COMMENTS[quality]),
+  };
+}
+
 export function classifyMove(
   chessBefore: Chess,
   sanPlayed: string,
@@ -130,30 +154,46 @@ export function classifyMove(
   const chessAfter = new Chess(chessBefore.fen());
   chessAfter.move(sanPlayed);
 
-  // Eval after (negate because it's now opponent's turn)
-  const evalAfterRaw = getEvaluation(chessAfter, evalDepth);
-  const evalAfter = evalAfterRaw; // white-positive regardless
+  // Eval after
+  const evalAfter = getEvaluation(chessAfter, evalDepth);
 
-  // Centipawn loss = how much worse than best move (from side-to-move perspective)
-  let cpLoss: number;
-  if (isWhite) {
-    cpLoss = bestEval - evalAfter;
-  } else {
-    cpLoss = (-bestEval) - (-evalAfter);
-  }
+  return finalizeAnalysis(evalBefore, bestEval, evalAfter, isWhite);
+}
 
-  const isBrilliant = cpLoss < THRESHOLDS.brilliant;
-  const quality = cpLossToQuality(Math.max(0, cpLoss), isBrilliant);
+function scoreToCp(r: { scoreCp: number | null; mate: number | null }): number {
+  if (r.mate !== null) return r.mate > 0 ? 100000 : -100000;
+  return r.scoreCp ?? 0;
+}
 
-  return {
-    quality,
-    evalBefore,
-    evalAfter,
-    bestEval,
-    centipawnLoss: Math.max(0, cpLoss),
-    explanation: pickRandom(EXPLANATIONS[quality]),
-    coachComment: pickRandom(COACH_COMMENTS[quality]),
-  };
+// Stockfish-backed move classification. Runs two short searches (on the native
+// engine threads, off the JS thread) — one on the position before the move
+// (best line for the mover) and one after (best reply for the opponent) — then
+// derives the centipawn loss. Far faster and far more accurate than the JS
+// classifier, and it never blocks the UI thread.
+export async function classifyMoveStockfish(
+  fenBefore: string,
+  fenAfter: string,
+  isWhite: boolean,
+  movetimeMs = 300,
+): Promise<MoveAnalysis> {
+  // Analyse at full strength for an accurate eval (the coach search may have
+  // left the engine limited to the player's Elo).
+  Stockfish.setStrengthElo(null);
+  const before = await Stockfish.bestMove(fenBefore, { movetime: movetimeMs });
+  const after = await Stockfish.bestMove(fenAfter, { movetime: movetimeMs });
+
+  // Side-to-move centipawn scores.
+  const cpBefore = scoreToCp(before); // mover's POV at fenBefore
+  // If the opponent has no move, the player's move ended the game (mate/
+  // stalemate); treat as decisively good for the mover so it isn't flagged.
+  const afterTerminal = !after.bestmove || !/^[a-h][1-8][a-h][1-8]/.test(after.bestmove);
+  const cpAfter = afterTerminal ? -100000 : scoreToCp(after); // opponent's POV at fenAfter
+
+  // Convert to White-POV evals for display + the shared finalizer.
+  const bestEvalWhite = isWhite ? cpBefore : -cpBefore;
+  const evalAfterWhite = isWhite ? -cpAfter : cpAfter;
+
+  return finalizeAnalysis(bestEvalWhite, bestEvalWhite, evalAfterWhite, isWhite);
 }
 
 export function qualityTone(q: MoveQuality): 'good' | 'warn' | 'bad' | 'brand' {
