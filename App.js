@@ -10,7 +10,7 @@ function Root() {
   const { mode } = useTheme();
 
   // Warm up the native Stockfish engine at launch so the first coach move is
-  // instant. Safe no-op when the native module is absent (JS engine is used).
+  // instant. Safe no-op when the native module is absent.
   useEffect(() => {
     if (Stockfish.available) {
       Stockfish.ensureReady().catch(() => {});

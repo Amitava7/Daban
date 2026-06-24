@@ -7,7 +7,7 @@ import { useTheme } from '../context/ThemeContext';
 import { useGame } from '../context/GameContext';
 import { useProgress } from '../context/ProgressContext';
 import { RootStackParamList } from '../navigation/types';
-import { eloToLevel } from '../engine/ChessEngine';
+import { eloToLevel } from '../engine/rating';
 
 type Nav = NativeStackNavigationProp<RootStackParamList, 'ColorPicker'>;
 

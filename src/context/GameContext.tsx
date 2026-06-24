@@ -1,13 +1,10 @@
 import React, {
   createContext, useContext, useState, useCallback, useRef, useEffect,
 } from 'react';
-import { InteractionManager } from 'react-native';
 import { Chess } from 'chess.js';
-import {
-  getBestMove, getEvaluation, levelToDepth, levelToElo,
-  resetSearchNodes, getSearchNodes,
-} from '../engine/ChessEngine';
-import { classifyMove, classifyMoveStockfish, MoveAnalysis } from '../engine/MoveClassifier';
+import { levelToElo } from '../engine/rating';
+import { evaluate as evaluatePosition } from '../engine/engine';
+import { classifyMoveStockfish, neutralAnalysis, MoveAnalysis } from '../engine/MoveClassifier';
 import { Stockfish } from '../engine/StockfishUci';
 import { Storage, computeAccuracy } from '../services/StorageService';
 import { dlog } from '../utils/debugLog';
@@ -304,18 +301,19 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
   // Helper: run engine move asynchronously (off the render path).
   const runEngineMove = useCallback(() => {
-    dlog('engine', `runEngineMove scheduled (level=${level}, depth=${levelToDepth(level)})`);
-    // Defer to next tick so the "Thinking..." UI updates first; then the
-    // engine computes in a follow-up tick so the JS thread can interleave.
+    dlog('engine', `runEngineMove scheduled (level=${level})`);
+    // Defer to next tick so the "Thinking..." UI updates first; the native
+    // engine then computes on its own threads.
     setTimeout(async () => {
       dlog('engine', `engine compute starting; chessTurn=${chess.turn()} fen=${chess.fen()}`);
       const fen = chess.fen();
       const ply = chess.history().length;
 
-      // Acquire the coach's move: prefer native Stockfish (strength matched to
-      // the player's rating), and fall back to the built-in JS engine if the
-      // native module is unavailable or returns something unusable.
+      // The coach plays through native Stockfish, with strength matched to the
+      // player's rating. If the native module is unavailable (e.g. outside the
+      // native build), play a random legal move so the game still progresses.
       let moveData: any = null;
+      let coachEvalWhite: number | null = null;
       const tStart = Date.now();
       if (Stockfish.available) {
         try {
@@ -329,27 +327,29 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
               to: uci.slice(2, 4),
               promotion: uci.length > 4 ? uci[4] : undefined,
             });
+            const stm = fen.split(' ')[1];
+            const cp = r.mate !== null ? (r.mate > 0 ? 100000 : -100000) : (r.scoreCp ?? 0);
+            coachEvalWhite = stm === 'w' ? cp : -cp;
             dlog('perf', `coach(SF) elo=${levelToElo(level)} ply=${ply} took=${Date.now() - tStart}ms depth=${r.depth} nps=${r.nps} bestmove=${uci}`);
           }
         } catch (e) {
-          dlog('engine', `Stockfish move failed, falling back to JS: ${String(e)}`);
+          dlog('engine', `Stockfish move failed: ${String(e)}`);
           moveData = null;
         }
       }
       if (!moveData) {
-        const depth = levelToDepth(level);
-        resetSearchNodes();
-        const t2 = Date.now();
-        const er = getBestMove(chess, depth);
-        dlog('perf', `coach(JS) depth=${depth} ply=${ply} took=${Date.now() - t2}ms nodes=${getSearchNodes()}`);
-        moveData = chess.move({ from: er.from, to: er.to, promotion: er.promotion });
+        const legal = chess.moves({ verbose: true });
+        if (legal.length === 0) return;
+        const pick = legal[Math.floor(Math.random() * legal.length)];
+        moveData = chess.move(pick);
+        dlog('engine', `no native engine; played random move ${moveData.san}`);
       }
       dlog('engine', `chess.move OK san=${moveData.san} flags=${moveData.flags} captured=${moveData.captured ?? '-'}`);
       const engineFen = chess.fen();
       const engineRecord: MoveRecord = {
         san: moveData.san,
         fen: engineFen,
-        eval: 0, // filled in below
+        eval: coachEvalWhite ?? 0,
         playerMove: false,
       };
       setFen(engineFen);
@@ -372,11 +372,8 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         setStatus('playing');
       }
 
-      // Defer eval (shallow) one more tick so the piece animation has begun
-      setTimeout(() => {
-        const evalNow = getEvaluation(chess, 1);
-        setCurrentEval(evalNow);
-      }, 0);
+      // Update the eval bar from the engine's own score (no extra search).
+      if (coachEvalWhite !== null) setCurrentEval(coachEvalWhite);
     }, 0);
   }, [chess, level, playerColor, endGame, setMoveHistory]);
 
@@ -409,11 +406,8 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     setLastMove(null);
     setCaptureFlash(null);
 
-    // Initial eval computation can wait
-    InteractionManager.runAfterInteractions(() => {
-      const eEval = getEvaluation(chess, 1);
-      setCurrentEval(eEval);
-    });
+    // Initial eval from the engine (async; the start position is ~0).
+    evaluatePosition(chess.fen()).then(setCurrentEval).catch(() => {});
 
     if (color === 'b') {
       setStatus('engine_thinking');
@@ -484,11 +478,11 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
             chessBefore.fen(), newFen, playerColor === 'w', CLASSIFY_MOVETIME_MS,
           );
         } catch (e) {
-          dlog('makeMove', `Stockfish classify failed, JS fallback: ${String(e)}`);
-          analysis = classifyMove(chessBefore, moveResult.san, 2);
+          dlog('makeMove', `Stockfish classify failed: ${String(e)}`);
+          analysis = neutralAnalysis();
         }
       } else {
-        analysis = classifyMove(chessBefore, moveResult.san, 2);
+        analysis = neutralAnalysis();
       }
       setLastAnalysis(analysis);
       setCurrentEval(analysis.evalAfter);
@@ -590,10 +584,8 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       setLastMove(null);
     }
 
-    // Refresh eval in the background
-    setTimeout(() => {
-      setCurrentEval(getEvaluation(chess, 1));
-    }, 0);
+    // Refresh eval from the engine in the background.
+    evaluatePosition(chess.fen()).then(setCurrentEval).catch(() => {});
   }, [chess, moveHistory, status]);
 
   const loadSavedGame = useCallback(async () => {
@@ -614,9 +606,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     setBoardPieces(piecesFromFen(saved.fen));
     setLastMove(null);
     setCaptureFlash(null);
-    InteractionManager.runAfterInteractions(() => {
-      setCurrentEval(getEvaluation(chess, 1));
-    });
+    evaluatePosition(chess.fen()).then(setCurrentEval).catch(() => {});
     return true;
   }, [chess]);
 

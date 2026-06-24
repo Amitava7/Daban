@@ -1,11 +1,7 @@
-// Async UCI client for the native Stockfish module. This is the future engine
-// backend; for now it is exercised only by stockfishSelfTest() so we can
-// confirm, on the real device, that the native build runs and how fast it is.
-//
-// The engine is intentionally NOT wired into gameplay yet — the existing JS
-// engine stays in charge until Stockfish is verified on-device.
+// Async UCI client for the native Stockfish module — the app's chess engine.
+// Wraps the native bridge (start/write/onMessage) in a small promise-based UCI
+// API: init/ensureReady, strength control, best-move and MultiPV searches.
 import StockfishNative from '../../modules/expo-stockfish';
-import { dlog } from '../utils/debugLog';
 
 type Listener = (line: string) => void;
 
@@ -118,34 +114,35 @@ class StockfishUci {
     off();
     return { bestmove: line.split(/\s+/)[1] ?? '', scoreCp, mate, depth, nodes, nps };
   }
+
+  // MultiPV search: returns the top `multipv` lines (rank 1 = best), each with
+  // its first move (UCI) and side-to-move score. Used for hints.
+  async searchMulti(
+    fen: string,
+    opts: { movetime: number; multipv: number },
+  ): Promise<{ rank: number; uci: string; scoreCp: number | null; mate: number | null }[]> {
+    this.send(`setoption name MultiPV value ${opts.multipv}`);
+    const lines = new Map<number, { uci: string; scoreCp: number | null; mate: number | null }>();
+    const off = this.onLine((line) => {
+      if (!line.startsWith('info') || !line.includes(' pv ')) return;
+      const mpv = line.match(/ multipv (\d+)/);
+      const rank = mpv ? +mpv[1] : 1;
+      const pv = line.match(/ pv (\w+)/);
+      if (!pv) return;
+      let scoreCp: number | null = null;
+      let mate: number | null = null;
+      const cp = line.match(/ score cp (-?\d+)/); if (cp) scoreCp = +cp[1];
+      const m = line.match(/ score mate (-?\d+)/); if (m) mate = +m[1];
+      lines.set(rank, { uci: pv[1], scoreCp, mate });
+    });
+    this.send('position fen ' + fen);
+    this.send(`go movetime ${opts.movetime}`);
+    await this.waitFor(l => l.startsWith('bestmove'), opts.movetime + 20000);
+    off();
+    // Restore single-PV mode for subsequent searches.
+    this.send('setoption name MultiPV value 1');
+    return [...lines.entries()].sort((a, b) => a[0] - b[0]).map(([rank, v]) => ({ rank, ...v }));
+  }
 }
 
 export const Stockfish = new StockfishUci();
-
-// One-shot on-device benchmark. Logs to the existing debug log so the result
-// can be shared from the in-app "View debug log" button.
-export async function stockfishSelfTest(): Promise<void> {
-  if (!Stockfish.available) {
-    dlog('sf', 'native Stockfish module NOT available (JS engine still in use)');
-    return;
-  }
-  try {
-    const t0 = Date.now();
-    await Stockfish.init();
-    dlog('sf', `init ok in ${Date.now() - t0}ms`);
-    // Use several cores; the S24 Ultra has 8.
-    Stockfish.setThreads(6);
-
-    const start = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
-    const t1 = Date.now();
-    const r = await Stockfish.bestMove(start, { movetime: 1000 });
-    dlog('sf', `1s search: bestmove=${r.bestmove} depth=${r.depth} nodes=${r.nodes} nps=${r.nps} score=${r.scoreCp} (${Date.now() - t1}ms)`);
-
-    const mid = 'r1bqkb1r/pppp1ppp/2n2n2/4p3/4P3/2N2N2/PPPP1PPP/R1BQKB1R w KQkq - 4 4';
-    const t2 = Date.now();
-    const r2 = await Stockfish.bestMove(mid, { movetime: 1000 });
-    dlog('sf', `1s midgame: bestmove=${r2.bestmove} depth=${r2.depth} nodes=${r2.nodes} nps=${r2.nps} (${Date.now() - t2}ms)`);
-  } catch (e) {
-    dlog('sf', 'selftest error: ' + String(e));
-  }
-}

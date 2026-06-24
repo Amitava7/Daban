@@ -1,5 +1,3 @@
-import { Chess } from 'chess.js';
-import { getEvaluation, getTopMoves } from './ChessEngine';
 import { Stockfish } from './StockfishUci';
 
 export type MoveQuality = 'brilliant' | 'best' | 'excellent' | 'good' | 'inaccuracy' | 'mistake' | 'blunder';
@@ -136,28 +134,18 @@ export function finalizeAnalysis(
   };
 }
 
-export function classifyMove(
-  chessBefore: Chess,
-  sanPlayed: string,
-  evalDepth = 2,
-): MoveAnalysis {
-  const isWhite = chessBefore.turn() === 'w';
-
-  // Eval before the move
-  const evalBefore = getEvaluation(chessBefore, evalDepth);
-
-  // Best possible eval for side to move
-  const topMoves = getTopMoves(chessBefore, Math.max(1, evalDepth), 1);
-  const bestEval = topMoves.length > 0 ? topMoves[0].score : evalBefore;
-
-  // Make the move
-  const chessAfter = new Chess(chessBefore.fen());
-  chessAfter.move(sanPlayed);
-
-  // Eval after
-  const evalAfter = getEvaluation(chessAfter, evalDepth);
-
-  return finalizeAnalysis(evalBefore, bestEval, evalAfter, isWhite);
+// Fallback when the native engine is unavailable (e.g. running outside the
+// native build): a neutral "good" analysis so the UI has something to show.
+export function neutralAnalysis(): MoveAnalysis {
+  return {
+    quality: 'good',
+    evalBefore: 0,
+    evalAfter: 0,
+    bestEval: 0,
+    centipawnLoss: 0,
+    explanation: pickRandom(EXPLANATIONS.good),
+    coachComment: pickRandom(COACH_COMMENTS.good),
+  };
 }
 
 function scoreToCp(r: { scoreCp: number | null; mate: number | null }): number {

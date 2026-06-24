@@ -8,7 +8,7 @@ import { AppBar } from '../components/AppBar';
 import { Board } from '../components/Board';
 import { Card } from '../components/Card';
 import { Chess } from 'chess.js';
-import { getBestMove, levelToDepth } from '../engine/ChessEngine';
+import { bestMove } from '../engine/engine';
 import { fenToPieces } from '../utils/fenUtils';
 import { PieceData } from '../components/Board';
 
@@ -20,14 +20,12 @@ interface Frame {
   highlightTo?: string;
 }
 
-function buildRefutationFrames(
+async function buildRefutationFrames(
   positionBeforeBlunder: string,
   blunderSan: string,
-  level: number,
-): Frame[] {
+): Promise<Frame[]> {
   const frames: Frame[] = [];
   const chess = new Chess(positionBeforeBlunder);
-  const depth = Math.max(2, levelToDepth(level));
 
   // Frame 1: position before blunder
   frames.push({
@@ -52,25 +50,21 @@ function buildRefutationFrames(
 
   // Engine punishing moves
   for (let i = 0; i < 3; i++) {
-    try {
-      const result = getBestMove(chess, depth);
-      const move = chess.move({ from: result.from, to: result.to, promotion: result.promotion });
-      frames.push({
-        title: `${i + 2}. ${result.san}`,
-        caption: getPunishCaption(move, i),
-        fen: chess.fen(),
-        highlightFrom: result.from,
-        highlightTo: result.to,
-      });
-      if (chess.isGameOver()) break;
-      // Player's forced response (random legal move)
-      const playerMoves = chess.moves({ verbose: true });
-      if (playerMoves.length === 0) break;
-      const forced = playerMoves[0];
-      chess.move(forced);
-    } catch {
-      break;
-    }
+    const result = await bestMove(chess.fen(), 500);
+    if (!result) break;
+    const move = chess.move({ from: result.from, to: result.to, promotion: result.promotion });
+    frames.push({
+      title: `${i + 2}. ${result.san}`,
+      caption: getPunishCaption(move, i),
+      fen: chess.fen(),
+      highlightFrom: result.from,
+      highlightTo: result.to,
+    });
+    if (chess.isGameOver()) break;
+    // Player's forced response (first legal move)
+    const playerMoves = chess.moves({ verbose: true });
+    if (playerMoves.length === 0) break;
+    chess.move(playerMoves[0]);
   }
 
   return frames;
@@ -95,7 +89,7 @@ const PIECE_NAMES: Record<string, string> = {
 export function RefutationScreen() {
   const { colors } = useTheme();
   const nav = useNavigation();
-  const { moveHistory, playerColor, level } = useGame();
+  const { moveHistory, playerColor } = useGame();
   const [step, setStep] = useState(0);
   const [frames, setFrames] = useState<Frame[]>([]);
   const [auto, setAuto] = useState(true);
@@ -109,13 +103,18 @@ export function RefutationScreen() {
 
   useEffect(() => {
     if (!blunderRecord) return;
+    let cancelled = false;
     // Find the FEN before the blunder
     const idx = moveHistory.indexOf(blunderRecord);
     const fenBefore = idx > 0 ? moveHistory[idx - 1].fen : 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
-    const built = buildRefutationFrames(fenBefore, blunderRecord.san, level);
-    setFrames(built);
-    setStep(0);
-  }, [blunderRecord, level]);
+    (async () => {
+      const built = await buildRefutationFrames(fenBefore, blunderRecord.san);
+      if (cancelled) return;
+      setFrames(built);
+      setStep(0);
+    })();
+    return () => { cancelled = true; };
+  }, [blunderRecord]);
 
   useEffect(() => {
     if (!auto || frames.length === 0) return;
