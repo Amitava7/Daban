@@ -64,6 +64,24 @@ class StockfishUci {
     await this.waitFor(l => l.startsWith('readyok'), 8000);
   }
 
+  // Idempotent: initialise the engine once (and configure threads for the
+  // S24 Ultra's cores). All callers can `await ensureReady()` cheaply.
+  private readyPromise: Promise<void> | null = null;
+  ensureReady(): Promise<void> {
+    if (!this.available) return Promise.reject(new Error('stockfish unavailable'));
+    if (!this.readyPromise) {
+      this.readyPromise = (async () => {
+        await this.init();
+        this.setThreads(4);
+      })();
+    }
+    return this.readyPromise;
+  }
+
+  newGame(): void {
+    this.send('ucinewgame');
+  }
+
   // Limit playing strength to a target Elo (Stockfish supports ~1320–3190).
   // Pass null to play at full strength (used for analysis).
   setStrengthElo(elo: number | null): void {

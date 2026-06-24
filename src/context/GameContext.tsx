@@ -8,6 +8,7 @@ import {
   resetSearchNodes, getSearchNodes,
 } from '../engine/ChessEngine';
 import { classifyMove, MoveAnalysis } from '../engine/MoveClassifier';
+import { Stockfish } from '../engine/StockfishUci';
 import { Storage, computeAccuracy } from '../services/StorageService';
 import { dlog } from '../utils/debugLog';
 import type { PieceData } from '../components/Board';
@@ -75,6 +76,9 @@ const GameCtx = createContext<(GameState & GameActions) | null>(null);
 
 const INITIAL_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
 const MAX_HINTS = 3;
+// Per-move thinking budget for the native Stockfish coach. ~1s gives very
+// strong play (depth ~20 on the S24 Ultra) while staying snappy.
+const COACH_MOVETIME_MS = 1000;
 
 const PIECE_POINTS: Record<string, number> = {
   P: 1, N: 3, B: 3, R: 5, Q: 9, K: 0,
@@ -301,28 +305,47 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     dlog('engine', `runEngineMove scheduled (level=${level}, depth=${levelToDepth(level)})`);
     // Defer to next tick so the "Thinking..." UI updates first; then the
     // engine computes in a follow-up tick so the JS thread can interleave.
-    setTimeout(() => {
+    setTimeout(async () => {
       dlog('engine', `engine compute starting; chessTurn=${chess.turn()} fen=${chess.fen()}`);
-      const depth = levelToDepth(level);
-      // Time the search and count nodes so we can see, on the real device,
-      // exactly how long the coach takes and how much work it did.
-      resetSearchNodes();
-      const tStart = Date.now();
-      const engineResult = getBestMove(chess, depth);
-      const elapsedMs = Date.now() - tStart;
-      const nodes = getSearchNodes();
+      const fen = chess.fen();
       const ply = chess.history().length;
-      dlog('perf', `coach search level=${level} depth=${depth} ply=${ply} took=${elapsedMs}ms nodes=${nodes} (${(nodes / Math.max(1, elapsedMs)).toFixed(1)} nodes/ms)`);
-      dlog('engine', `getBestMove -> san=${engineResult.san} from=${engineResult.from} to=${engineResult.to} promotion=${engineResult.promotion ?? '-'}`);
-      const moveData = chess.move({
-        from: engineResult.from,
-        to: engineResult.to,
-        promotion: engineResult.promotion,
-      });
+
+      // Acquire the coach's move: prefer native Stockfish (strength matched to
+      // the player's rating), and fall back to the built-in JS engine if the
+      // native module is unavailable or returns something unusable.
+      let moveData: any = null;
+      const tStart = Date.now();
+      if (Stockfish.available) {
+        try {
+          await Stockfish.ensureReady();
+          Stockfish.setStrengthElo(levelToElo(level));
+          const r = await Stockfish.bestMove(fen, { movetime: COACH_MOVETIME_MS });
+          const uci = r.bestmove;
+          if (/^[a-h][1-8][a-h][1-8][qrbn]?$/.test(uci)) {
+            moveData = chess.move({
+              from: uci.slice(0, 2),
+              to: uci.slice(2, 4),
+              promotion: uci.length > 4 ? uci[4] : undefined,
+            });
+            dlog('perf', `coach(SF) elo=${levelToElo(level)} ply=${ply} took=${Date.now() - tStart}ms depth=${r.depth} nps=${r.nps} bestmove=${uci}`);
+          }
+        } catch (e) {
+          dlog('engine', `Stockfish move failed, falling back to JS: ${String(e)}`);
+          moveData = null;
+        }
+      }
+      if (!moveData) {
+        const depth = levelToDepth(level);
+        resetSearchNodes();
+        const t2 = Date.now();
+        const er = getBestMove(chess, depth);
+        dlog('perf', `coach(JS) depth=${depth} ply=${ply} took=${Date.now() - t2}ms nodes=${getSearchNodes()}`);
+        moveData = chess.move({ from: er.from, to: er.to, promotion: er.promotion });
+      }
       dlog('engine', `chess.move OK san=${moveData.san} flags=${moveData.flags} captured=${moveData.captured ?? '-'}`);
       const engineFen = chess.fen();
       const engineRecord: MoveRecord = {
-        san: engineResult.san,
+        san: moveData.san,
         fen: engineFen,
         eval: 0, // filled in below
         playerMove: false,
@@ -361,6 +384,9 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     timeControl: 'none' | '10min' | '5min',
   ) => {
     chess.reset();
+    if (Stockfish.available) {
+      Stockfish.ensureReady().then(() => Stockfish.newGame()).catch(() => {});
+    }
     const initialEval = 0;
     const seconds = timeControl === '10min' ? 600 : timeControl === '5min' ? 300 : null;
 
