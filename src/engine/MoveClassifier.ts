@@ -165,10 +165,10 @@ export async function classifyMoveStockfish(
   movetimeMs = 300,
 ): Promise<MoveAnalysis> {
   // Analyse at full strength for an accurate eval (the coach search may have
-  // left the engine limited to the player's Elo).
-  Stockfish.setStrengthElo(null);
-  const before = await Stockfish.bestMove(fenBefore, { movetime: movetimeMs });
-  const after = await Stockfish.bestMove(fenAfter, { movetime: movetimeMs });
+  // left the engine limited to the player's Elo). `elo: null` is applied
+  // atomically inside each (serialized) search.
+  const before = await Stockfish.bestMove(fenBefore, { movetime: movetimeMs, elo: null });
+  const after = await Stockfish.bestMove(fenAfter, { movetime: movetimeMs, elo: null });
 
   // Side-to-move centipawn scores.
   const cpBefore = scoreToCp(before); // mover's POV at fenBefore

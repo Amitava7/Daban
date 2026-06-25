@@ -39,8 +39,7 @@ function resolve(fen: string, uci: string): Omit<EngineMove, 'score'> | null {
 export async function bestMove(fen: string, movetimeMs = 1000): Promise<EngineMove | null> {
   if (!Stockfish.available) return null;
   await Stockfish.ensureReady();
-  Stockfish.setStrengthElo(null);
-  const r = await Stockfish.bestMove(fen, { movetime: movetimeMs });
+  const r = await Stockfish.bestMove(fen, { movetime: movetimeMs, elo: null });
   const m = resolve(fen, r.bestmove);
   return m ? { ...m, score: whitePov(fen, r.scoreCp, r.mate) } : null;
 }
@@ -49,8 +48,7 @@ export async function bestMove(fen: string, movetimeMs = 1000): Promise<EngineMo
 export async function topMoves(fen: string, n = 3, movetimeMs = 800): Promise<EngineMove[]> {
   if (!Stockfish.available) return [];
   await Stockfish.ensureReady();
-  Stockfish.setStrengthElo(null);
-  const lines = await Stockfish.searchMulti(fen, { movetime: movetimeMs, multipv: n });
+  const lines = await Stockfish.searchMulti(fen, { movetime: movetimeMs, multipv: n, elo: null });
   const out: EngineMove[] = [];
   for (const l of lines) {
     const m = resolve(fen, l.uci);
@@ -63,7 +61,31 @@ export async function topMoves(fen: string, n = 3, movetimeMs = 800): Promise<En
 export async function evaluate(fen: string, movetimeMs = 300): Promise<number> {
   if (!Stockfish.available) return 0;
   await Stockfish.ensureReady();
-  Stockfish.setStrengthElo(null);
-  const r = await Stockfish.bestMove(fen, { movetime: movetimeMs });
+  const r = await Stockfish.bestMove(fen, { movetime: movetimeMs, elo: null });
   return whitePov(fen, r.scoreCp, r.mate);
+}
+
+export interface LineMove {
+  san: string;
+  from: string;
+  to: string;
+  fen: string; // position AFTER this move
+}
+
+// The engine's principal variation (best play for both sides) from `fen`,
+// replayed into per-move frames. A single full-strength search — used for the
+// "what you missed" refutation line.
+export async function refutationLine(fen: string, maxPlies = 6, movetimeMs = 1200): Promise<LineMove[]> {
+  if (!Stockfish.available) return [];
+  await Stockfish.ensureReady();
+  const r = await Stockfish.searchPv(fen, { movetime: movetimeMs, elo: null });
+  const out: LineMove[] = [];
+  const c = new Chess(fen);
+  for (const uci of r.pv.slice(0, maxPlies)) {
+    const m = resolve(c.fen(), uci);
+    if (!m) break;
+    c.move({ from: m.from, to: m.to, promotion: m.promotion });
+    out.push({ san: m.san, from: m.from, to: m.to, fen: c.fen() });
+  }
+  return out;
 }

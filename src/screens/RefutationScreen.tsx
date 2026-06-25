@@ -8,7 +8,7 @@ import { AppBar } from '../components/AppBar';
 import { Board } from '../components/Board';
 import { Card } from '../components/Card';
 import { Chess } from 'chess.js';
-import { bestMove } from '../engine/engine';
+import { refutationLine } from '../engine/engine';
 import { fenToPieces } from '../utils/fenUtils';
 import { PieceData } from '../components/Board';
 
@@ -35,56 +35,50 @@ async function buildRefutationFrames(
   });
 
   // Make the blunder
+  let blunder;
   try {
-    const move = chess.move(blunderSan);
-    frames.push({
-      title: `1. …${blunderSan}`,
-      caption: `After ${blunderSan}, the opponent has a strong response.`,
-      fen: chess.fen(),
-      highlightFrom: move.from,
-      highlightTo: move.to,
-    });
+    blunder = chess.move(blunderSan);
   } catch {
     return frames;
   }
+  frames.push({
+    title: `1. …${blunderSan}`,
+    caption: `After ${blunderSan}, the opponent has a strong response.`,
+    fen: chess.fen(),
+    highlightFrom: blunder.from,
+    highlightTo: blunder.to,
+  });
 
-  // Engine punishing moves
-  for (let i = 0; i < 3; i++) {
-    const result = await bestMove(chess.fen(), 500);
-    if (!result) break;
-    const move = chess.move({ from: result.from, to: result.to, promotion: result.promotion });
+  // The engine's best line for BOTH sides from the position after the blunder
+  // (one search — no random replies, no overlapping searches).
+  const line = await refutationLine(chess.fen(), 6, 1200);
+  line.forEach((m, i) => {
+    const opponentMove = i % 2 === 0; // the first reply punishes the blunder
     frames.push({
-      title: `${i + 2}. ${result.san}`,
-      caption: getPunishCaption(move, i),
-      fen: chess.fen(),
-      highlightFrom: result.from,
-      highlightTo: result.to,
+      title: `${i + 2}. ${m.san}`,
+      caption: opponentMove ? punishCaption(m.san, i) : defenseCaption(m.san),
+      fen: m.fen,
+      highlightFrom: m.from,
+      highlightTo: m.to,
     });
-    if (chess.isGameOver()) break;
-    // Player's forced response (first legal move)
-    const playerMoves = chess.moves({ verbose: true });
-    if (playerMoves.length === 0) break;
-    chess.move(playerMoves[0]);
-  }
+  });
 
   return frames;
 }
 
-function getPunishCaption(move: any, idx: number): string {
-  if (move.captured) {
-    return `Captures the ${PIECE_NAMES[move.captured] ?? 'piece'} — material won.`;
-  }
-  if (move.flags?.includes('k') || move.flags?.includes('q')) {
-    return 'Castles into safety and pressure.';
-  }
-  if (idx === 0) return 'The best response — exploiting the weakness.';
-  if (idx === 1) return 'Building on the advantage.';
-  return 'The position is now very difficult to defend.';
+function punishCaption(san: string, idx: number): string {
+  if (san.includes('#')) return 'Checkmate — the position collapses.';
+  if (san.includes('x')) return 'Wins material — punishing the weakness.';
+  if (san.startsWith('O-O')) return 'Castles in, with pressure mounting.';
+  if (san.includes('+')) return 'Check — seizing the initiative.';
+  if (idx === 0) return 'The strongest response — exploiting the weakness.';
+  return 'Building on the advantage.';
 }
 
-const PIECE_NAMES: Record<string, string> = {
-  p: 'pawn', n: 'knight', b: 'bishop', r: 'rook', q: 'queen',
-};
+function defenseCaption(san: string): string {
+  if (san.includes('x')) return 'Forced to trade, but the damage is done.';
+  return 'The best defence — yet the position stays difficult.';
+}
 
 export function RefutationScreen() {
   const { colors } = useTheme();
