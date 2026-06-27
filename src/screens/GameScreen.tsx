@@ -42,7 +42,7 @@ export function GameScreen() {
   const {
     fen, status, result, moveHistory, lastAnalysis, currentEval,
     selectedSquare, legalMoves, playerColor, level, playerTime,
-    selectSquare, makeMove, resign, offerDraw, useHint,
+    selectSquare, makeMove, resign, offerDraw, continueAfterTimeout, useHint,
     clearBlunderAlert, boardPieces, lastMove, captureFlash, clearCaptureFlash,
     undoLastMove, canUndo,
   } = useGame();
@@ -121,6 +121,7 @@ export function GameScreen() {
   const isPlayerTurn = status === 'playing' && fen.split(' ')[1] === playerColor;
   const isThinking = status === 'engine_thinking';
   const isBlunder = status === 'player_blundered';
+  const isTimedOut = status === 'timed_out';
   const isOver = status === 'game_over';
 
   return (
@@ -173,7 +174,7 @@ export function GameScreen() {
                 {formatTime(playerTime)}
               </Text>
               <Text style={[styles.clockLabel, { color: isPlayerTurn ? colors.surface : colors.inkMute }]}>
-                {isPlayerTurn ? 'Your move' : 'Coach thinking…'}
+                {isTimedOut ? "Time's up" : isPlayerTurn ? 'Your move' : 'Coach thinking…'}
               </Text>
             </View>
           </View>
@@ -249,8 +250,31 @@ export function GameScreen() {
           </Card>
         )}
 
+        {/* Timeout banner — continue without a clock, or accept the loss */}
+        {isTimedOut && (
+          <Card variant="bad" tight>
+            <View style={styles.blunderRow}>
+              <Text style={[styles.blunderText, { color: colors.bad2 }]}>
+                Time's up! Your clock ran out.
+              </Text>
+              <TouchableOpacity
+                style={[styles.blunderBtn, { backgroundColor: colors.brand }]}
+                onPress={continueAfterTimeout}
+              >
+                <Text style={[styles.blunderBtnText, { color: colors.onBrand }]}>Continue anyway</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.blunderBtn, { backgroundColor: colors.surface, borderColor: colors.border }]}
+                onPress={resign}
+              >
+                <Text style={[styles.blunderBtnText, { color: colors.ink }]}>Accept loss</Text>
+              </TouchableOpacity>
+            </View>
+          </Card>
+        )}
+
         {/* Notation */}
-        {!isOver && !isBlunder && (
+        {!isOver && !isBlunder && !isTimedOut && (
           <Card variant="flat" tight style={styles.notation}>
             <Text style={[styles.notationKicker, { color: colors.inkMute }]}>Last moves</Text>
             <Text style={[styles.notationMoves, { color: colors.inkSoft, fontFamily: 'monospace' }]}>
@@ -264,7 +288,7 @@ export function GameScreen() {
         <View style={{ flex: 1 }} />
 
         {/* Actions */}
-        {!isOver && (
+        {!isOver && !isTimedOut && (
           <>
             <View style={styles.btnRow}>
               <TouchableOpacity

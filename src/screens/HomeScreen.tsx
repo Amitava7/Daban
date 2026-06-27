@@ -46,7 +46,7 @@ export function HomeScreen() {
   const { fen, status, playerColor, level } = useGame();
   const { progress, openingMastery, endgameCompleted, weeklyEloChange } = useProgress();
 
-  const hasActiveGame = status === 'playing' || status === 'engine_thinking' || status === 'player_blundered';
+  const hasActiveGame = status === 'playing' || status === 'engine_thinking' || status === 'player_blundered' || status === 'timed_out';
   const liveFen = hasActiveGame ? fen : INITIAL_FEN;
 
   // The HomeScreen stays mounted while the user plays on GameScreen, so every
