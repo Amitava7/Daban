@@ -107,6 +107,13 @@ export function EndgamePuzzleScreen() {
   const handleSquarePress = (sq: string) => {
     if (!isPlayerTurn) return;
 
+    // Tapping the already-selected piece deselects it.
+    if (sq === selectedSquare) {
+      setSelectedSquare(null);
+      setLegalMoves([]);
+      return;
+    }
+
     if (selectedSquare && legalMoves.includes(sq)) {
       try {
         const move = chess.move({ from: selectedSquare, to: sq, promotion: 'q' });

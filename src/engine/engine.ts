@@ -3,6 +3,7 @@
 // + White-positive centipawn score), so callers stay simple.
 import { Chess } from 'chess.js';
 import { Stockfish } from './StockfishUci';
+import { dlog } from '../utils/debugLog';
 
 export interface EngineMove {
   san: string;
@@ -46,14 +47,19 @@ export async function bestMove(fen: string, movetimeMs = 1000): Promise<EngineMo
 
 // Top N candidate moves (rank 1 = best), via MultiPV.
 export async function topMoves(fen: string, n = 3, movetimeMs = 800): Promise<EngineMove[]> {
-  if (!Stockfish.available) return [];
+  if (!Stockfish.available) {
+    dlog('hint', 'topMoves: native engine unavailable');
+    return [];
+  }
   await Stockfish.ensureReady();
   const lines = await Stockfish.searchMulti(fen, { movetime: movetimeMs, multipv: n, elo: null });
   const out: EngineMove[] = [];
   for (const l of lines) {
     const m = resolve(fen, l.uci);
     if (m) out.push({ ...m, score: whitePov(fen, l.scoreCp, l.mate) });
+    else dlog('hint', `topMoves: unresolved uci=${l.uci}`);
   }
+  dlog('hint', `topMoves fen="${fen.split(' ').slice(0, 2).join(' ')}" rawLines=${lines.length} resolved=${out.length}`);
   return out;
 }
 

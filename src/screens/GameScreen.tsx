@@ -42,11 +42,11 @@ export function GameScreen() {
   const {
     fen, status, result, moveHistory, lastAnalysis, currentEval,
     selectedSquare, legalMoves, playerColor, level, playerTime,
-    hintsUsed, selectSquare, makeMove, resign, offerDraw, useHint,
+    selectSquare, makeMove, resign, offerDraw, useHint,
     clearBlunderAlert, boardPieces, lastMove, captureFlash, clearCaptureFlash,
     undoLastMove, canUndo,
   } = useGame();
-  const { settings, recordGame } = useProgress();
+  const { recordGame } = useProgress();
   const [showResignModal, setShowResignModal] = useState(false);
   const [promotionPending, setPromotionPending] = useState<{ from: string; to: string } | null>(null);
   const [boardWidth, setBoardWidth] = useState(0);
@@ -122,7 +122,6 @@ export function GameScreen() {
   const isThinking = status === 'engine_thinking';
   const isBlunder = status === 'player_blundered';
   const isOver = status === 'game_over';
-  const maxHints = settings.personality === 'Loud' ? 99 : 3;
 
   return (
     <SafeAreaView style={[styles.safe, { backgroundColor: colors.bg }]}>
@@ -269,13 +268,11 @@ export function GameScreen() {
           <>
             <View style={styles.btnRow}>
               <TouchableOpacity
-                style={[styles.btn, styles.btnBrand, { backgroundColor: colors.brand, opacity: hintsUsed >= maxHints ? 0.4 : 1 }]}
-                onPress={() => { if (hintsUsed < maxHints) { useHint(); nav.navigate('Hint'); } }}
-                disabled={hintsUsed >= maxHints}
+                style={[styles.btn, styles.btnBrand, { backgroundColor: colors.brand, opacity: isPlayerTurn ? 1 : 0.4 }]}
+                onPress={() => { useHint(); nav.navigate('Hint'); }}
+                disabled={!isPlayerTurn}
               >
-                <Text style={[styles.btnText, { color: colors.onBrand }]}>
-                  Hint {maxHints < 99 ? `(${maxHints - hintsUsed})` : ''}
-                </Text>
+                <Text style={[styles.btnText, { color: colors.onBrand }]}>Hint</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={[

@@ -418,6 +418,13 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     if (status !== 'playing') return;
     if (chess.turn() !== playerColor) return;
 
+    // Tapping the already-selected piece deselects it.
+    if (sq === selectedSquare) {
+      setSelectedSquare(null);
+      setLegalMoves([]);
+      return;
+    }
+
     const piece = chess.get(sq as any);
 
     if (selectedSquare && legalMoves.includes(sq)) {
