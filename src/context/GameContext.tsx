@@ -318,8 +318,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       if (Stockfish.available) {
         try {
           await Stockfish.ensureReady();
-          Stockfish.setStrengthElo(levelToElo(level));
-          const r = await Stockfish.bestMove(fen, { movetime: COACH_MOVETIME_MS });
+          const r = await Stockfish.bestMove(fen, { movetime: COACH_MOVETIME_MS, elo: levelToElo(level) });
           const uci = r.bestmove;
           if (/^[a-h][1-8][a-h][1-8][qrbn]?$/.test(uci)) {
             moveData = chess.move({
