@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   View, Text, TouchableOpacity, StyleSheet, Modal, Alert, Share, ScrollView, TextInput,
 } from 'react-native';
@@ -57,9 +57,16 @@ export function GameScreen() {
   const evalPct = evalBarPct(currentEval);
   const evalLabel = formatEval(currentEval);
 
-  // Record game on completion
+  // Record game on completion — at most once per game. Undoing a game-ending
+  // move and finishing again must not record the game twice; the ref resets
+  // only when a fresh game starts (empty history).
+  const recordedRef = useRef(false);
   useEffect(() => {
-    if (status === 'game_over' && result) {
+    if (status === 'playing' && moveHistory.length === 0) {
+      recordedRef.current = false;
+    }
+    if (status === 'game_over' && result && !recordedRef.current) {
+      recordedRef.current = true;
       const blunders = moveHistory.filter(m => m.playerMove && m.analysis?.quality === 'blunder').length;
       const losses = moveHistory
         .filter(m => m.playerMove && m.analysis)
@@ -69,7 +76,7 @@ export function GameScreen() {
         : 100;
       recordGame({ result, playerColor, level, accuracy, blunders, moves: moveHistory.length });
     }
-  }, [status, result]);
+  }, [status, result, moveHistory.length]);
 
   const handleSquarePress = (sq: string) => {
     dlog('tap', `square=${sq} selectedSquare=${selectedSquare ?? '-'} legalMoves=[${legalMoves.join(',')}] status=${status}`);
@@ -219,7 +226,7 @@ export function GameScreen() {
               </Text>
               <TouchableOpacity
                 style={[styles.blunderBtn, { backgroundColor: colors.bad }]}
-                onPress={() => nav.navigate('Feedback')}
+                onPress={() => nav.navigate('Refutation')}
               >
                 <Text style={[styles.blunderBtnText, { color: '#fff' }]}>See</Text>
               </TouchableOpacity>
@@ -336,12 +343,22 @@ export function GameScreen() {
         )}
 
         {isOver && (
-          <TouchableOpacity
-            style={[styles.btn, styles.btnFull, { backgroundColor: colors.ink }]}
-            onPress={() => nav.navigate('ColorPicker')}
-          >
-            <Text style={[styles.btnText, { color: colors.surface }]}>New game</Text>
-          </TouchableOpacity>
+          <View style={styles.btnRow}>
+            {canUndo() && (
+              <TouchableOpacity
+                style={[styles.btn, { backgroundColor: colors.surface, borderColor: colors.border }]}
+                onPress={() => undoLastMove()}
+              >
+                <Text style={[styles.btnText, { color: colors.ink }]}>↩ Undo last move</Text>
+              </TouchableOpacity>
+            )}
+            <TouchableOpacity
+              style={[styles.btn, styles.btnFull, { backgroundColor: colors.ink }]}
+              onPress={() => nav.navigate('ColorPicker')}
+            >
+              <Text style={[styles.btnText, { color: colors.surface }]}>New game</Text>
+            </TouchableOpacity>
+          </View>
         )}
       </View>
 
