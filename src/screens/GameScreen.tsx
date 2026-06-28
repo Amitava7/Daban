@@ -42,11 +42,11 @@ export function GameScreen() {
   const {
     fen, status, result, moveHistory, lastAnalysis, currentEval,
     selectedSquare, legalMoves, playerColor, level, playerTime,
-    hintsUsed, selectSquare, makeMove, resign, offerDraw, useHint,
+    selectSquare, makeMove, resign, offerDraw, continueAfterTimeout, useHint,
     clearBlunderAlert, boardPieces, lastMove, captureFlash, clearCaptureFlash,
     undoLastMove, canUndo,
   } = useGame();
-  const { settings, recordGame } = useProgress();
+  const { recordGame } = useProgress();
   const [showResignModal, setShowResignModal] = useState(false);
   const [promotionPending, setPromotionPending] = useState<{ from: string; to: string } | null>(null);
   const [boardWidth, setBoardWidth] = useState(0);
@@ -121,8 +121,8 @@ export function GameScreen() {
   const isPlayerTurn = status === 'playing' && fen.split(' ')[1] === playerColor;
   const isThinking = status === 'engine_thinking';
   const isBlunder = status === 'player_blundered';
+  const isTimedOut = status === 'timed_out';
   const isOver = status === 'game_over';
-  const maxHints = settings.personality === 'Loud' ? 99 : 3;
 
   return (
     <SafeAreaView style={[styles.safe, { backgroundColor: colors.bg }]}>
@@ -174,7 +174,7 @@ export function GameScreen() {
                 {formatTime(playerTime)}
               </Text>
               <Text style={[styles.clockLabel, { color: isPlayerTurn ? colors.surface : colors.inkMute }]}>
-                {isPlayerTurn ? 'Your move' : 'Coach thinking…'}
+                {isTimedOut ? "Time's up" : isPlayerTurn ? 'Your move' : 'Coach thinking…'}
               </Text>
             </View>
           </View>
@@ -250,8 +250,31 @@ export function GameScreen() {
           </Card>
         )}
 
+        {/* Timeout banner — continue without a clock, or accept the loss */}
+        {isTimedOut && (
+          <Card variant="bad" tight>
+            <View style={styles.blunderRow}>
+              <Text style={[styles.blunderText, { color: colors.bad2 }]}>
+                Time's up! Your clock ran out.
+              </Text>
+              <TouchableOpacity
+                style={[styles.blunderBtn, { backgroundColor: colors.brand }]}
+                onPress={continueAfterTimeout}
+              >
+                <Text style={[styles.blunderBtnText, { color: colors.onBrand }]}>Continue anyway</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.blunderBtn, { backgroundColor: colors.surface, borderColor: colors.border }]}
+                onPress={resign}
+              >
+                <Text style={[styles.blunderBtnText, { color: colors.ink }]}>Accept loss</Text>
+              </TouchableOpacity>
+            </View>
+          </Card>
+        )}
+
         {/* Notation */}
-        {!isOver && !isBlunder && (
+        {!isOver && !isBlunder && !isTimedOut && (
           <Card variant="flat" tight style={styles.notation}>
             <Text style={[styles.notationKicker, { color: colors.inkMute }]}>Last moves</Text>
             <Text style={[styles.notationMoves, { color: colors.inkSoft, fontFamily: 'monospace' }]}>
@@ -265,17 +288,15 @@ export function GameScreen() {
         <View style={{ flex: 1 }} />
 
         {/* Actions */}
-        {!isOver && (
+        {!isOver && !isTimedOut && (
           <>
             <View style={styles.btnRow}>
               <TouchableOpacity
-                style={[styles.btn, styles.btnBrand, { backgroundColor: colors.brand, opacity: hintsUsed >= maxHints ? 0.4 : 1 }]}
-                onPress={() => { if (hintsUsed < maxHints) { useHint(); nav.navigate('Hint'); } }}
-                disabled={hintsUsed >= maxHints}
+                style={[styles.btn, styles.btnBrand, { backgroundColor: colors.brand, opacity: isPlayerTurn ? 1 : 0.4 }]}
+                onPress={() => { useHint(); nav.navigate('Hint'); }}
+                disabled={!isPlayerTurn}
               >
-                <Text style={[styles.btnText, { color: colors.onBrand }]}>
-                  Hint {maxHints < 99 ? `(${maxHints - hintsUsed})` : ''}
-                </Text>
+                <Text style={[styles.btnText, { color: colors.onBrand }]}>Hint</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={[

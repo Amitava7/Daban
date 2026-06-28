@@ -23,6 +23,7 @@ export type GameStatus =
   | 'playing'
   | 'engine_thinking'
   | 'player_blundered'
+  | 'timed_out'
   | 'game_over';
 
 export type GameResult = 'win' | 'loss' | 'draw' | null;
@@ -60,6 +61,7 @@ interface GameActions {
   makeMove: (from: string, to: string, promotion?: string) => Promise<void>;
   resign: () => void;
   offerDraw: () => void;
+  continueAfterTimeout: () => void;
   useHint: () => void;
   clearBlunderAlert: () => void;
   clearCaptureFlash: () => void;
@@ -253,11 +255,12 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     return () => clearInterval(id);
   }, [playerOnMove, playerTime === null]);
 
-  // Flag fall: if the player's clock hits zero, they lose on time.
+  // Flag fall: when the player's clock hits zero, pause in a 'timed_out' state
+  // (no result recorded yet) so the player can either accept the loss or
+  // continue the game without a clock.
   useEffect(() => {
-    if (playerTime === 0 && status !== 'game_over' && status !== 'idle') {
-      setStatus('game_over');
-      setResult('loss');
+    if (playerTime === 0 && (status === 'playing' || status === 'engine_thinking' || status === 'player_blundered')) {
+      setStatus('timed_out');
     }
   }, [playerTime, status]);
 
@@ -418,6 +421,13 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     if (status !== 'playing') return;
     if (chess.turn() !== playerColor) return;
 
+    // Tapping the already-selected piece deselects it.
+    if (sq === selectedSquare) {
+      setSelectedSquare(null);
+      setLegalMoves([]);
+      return;
+    }
+
     const piece = chess.get(sq as any);
 
     if (selectedSquare && legalMoves.includes(sq)) {
@@ -528,6 +538,15 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     setResult('draw');
   }, []);
 
+  // After a flag fall, keep playing with the clock switched off. It's the
+  // player's turn (the clock only ticks on their turn), so they just resume.
+  const continueAfterTimeout = useCallback(() => {
+    if (status !== 'timed_out') return;
+    setPlayerTime(null);   // disable the clock for the rest of the game
+    setResult(null);
+    setStatus('playing');
+  }, [status]);
+
   const useHint = useCallback(() => {
     setHintsUsed(h => Math.min(h + 1, MAX_HINTS));
   }, []);
@@ -627,7 +646,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       lastAnalysis, currentEval, selectedSquare, legalMoves,
       playerTime, hintsUsed, pendingRefutation,
       boardPieces, lastMove, captureFlash,
-      startNewGame, selectSquare, makeMove, resign, offerDraw,
+      startNewGame, selectSquare, makeMove, resign, offerDraw, continueAfterTimeout,
       useHint, clearBlunderAlert, clearCaptureFlash, loadSavedGame, saveCurrentGame,
       undoLastMove, canUndo,
     }}>

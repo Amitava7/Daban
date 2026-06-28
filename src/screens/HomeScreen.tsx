@@ -15,6 +15,7 @@ import { fenToPieces } from '../utils/fenUtils';
 import { Storage } from '../services/StorageService';
 import { OPENINGS } from '../engine/OpeningBook';
 import { CATEGORY_META, getAllPuzzles } from '../engine/EndgameGenerator';
+import { eloToLevel } from '../engine/rating';
 
 type Nav = NativeStackNavigationProp<RootStackParamList, 'Home'>;
 
@@ -43,9 +44,9 @@ export function HomeScreen() {
   const { colors } = useTheme();
   const nav = useNavigation<Nav>();
   const { fen, status, playerColor, level } = useGame();
-  const { progress, settings, openingMastery, endgameCompleted, weeklyEloChange } = useProgress();
+  const { progress, openingMastery, endgameCompleted, weeklyEloChange } = useProgress();
 
-  const hasActiveGame = status === 'playing' || status === 'engine_thinking' || status === 'player_blundered';
+  const hasActiveGame = status === 'playing' || status === 'engine_thinking' || status === 'player_blundered' || status === 'timed_out';
   const liveFen = hasActiveGame ? fen : INITIAL_FEN;
 
   // The HomeScreen stays mounted while the user plays on GameScreen, so every
@@ -130,7 +131,7 @@ export function HomeScreen() {
             <Text style={[styles.resumeMeta, { color: colors.brand2 }]}>
               {hasActiveGame
                 ? `Level ${level} · ${playerColor === 'w' ? 'White' : 'Black'}`
-                : `Level ${settings.level} · choose color`}
+                : `≈ ${progress.elo} ELO · choose color`}
             </Text>
           </View>
           <View style={[styles.resumeBtn, { backgroundColor: colors.brand }]}>
@@ -143,7 +144,7 @@ export function HomeScreen() {
           <NavRow
             glyph="♟"
             title="New game"
-            meta={`Level ${settings.level} · ≈ ${[600,700,850,1000,1100,1250,1400,1550,1700,1900][settings.level-1]} ELO`}
+            meta={`Coach matches you · Level ${eloToLevel(progress.elo)} · ≈ ${progress.elo} ELO`}
             onPress={() => nav.navigate('ColorPicker')}
           />
           <NavRow
