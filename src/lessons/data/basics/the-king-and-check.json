@@ -1,0 +1,120 @@
+{
+  "id": "the-king-and-check",
+  "title": "The King and Check",
+  "topic": "basics",
+  "level": 1,
+  "subtitle": "One square at a time — and how to answer a check.",
+  "goals": [
+    "Move the king one square in any direction",
+    "Escape check three ways: move, block, capture",
+    "Give a check yourself"
+  ],
+  "estMinutes": 4,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "4k3/8/8/8/4K3/8/8/8 w - - 0 1",
+      "say": "The king — the whole game in one piece. He moves just one square in any direction, and he can never step onto a square an enemy attacks. When the king is attacked, it's called CHECK, and you must deal with it immediately.",
+      "highlights": ["d3", "d4", "d5", "e3", "e5", "f3", "f4", "f5"]
+    },
+    {
+      "kind": "explain",
+      "fen": "4k3/8/8/8/8/8/4K3/7R w - - 0 1",
+      "say": "Watch a check happen — and how the defender must respond.",
+      "autoMoves": [
+        { "san": "Rh8+", "say": "Check! The rook attacks the king along the back rank. Black is not allowed to ignore this." },
+        { "san": "Kd7", "say": "The king steps off the attacked line. Every check must be answered before anything else." }
+      ]
+    },
+    {
+      "kind": "challenge",
+      "fen": "4k2r/8/8/8/R7/8/8/6BK w - - 0 1",
+      "prompt": "You're in check! Your king can't move — block the attack instead.",
+      "hints": [
+        "Three ways out of check: move the king, capture the attacker, or block the line. Here, moving and capturing are impossible.",
+        "Put a piece in the rook's path on the h-file. Two of your pieces can do it."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Rh4", "say": "The rook slides across and shields the king. Block delivered!" }
+          ]
+        },
+        {
+          "line": [
+            { "san": "Bh2", "say": "The bishop tucks in front of the king. A perfect little shield!" }
+          ]
+        }
+      ],
+      "wrongSay": "You're in check — only a move that stops the attack is legal. Put something between the rook and your king.",
+      "successSay": "Move, block, capture — you just used option two. Always check all three."
+    },
+    {
+      "kind": "challenge",
+      "fen": "4k3/8/8/8/8/8/4q3/4K3 w - - 0 1",
+      "prompt": "The queen says check — but she came too close without backup. What now?",
+      "hints": [
+        "Move, block, or capture. Look closely at the checking piece — is anyone protecting her?",
+        "The queen is right next to your king and completely undefended. Take her!"
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Kxe2", "say": "The king captures the queen! A check from an unprotected piece next to your king is just a gift." }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "wrongSay": "Only one legal move exists here — the checking queen has no bodyguard...",
+      "successSay": "Never panic at a check. Sometimes the 'attacker' is the one in danger."
+    },
+    {
+      "kind": "challenge",
+      "fen": "4k3/8/8/8/8/8/8/R5K1 w - - 0 1",
+      "prompt": "Your turn to attack — give the black king a check!",
+      "hints": [
+        "A check is any move that attacks the enemy king. Your rook has two ways to do it.",
+        "Line up with the king: same rank or same file."
+      ],
+      "goal": { "type": "check" },
+      "solutions": [
+        {
+          "line": [
+            { "san": "Ra8+", "say": "Check! The rook owns the back rank and stares straight at the king." }
+          ],
+          "assert": "check"
+        },
+        {
+          "line": [
+            { "san": "Re1+", "say": "Check! The rook takes the e-file — the king's own avenue." }
+          ],
+          "assert": "check"
+        }
+      ],
+      "wrongSay": "No check yet. Move the rook onto the king's rank or file.",
+      "successSay": "Checks force your opponent to react — they're the most forcing moves in chess."
+    },
+    {
+      "kind": "challenge",
+      "fen": "4k3/3p2p1/8/8/2B5/8/8/R5K1 w - - 0 1",
+      "prompt": "Two checks are possible — but one loses a piece. Find the SAFE check!",
+      "hints": [
+        "Before checking, ask: can the king (or anyone) just capture my piece?",
+        "The bishop check lands right next to the king. The rook check attacks from a safe distance."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Ra8+", "say": "Check from across the board — the king can't touch you. That's a quality check." }
+          ],
+          "assert": "check"
+        }
+      ],
+      "rejections": [
+        { "san": "Bf7+", "say": "Check — but Kxf7! The king simply eats your undefended bishop. A check that loses material is usually a bad check." }
+      ],
+      "wrongSay": "Look for a check the king cannot answer by capturing your piece.",
+      "successSay": "Checks are only good when they're safe or achieve something. You just learned that ahead of schedule."
+    }
+  ]
+}

@@ -1,0 +1,117 @@
+{
+  "id": "the-rook",
+  "title": "The Rook",
+  "topic": "basics",
+  "level": 1,
+  "subtitle": "Straight lines, long range — meet your heavy piece.",
+  "goals": [
+    "Move the rook along ranks and files",
+    "Capture with the rook",
+    "Deliver your first rook checkmate"
+  ],
+  "estMinutes": 3,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "4k3/8/8/8/3R4/8/8/4K3 w - - 0 1",
+      "say": "This is the rook. It moves in straight lines — forward, backward, and sideways — as far as it wants, as long as nothing is in the way.",
+      "highlights": ["d8", "d1", "a4", "h4"],
+      "arrows": [
+        { "from": "d4", "to": "d8" },
+        { "from": "d4", "to": "h4" }
+      ]
+    },
+    {
+      "kind": "explain",
+      "fen": "4k3/8/8/8/3R4/8/8/4K3 w - - 0 1",
+      "say": "Watch how much of the board one rook can cover.",
+      "autoMoves": [
+        { "san": "Ra4", "say": "Along the whole rank in a single move..." },
+        { "san": "Kd7" },
+        { "san": "Ra8", "say": "...and straight up the file. On an open board the rook is a monster." }
+      ]
+    },
+    {
+      "kind": "challenge",
+      "fen": "7k/3p4/8/8/3R4/8/8/K7 w - - 0 1",
+      "prompt": "Capture the black pawn with your rook.",
+      "hints": [
+        "The rook moves in straight lines. Is the pawn on the same file as your rook?",
+        "Slide the rook straight up the d-file."
+      ],
+      "highlights": ["d7"],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Rxd7", "say": "Exactly! The pawn was on the rook's file, so it was just one slide away." }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "wrongSay": "The rook only moves in straight lines — look for a rank or file that leads to the pawn.",
+      "successSay": "Nice capture. Rooks punish anything left on their lines."
+    },
+    {
+      "kind": "challenge",
+      "fen": "7k/8/3p2p1/8/3R4/8/6p1/K7 w - - 0 1",
+      "prompt": "Capture all three black pawns — one rook move at a time.",
+      "hints": [
+        "Plan a route: after each capture, which pawn shares a line with your rook?",
+        "Start with the pawn straight up the d-file, then slide across."
+      ],
+      "sequenceGoal": {
+        "type": "capture-all",
+        "count": 3,
+        "say": "Good — keep going, the rook's route continues!"
+      },
+      "hintArrows": [{ "from": "d4", "to": "d6" }],
+      "wrongSay": "That move doesn't capture anything. Find the pawn that sits on your rook's rank or file.",
+      "successSay": "All three! You just made the rook tour the board like a vacuum cleaner."
+    },
+    {
+      "kind": "challenge",
+      "fen": "k7/8/8/p7/1p2R2p/8/8/7K w - - 0 1",
+      "prompt": "Two pawns are on your rook's rank — but only one is safe to take. Capture it!",
+      "hints": [
+        "Before you capture, ask: can anything take my rook back?",
+        "The b4 pawn is guarded by the pawn on a5. The h4 pawn has no friends nearby."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Rxh4", "say": "Correct — the h-pawn was undefended, so the rook grabs it for free." }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "rejections": [
+        { "san": "Rxb4", "say": "The a5 pawn recaptures your rook! Trading a rook for a pawn is a terrible deal. Look for the pawn nobody defends." }
+      ],
+      "wrongSay": "You can capture a pawn this move — pick the one that can't be taken back.",
+      "successSay": "That's the golden rule of captures: free stuff first, guarded stuff never (unless it's worth it)."
+    },
+    {
+      "kind": "challenge",
+      "fen": "4k3/8/4K3/8/8/8/8/7R w - - 0 1",
+      "prompt": "Checkmate in one move!",
+      "hints": [
+        "Your king already stops the black king from stepping forward. Which line can the rook seal off?",
+        "Slide the rook to the back rank — the king will have nowhere left to go."
+      ],
+      "goal": { "type": "checkmate" },
+      "solutions": [
+        {
+          "line": [
+            { "san": "Rh8#", "say": "Checkmate! The rook covers the whole back rank, and your king guards every escape square in front." }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "rejections": [
+        { "san": "Rh7", "say": "Close — but the king simply slips to d8 or f8. Cut off the back rank itself." }
+      ],
+      "wrongSay": "Not mate yet — the king still has an escape square. Which rank does he live on?",
+      "successSay": "Your first rook checkmate — the back-rank pattern will win you countless games."
+    }
+  ]
+}

@@ -201,8 +201,8 @@ function validateChallenge(step, ctx, stepIdx, totalSteps) {
     err(ctx, `challenge needs at least one hint`);
   }
   const hasSolutions = Array.isArray(step.solutions) && step.solutions.length > 0;
-  if (!hasSolutions && !step.goal) {
-    err(ctx, `challenge needs solutions or a goal`);
+  if (!hasSolutions && !step.goal && !step.sequenceGoal) {
+    err(ctx, `challenge needs solutions, a goal, or a sequenceGoal`);
   }
   checkSquares(step.highlights, ctx, 'highlights');
   checkArrows(step.hintArrows, ctx, 'hintArrows');

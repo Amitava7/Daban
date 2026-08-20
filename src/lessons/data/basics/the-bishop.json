@@ -1,0 +1,117 @@
+{
+  "id": "the-bishop",
+  "title": "The Bishop",
+  "topic": "basics",
+  "level": 1,
+  "subtitle": "Diagonals only, and always the same color squares.",
+  "goals": [
+    "Move the bishop along diagonals",
+    "Understand light-squared vs dark-squared bishops",
+    "Capture safely with the bishop"
+  ],
+  "estMinutes": 3,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "4k3/8/8/8/3B4/8/8/4K3 w - - 0 1",
+      "say": "This is the bishop. It moves any number of squares — but only diagonally. Notice something: this bishop starts on a dark square, so it will live on dark squares its whole life.",
+      "highlights": ["a7", "h8", "a1", "g1"],
+      "arrows": [
+        { "from": "d4", "to": "h8" },
+        { "from": "d4", "to": "a7" }
+      ]
+    },
+    {
+      "kind": "explain",
+      "fen": "4k3/8/8/8/3B4/8/8/4K3 w - - 0 1",
+      "say": "Watch the bishop glide — corner to corner, always on its own color.",
+      "autoMoves": [
+        { "san": "Be5", "say": "One step up the diagonal..." },
+        { "san": "Kd7" },
+        { "san": "Bh8", "say": "...and all the way into the corner. Fast, elegant — and forever stuck on dark squares. That's why bishops work best in pairs." }
+      ]
+    },
+    {
+      "kind": "challenge",
+      "fen": "k7/6p1/8/8/3B4/8/8/7K w - - 0 1",
+      "prompt": "Capture the black pawn with your bishop.",
+      "hints": [
+        "Diagonals only! Which diagonal leads from your bishop to the pawn?",
+        "Follow the dark diagonal d4–e5–f6–g7."
+      ],
+      "highlights": ["g7"],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Bxg7", "say": "Perfect — the pawn sat on your bishop's diagonal, three squares away but only one move." }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "wrongSay": "The bishop can't reach that. Trace the diagonal lines leading out of d4.",
+      "successSay": "Well spotted. Long diagonals are bishop highways."
+    },
+    {
+      "kind": "challenge",
+      "fen": "7k/p7/1p6/8/3B4/4p3/8/7K w - - 0 1",
+      "prompt": "Capture all three black pawns — they're all on the bishop's color!",
+      "hints": [
+        "Every pawn here is on a dark square — your bishop can visit them all.",
+        "Zigzag: take one pawn, then look for the next one on a new diagonal."
+      ],
+      "sequenceGoal": {
+        "type": "capture-all",
+        "count": 3,
+        "say": "Got one — now find the diagonal to the next pawn!"
+      },
+      "hintArrows": [{ "from": "d4", "to": "b6" }],
+      "wrongSay": "No capture there. Each pawn shares a diagonal with your bishop — find it.",
+      "successSay": "Swept the board! When targets sit on your bishop's color, no distance is safe."
+    },
+    {
+      "kind": "challenge",
+      "fen": "k7/p7/1p6/4p3/3B4/8/8/7K w - - 0 1",
+      "prompt": "Two pawns are on your diagonals — one is guarded. Capture the safe one!",
+      "hints": [
+        "Check each target: if you land there, can a black pawn take you back?",
+        "The b6 pawn is protected by its neighbor on a7. The e5 pawn is all alone."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Bxe5", "say": "Right — e5 had no defender, so the bishop eats for free." }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "rejections": [
+        { "san": "Bxb6", "say": "axb6! The a7 pawn was guarding its neighbor — you just gave away a bishop for a pawn." }
+      ],
+      "wrongSay": "There's a free pawn on one of your diagonals. Count defenders before you grab.",
+      "successSay": "Free pawn, zero regrets. Always count the defenders first."
+    },
+    {
+      "kind": "challenge",
+      "fen": "k7/8/1K6/4B3/8/8/4B3/8 w - - 0 1",
+      "prompt": "Two bishops, one cornered king. Checkmate in one move!",
+      "hints": [
+        "Your king guards a7 and b7, and the dark bishop already watches b8. Only a8 needs an attacker.",
+        "Which bishop can hit the long light diagonal ending on a8?"
+      ],
+      "goal": { "type": "checkmate" },
+      "solutions": [
+        {
+          "line": [
+            { "san": "Bf3#", "say": "Checkmate! The light bishop fires down the long diagonal to a8, the dark bishop seals b8, and your king covers the rest." }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "rejections": [
+        { "san": "Bc4", "say": "That eyes a6 — but the king isn't even in check. Aim at the corner square a8 itself." }
+      ],
+      "wrongSay": "Not mate — the king still breathes. Find the diagonal that points straight into the a8 corner.",
+      "successSay": "The two-bishop mate — proof that the pair covers both colors and the whole board."
+    }
+  ]
+}
