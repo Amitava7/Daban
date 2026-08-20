@@ -1,0 +1,117 @@
+{
+  "id": "knight-outposts",
+  "title": "Knight Outposts",
+  "topic": "strategy",
+  "level": 5,
+  "subtitle": "Park a knight where no pawn can ever kick it.",
+  "goals": [
+    "Identify true outposts (and fake ones)",
+    "Deny outposts prophylactically",
+    "Trade defenders to own the square"
+  ],
+  "estMinutes": 6,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "5rk1/pp3pbp/3p2p1/8/4P3/2N5/PPP2PPP/5RK1 w - - 0 1",
+      "say": "An OUTPOST is a square in enemy territory that no enemy pawn can ever attack — ideally protected by one of your own pawns. A knight on an outpost is a permanent thorn: it can't be traded cheaply, can't be kicked, and radiates threats forever. Finding outposts is what separates positional players from move-to-move players.",
+      "highlights": ["d5"]
+    },
+    {
+      "kind": "challenge",
+      "fen": "5rk1/pp3pbp/3p2p1/8/4P3/2N5/PPP2PPP/5RK1 w - - 0 1",
+      "prompt": "Black has no c-pawn and no e-pawn. One square in their camp is an eternal home for your knight — find it!",
+      "hints": [
+        "Which square could a black pawn NEVER attack? Check what pawns Black is missing.",
+        "d5: black's c- and e-pawns are gone, and your e4 pawn protects it. Forever."
+      ],
+      "highlights": ["d5"],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Nd5", "say": "The eternal knight! Protected by your pawn, unreachable by any black pawn until the end of time. From d5 it dominates e7, c7, f6, b6 — Black must play the whole game around it." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "Nb5", "say": "a6! and the knight is kicked straight back. b5 can be attacked by a black pawn, so it was never an outpost — just a visit. d5 is the PERMANENT address." }
+      ],
+      "wrongSay": "The outpost is a square Black's pawns can never touch, guarded by yours. Look at the hole where Black's c- and e-pawns used to be.",
+      "successSay": "Missing enemy pawns leave permanent holes. The knight is the piece that moves in."
+    },
+    {
+      "kind": "challenge",
+      "fen": "6k1/ppp1pppp/8/8/4P3/2N5/PP3PPP/6K1 b - - 0 1",
+      "prompt": "Switch sides! White's knight is eyeing the d5 hole. You're Black — deny the outpost before it exists!",
+      "hints": [
+        "An outpost only exists if your pawns can never attack it. Which of your pawns can still cover d5?",
+        "Either the c-pawn or the e-pawn can take control of d5 — one modest step."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "e6", "say": "Denied! Now Nd5 simply loses the knight to exd5. One quiet pawn move and the 'eternal knight' plan dies before it was born. This is called prophylaxis." }
+          ]
+        },
+        {
+          "line": [
+            { "san": "c6", "say": "The square is covered — Nd5 would now be met by cxd5. Grandmasters make these quiet denials constantly; amateurs notice the knight only after it lands." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "h6", "say": "Nd5! The eternal knight arrives while you nudged a wing pawn. One prophylactic move — e6 or c6 — would have denied the square forever." }
+      ],
+      "wrongSay": "White wants Nd5 permanently. Which pawn move takes that square away for good?",
+      "successSay": "Preventing your opponent's dream square is worth as much as finding your own."
+    },
+    {
+      "kind": "challenge",
+      "fen": "r4rk1/pp2bppp/3p1n2/6B1/4P3/2N5/PP3PPP/R4RK1 w - - 0 1",
+      "prompt": "You want the d5 outpost — but Black's f6 knight guards it. Remove the defender, then move in!",
+      "hints": [
+        "Count the fighters for d5: your knight wants in, their knight keeps it out. Eliminate it!",
+        "Your bishop can capture the f6 knight right now — then d5 has no defenders left."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Bxf6", "say": "The d5-defender is executed..." },
+            { "san": "Bxf6" },
+            { "san": "Nd5", "say": "...and the knight takes the throne — attacking the f6 bishop on arrival! A bishop traded for an eternal knight on d5 is a trade masters make happily." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "Nd5", "say": "Nxd5! exd5 — the knights are traded and your 'outpost' is now just a pawn. Fine, but the ETERNAL KNIGHT was the prize: remove the defender first with Bxf6." }
+      ],
+      "wrongSay": "d5 is contested by the f6 knight. What removes that knight from the equation?",
+      "successSay": "Outpost strategy in full: find the square, remove its defenders, occupy forever."
+    },
+    {
+      "kind": "challenge",
+      "fen": "r5k1/1p1q1ppp/8/3N4/4P3/8/5PPP/6K1 w - - 0 1",
+      "prompt": "Your d5 knight has watched long enough. Black's queen and rook stand on its jump squares — feast!",
+      "hints": [
+        "List the knight's jumps from d5 and check each for enemy pieces and defenders.",
+        "b6: attacks BOTH the a8 rook and the d7 queen — and no black pawn covers b6 (the a- and c-pawns are gone!)."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Nb6", "say": "The outpost pays out! Queen and rook forked from a square nothing defends..." },
+            { "san": "Qd6" },
+            { "san": "Nxa8", "say": "The rook is yours. THIS is why eternal knights win games: sooner or later, the fork appears." }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "rejections": [
+        { "san": "Ne7+", "say": "Qxe7! The queen was guarding e7 — your beautiful knight died for a check. The UNDEFENDED fork square was b6." },
+        { "san": "Nf6+", "say": "gxf6 — the pawn simply eats your knight. A sac needs a follow-up; the quiet monster-jump to b6 forked queen and rook for free." }
+      ],
+      "wrongSay": "The knight has a fork available — on the one jump square no black piece or pawn defends.",
+      "successSay": "Outposts are investments; forks are the dividend. Patience, then profit."
+    }
+  ]
+}

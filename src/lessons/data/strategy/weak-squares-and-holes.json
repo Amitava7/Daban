@@ -1,0 +1,113 @@
+{
+  "id": "weak-squares-and-holes",
+  "title": "Weak Squares & Holes",
+  "topic": "strategy",
+  "level": 5,
+  "subtitle": "See the holes in a pawn structure — and occupy them.",
+  "goals": [
+    "Spot color-complex weaknesses",
+    "Invade holes with the right pieces",
+    "Punish careless pawn advances"
+  ],
+  "estMinutes": 6,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "5rk1/pp3p1p/3p2p1/8/8/8/PP3PPP/2B3K1 w - - 0 1",
+      "say": "Every pawn move creates a hole: a square that pawn can never defend again. Black's ...g6 advance left h6 and f6 permanently weak — and with no dark-squared bishop to compensate, those DARK squares around the king are open wounds. Strategy is largely the art of seeing, creating and occupying holes.",
+      "highlights": ["h6", "f6"]
+    },
+    {
+      "kind": "challenge",
+      "fen": "5rk1/pp3p1p/3p2p1/8/8/8/PP3PPP/2B3K1 w - - 0 1",
+      "prompt": "Black's dark squares are defenseless. March your bishop into the hole next to the king!",
+      "hints": [
+        "The g6 pawn can never guard h6 again — and Black's dark-squared bishop left the board long ago.",
+        "Bc1–h6: nothing can ever evict the bishop, and it hits f8 on arrival."
+      ],
+      "highlights": ["h6"],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Bh6", "say": "Into the wound! The bishop attacks the f8 rook, owns the dark squares by the king, and no black pawn or piece can ever challenge it. Holes are homes." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "Bg5", "say": "A pleasant square — but ...f6 kicks the bishop with tempo. h6 is the true hole: NO black pawn can ever touch it, and from there the bishop hits f8 immediately." }
+      ],
+      "wrongSay": "Which dark square beside the king can never be defended by a pawn again? Go there.",
+      "successSay": "When the enemy weakens one color, pieces of that color become monsters."
+    },
+    {
+      "kind": "challenge",
+      "fen": "6k1/3q1p1p/6p1/8/4N3/8/5PPP/6K1 w - - 0 1",
+      "prompt": "The f6 hole is a knight's dream — and it comes with royal benefits. Jump in!",
+      "hints": [
+        "With Black's g-pawn on g6, the f6 square is a permanent hole — and a knight there touches the king's court.",
+        "Nf6+ — check! — and count what else that knight attacks..."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Nf6+", "say": "Into the hole with CHECK — and the knight simultaneously attacks the d7 queen!" },
+            { "san": "Kg7" },
+            { "san": "Nxd7", "say": "The queen falls. The hole on f6 wasn't just a nice square — it was a launchpad aimed at the king and everything near him." }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "rejections": [
+        { "san": "Nd6", "say": "It pokes at defended pawns only. The HOLE was f6 — un-defendable, arriving with check, and forking the queen." }
+      ],
+      "wrongSay": "The hole in front of the king is reachable right now — with check, no less.",
+      "successSay": "Holes near the king are worth more than material — they're where combinations are born."
+    },
+    {
+      "kind": "challenge",
+      "fen": "q4rk1/pp3p1p/6p1/8/4N3/3P4/PB1Q1PPP/6K1 w - - 0 1",
+      "prompt": "Dark squares around Black's king: undefended. Your dark-square army: assembled. Send in the queen!",
+      "hints": [
+        "Your Bb2 already owns the long dark diagonal. The queen wants the hole beside the king.",
+        "Qh6! The threat is Qg7# — supported by the bishop — and ...f6 fails to your knight."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Qh6", "say": "The dark squares collapse at once: Qg7# is threatened (the b2 bishop backs it up), the blocking try ...f6 walks into Nxf6+, and no black piece can reach the dark squares in time. A color-complex execution." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "Nc5", "say": "Retreating from the battle — the dark squares beg for the QUEEN: from h6 the mate on g7 (backed by your bishop) cannot be met." },
+        { "san": "Nf6+", "say": "Tempting — but after ...Kh8 the knight alone can't finish the job. Send the queen into the h6 hole first; the whole dark-square complex falls at once." }
+      ],
+      "wrongSay": "The g7 square is guarded only by the king — and your bishop already stares at it. Which queen move creates unstoppable mate threats?",
+      "successSay": "Weak squares come in COLORS. Own the color, and every square of it belongs to you at once."
+    },
+    {
+      "kind": "challenge",
+      "fen": "3q1rk1/6pp/8/3p1p2/5N2/8/5PPP/6K1 w - - 0 1",
+      "prompt": "Black pushed both center pawns past their duties — see the hole they left behind and exploit it!",
+      "hints": [
+        "The d5 and f5 pawns can never guard e6 again. What lands there — and what does it hit?",
+        "Ne6: an untouchable fork of queen and rook, sitting in the hole Black dug themselves."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Ne6", "say": "The hole becomes a gallows — queen and rook forked from a square no black pawn can ever attack!" },
+            { "san": "Qd6" },
+            { "san": "Nxf8", "say": "The exchange is won, and the knight escapes via the very hole it invaded. Every careless pawn push leaves a square like this behind." }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "rejections": [
+        { "san": "Nxd5", "say": "Qxd5! A pawn grab straight into the queen's mouth. The real prize was the HOLE those advanced pawns left behind them: e6." }
+      ],
+      "wrongSay": "Look at the squares Black's advanced pawns abandoned — one of them forks everything.",
+      "successSay": "Pawns can't move backward: every advance is a promise. Learn to collect on broken promises."
+    }
+  ]
+}
