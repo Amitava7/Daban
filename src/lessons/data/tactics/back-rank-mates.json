@@ -1,0 +1,127 @@
+{
+  "id": "back-rank-mates",
+  "title": "Back-Rank Mates",
+  "topic": "tactics",
+  "level": 4,
+  "subtitle": "A trapped king behind its own pawns is a target.",
+  "goals": [
+    "Deliver basic back-rank mates",
+    "Defend your own back rank (luft!)",
+    "Break through defended back ranks"
+  ],
+  "estMinutes": 6,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "6k1/5ppp/1r6/8/8/8/5PPP/4R1K1 w - - 0 1",
+      "say": "The pawn shield that keeps a castled king safe has one fatal flaw: it also blocks his escape. If the back rank isn't guarded, a single rook or queen check is instant checkmate. This pattern wins — and loses — more games than any other tactic in chess.",
+      "highlights": ["e8", "f7", "g7", "h7"]
+    },
+    {
+      "kind": "challenge",
+      "fen": "6k1/5ppp/1r6/8/8/8/5PPP/4R1K1 w - - 0 1",
+      "prompt": "Black's rook wandered off to grab pawns. Punish the abandoned back rank — mate in one!",
+      "hints": [
+        "The king's own pawns are his prison bars. Who guards the eighth rank? Nobody.",
+        "Send the rook to the back rank — no black piece can reach e8 in time."
+      ],
+      "goal": { "type": "checkmate" },
+      "solutions": [
+        {
+          "line": [
+            { "san": "Re8#", "say": "Checkmate! f7, g7 and h7 — Black's own loyal pawns — sealed every exit. The b6 rook watches helplessly from the wrong rank." }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "rejections": [
+        { "san": "Re6", "say": "Rxe6! You offered your rook on the rank the black rook patrols. The winning rank was the EIGHTH." }
+      ],
+      "wrongSay": "The back rank is undefended and the king can't step forward. One rook move ends it.",
+      "successSay": "When the enemy rook leaves its back rank, that rank becomes your runway."
+    },
+    {
+      "kind": "challenge",
+      "fen": "6k1/p4ppp/8/8/8/8/4QPPP/4R1K1 b - - 0 1",
+      "prompt": "Now defend! You're BLACK, and White's queen-rook battery threatens mate on e8. Give your king AIR!",
+      "hints": [
+        "Qe8 would be mate right now — count your king's escape squares: zero. You need 'luft' (air).",
+        "Move a shield pawn one step so the king gains an escape hatch."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "h6", "say": "Luft! Now Qe8+ is just a check — your king calmly steps to h7. One tiny pawn move defuses the whole battery." }
+          ]
+        },
+        {
+          "line": [
+            { "san": "g6", "say": "Air for the king via g7 — the back-rank mate threat is permanently cancelled." }
+          ]
+        },
+        {
+          "line": [
+            { "san": "h5", "say": "The hatch opens on h7 — mate threat neutralized. (h6 is the more standard nudge, but the air is what matters.)" }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "Kf8", "say": "Qe8+! The king walk doesn't escape the battery — the queen arrives with the rook behind her and the attack crashes through anyway. Make luft with a pawn." },
+        { "san": "a5", "say": "Qe8# — checkmate! The a-pawn is on the wrong side of the board. Luft must come from the pawns in front of your KING." }
+      ],
+      "wrongSay": "White threatens Qe8#. Only a move that gives your king an escape square (or guards e8) saves you.",
+      "successSay": "One pawn step — h6 or g6 — inoculates you against the most common checkmate in chess. Cheap insurance!"
+    },
+    {
+      "kind": "challenge",
+      "fen": "2r3k1/p4ppp/8/8/8/4R3/5PPP/4R1K1 w - - 0 1",
+      "prompt": "Black's c8 rook guards the back rank — but you have TWO attackers on the e-file. Crash through!",
+      "hints": [
+        "Count the e8 square: you attack it twice, Black defends it once. The math says invade.",
+        "Play Re8+ — when the guard captures, your second rook recaptures... on the back rank."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Re8+", "say": "Invasion! The guard must capture..." },
+            { "san": "Rxe8" },
+            { "san": "Rxe8#", "say": "...and the SECOND rook delivers mate. Two attackers versus one defender — the back rank never stood a chance." }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "rejections": [
+        { "san": "Rc3", "say": "It challenges the guard sideways — but Black just holds with Rd8 or trades on his terms. You outnumber Black on the E-FILE two to one: cash it in with Re8+!" }
+      ],
+      "wrongSay": "e8 is attacked twice and defended once. Force the trade ON the back rank.",
+      "successSay": "Defended back ranks fall to arithmetic: more attackers than defenders, then sacrifice first, mate second."
+    },
+    {
+      "kind": "challenge",
+      "fen": "4r1k1/p4ppp/8/8/3Q4/8/5PPP/6K1 w - - 0 1",
+      "prompt": "Danger! Look at YOUR back rank — Black's rook is ready to invade. Find the move that keeps you winning.",
+      "hints": [
+        "Before attacking, always scan your own back rank: Re1+ would be lethal — your queen can't cover e1 forever.",
+        "One little pawn move makes your king safe for the rest of the game."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "h3", "say": "Air! Re1+ is now met by Kh2, shrugging. With the back rank immune, your extra queen wins effortlessly." }
+          ]
+        },
+        {
+          "line": [
+            { "san": "g3", "say": "The king gets his escape hatch on g2 — Black's only trick is gone, and your queen cleans up." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "Qxa7", "say": "Re1+!! and after the forced block Qd1 (the only stopper), Rxd1 is CHECKMATE. You grabbed a pawn while your own back rank was on fire. Luft first — greed later." },
+        { "san": "Qd1", "say": "It guards e1, but chains your queen to sentry duty forever. One pawn nudge (h3) solves the problem permanently and frees the queen to attack." }
+      ],
+      "wrongSay": "Your own back rank is the weakness here. Permanent safety costs one pawn move.",
+      "successSay": "The final back-rank skill: seeing the threat against YOURSELF. Check your own eighth rank every single move."
+    }
+  ]
+}

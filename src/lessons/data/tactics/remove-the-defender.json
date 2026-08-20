@@ -1,0 +1,117 @@
+{
+  "id": "remove-the-defender",
+  "title": "Remove the Defender",
+  "topic": "tactics",
+  "level": 4,
+  "subtitle": "Capture or chase away the guard, then take the prize.",
+  "goals": [
+    "Capture defenders before taking targets",
+    "Exploit pinned and overloaded defenders",
+    "Combine deflection with the back rank"
+  ],
+  "estMinutes": 6,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "3r2k1/1p3ppp/2n5/1B6/8/8/5PPP/3R2K1 w - - 0 1",
+      "say": "When a target is guarded, don't give up — interrogate the guard. Can you capture it? Chase it? Overload it? Pin it? Remove the defender and the 'protected' piece is suddenly hanging. Every guard is a weakness wearing a uniform.",
+      "highlights": ["c6", "d8"]
+    },
+    {
+      "kind": "challenge",
+      "fen": "3r2k1/1p3ppp/2n5/1B6/8/8/5PPP/3R2K1 w - - 0 1",
+      "prompt": "You'd love Rxd8 — but the knight guards it. Deal with the guard FIRST!",
+      "hints": [
+        "Rxd8 right now gets answered by Nxd8. So what if the knight disappeared first?",
+        "Your bishop can capture the defender — then the rook robs the house."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Bxc6", "say": "Guard eliminated!" },
+            { "san": "bxc6" },
+            { "san": "Rxd8+", "say": "And the rook falls with check — for FREE this time. Bishop for knight and rook: a clean profit." }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "rejections": [
+        { "san": "Rxd8+", "say": "Nxd8! The knight was on guard duty and did its job. Remove the defender FIRST — Bxc6 — then take." }
+      ],
+      "wrongSay": "The d8 rook has exactly one defender. What removes it?",
+      "successSay": "Guard first, treasure second — the order is the whole tactic."
+    },
+    {
+      "kind": "challenge",
+      "fen": "3q2k1/5ppp/5n2/3b2B1/8/8/5PPP/3R2K1 w - - 0 1",
+      "prompt": "The f6 knight guards the d5 bishop — but the knight is PINNED. Prove its defense is fake!",
+      "hints": [
+        "Your Bg5 pins the f6 knight against the queen. A pinned defender is no defender.",
+        "Take the d5 bishop. If the knight dares recapture, what happens to the queen?"
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Rxd5", "say": "Taking the 'defended' bishop — because the defense is an illusion!" },
+            { "san": "Nxd5" },
+            { "san": "Bxd8", "say": "The knight abandoned its pin duty and the queen fell instantly. Pinned pieces guard nothing." }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "rejections": [
+        { "san": "Bxf6", "say": "gxf6 — you gave up the pin AND your bishop pair just to remove a guard that was already fake. Rxd5 wins the piece outright: the pinned knight never truly defended it." }
+      ],
+      "wrongSay": "Recount d5's defenders — does a knight pinned to its queen really count?",
+      "successSay": "Pins turn defenders into spectators. Always re-audit the guards when a pin appears."
+    },
+    {
+      "kind": "challenge",
+      "fen": "4r1k1/3q1ppp/8/1n6/8/1Q6/5PPP/4R1K1 w - - 0 1",
+      "prompt": "Black's queen guards BOTH the e8 rook and the b5 knight. She can't do two jobs — overload her!",
+      "hints": [
+        "Count the queen's duties: e8 needs her, b5 needs her. Force her to choose.",
+        "Capture one of her charges — when she recaptures, the other one is abandoned."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Rxe8+", "say": "The queen must recapture — it's check!" },
+            { "san": "Qxe8" },
+            { "san": "Qxb5", "say": "And the knight she abandoned is free. One defender, two jobs — the classic overload." }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "rejections": [
+        { "san": "Qxb5", "say": "Qxb5! You took the knight while it was still defended — the queen did her job and you lost a queen for a knight. Overload her with the CHECK first: Rxe8+." }
+      ],
+      "wrongSay": "The queen is stretched between two duties. Which capture forces her to pick one?",
+      "successSay": "Overloaded defenders are everywhere — count DUTIES, not just defenders."
+    },
+    {
+      "kind": "challenge",
+      "fen": "3qr1k1/5ppp/8/8/8/8/4QPPP/4R1K1 w - - 0 1",
+      "prompt": "The e8 rook is the ONLY guard of Black's back rank. Deflect it — with the most forcing sacrifice on the board!",
+      "hints": [
+        "If the e8 rook vanishes, your rook mates on e8. What forces it to vanish?",
+        "Give your QUEEN on e8. The recapture is forced — and then the back rank belongs to your rook."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Qxe8+", "say": "Queen sacrifice! The rook must be recaptured by the queen — it's the only legal reply..." },
+            { "san": "Qxe8" },
+            { "san": "Rxe8#", "say": "CHECKMATE. The defender was deflected, the back rank collapsed, and the queen sac cost you nothing at all. This exact combination decides thousands of real games." }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "rejections": [
+        { "san": "Qa6", "say": "A slow threat Black can meet. You have a forced mate in two: remove the back-rank guard by force — Qxe8+!!" }
+      ],
+      "wrongSay": "Black's whole position hangs on one rook. The most forcing move in chess is a capture with check...",
+      "successSay": "Deflection + back rank: the queen sacrifice that every tactician dreams of playing. Now it's in your arsenal."
+    }
+  ]
+}

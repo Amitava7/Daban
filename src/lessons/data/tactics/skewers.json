@@ -1,0 +1,116 @@
+{
+  "id": "skewers",
+  "title": "Skewers",
+  "topic": "tactics",
+  "level": 4,
+  "subtitle": "A pin in reverse: the big piece must step aside.",
+  "goals": [
+    "Skewer kings and queens with checks",
+    "Win the piece hiding behind",
+    "Pin queens to kings and collect"
+  ],
+  "estMinutes": 5,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "4q3/6pp/8/4k3/8/8/5PP1/R5K1 w - - 0 1",
+      "say": "A skewer is a pin turned inside out: the MORE valuable piece stands in front and gets attacked first. It must move — exposing the piece behind it. King in front, queen behind, rook attacking: the cruelest geometry in chess.",
+      "highlights": ["e5", "e8"]
+    },
+    {
+      "kind": "challenge",
+      "fen": "4q3/6pp/8/4k3/8/8/5PP1/R5K1 w - - 0 1",
+      "prompt": "King and queen share the e-file. Skewer them!",
+      "hints": [
+        "Attack the king along the line he shares with his queen — he MUST step off it.",
+        "Rook to e1: check, king moves, and then..."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Re1+", "say": "Check! The king is forced off the file..." },
+            { "san": "Kd4" },
+            { "san": "Rxe8", "say": "...and the queen behind him falls. That's the skewer: the king was a shield that had to move." }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "wrongSay": "Attack along the shared line — the king steps aside and unwraps the prize.",
+      "successSay": "Check-skewers are forced sequences: your opponent gets no say at all."
+    },
+    {
+      "kind": "challenge",
+      "fen": "r7/p7/2k5/8/8/8/4BPPP/6K1 w - - 0 1",
+      "prompt": "Bishops skewer along diagonals. King in front, rook behind — collect!",
+      "hints": [
+        "Find the diagonal that passes through the king AND continues to the rook in the corner.",
+        "Bishop to f3: check along c6... and a8 lies on the very same line."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Bf3+", "say": "Check on the long diagonal — and look what's at the far end of it..." },
+            { "san": "Kb6" },
+            { "san": "Bxa8", "say": "The rook never had a chance. Long diagonals are skewer highways." }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "wrongSay": "The king and the corner rook share one long diagonal — get your bishop onto it with check.",
+      "successSay": "Rooks love ranks and files; bishops own the diagonals. Skewers live on both."
+    },
+    {
+      "kind": "challenge",
+      "fen": "3r2k1/5ppp/3q4/8/8/8/5PPP/R4RK1 w - - 0 1",
+      "prompt": "Queen in front, rook behind on the d-file. Skewer the queen — safely!",
+      "hints": [
+        "Attack the queen along the file she shares with her rook. But make sure she can't just capture your attacker!",
+        "Either rook can go to d1 — the other one backs it up."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Rad1", "say": "The queen is attacked and has no good square on the file..." },
+            { "san": "Qc5" },
+            { "san": "Rxd8+", "say": "She fled, so the rook behind her is yours — with check! Note: your second rook made d1 safe; Qxd1 would have lost her too." }
+          ],
+          "assert": "capture"
+        },
+        {
+          "line": [
+            { "san": "Rfd1", "say": "Skewered! The queen is hit first and must abandon her rook..." },
+            { "san": "Qc5" },
+            { "san": "Rxd8+", "say": "The rook falls with check. The a1 rook guarded d1 the whole time, so the queen could never fight back." }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "wrongSay": "Get a rook onto the d-file — the queen must move and the d8 rook is caught behind her.",
+      "successSay": "Skewers against non-royal pieces need SAFE attackers — always check who covers your landing square."
+    },
+    {
+      "kind": "challenge",
+      "fen": "8/5ppk/8/8/4q3/N7/5PPP/3B2K1 w - - 0 1",
+      "prompt": "The queen stands on her king's diagonal. Pin her there — and win her!",
+      "hints": [
+        "Queen and king share the b1–h7 diagonal. A piece attacking along it freezes her: leaving the line would expose the king.",
+        "Bishop to c2 — and note your knight quietly guards that square, so Qxc2 fails too."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Bc2", "say": "The queen is pinned to her king — she can only shuffle along the diagonal or take on c2, where your knight waits!" },
+            { "san": "Qg6" },
+            { "san": "Bxg6+", "say": "Nowhere to hide on a closed line — bishop takes queen. A full queen for a bishop." }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "rejections": [
+        { "san": "Bf3", "say": "It attacks the queen — but from off the king's diagonal, so she simply steps away. Attack her along the line she CANNOT leave." }
+      ],
+      "wrongSay": "Find the line the queen is forbidden to leave — then attack her on it.",
+      "successSay": "Skewer, pin — same geometry, same lesson: pieces lined up with their king are hostages."
+    }
+  ]
+}
