@@ -1,0 +1,108 @@
+{
+  "id": "mate-with-two-rooks",
+  "title": "Mate with Two Rooks",
+  "topic": "fundamentals",
+  "level": 2,
+  "subtitle": "The ladder mate — walk the king to the edge.",
+  "goals": [
+    "Cut the king off with one rook",
+    "Alternate checks like climbing a ladder",
+    "Keep the rooks safe from the king"
+  ],
+  "estMinutes": 5,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "8/8/8/4k3/8/8/8/RR4K1 w - - 0 1",
+      "say": "Two rooks checkmate a lone king without any help from your own king. The method is called the LADDER: one rook fences the king in, the other gives check, pushing him back rank by rank until he runs out of board.",
+      "arrows": [
+        { "from": "a1", "to": "a5" },
+        { "from": "b1", "to": "b6" }
+      ]
+    },
+    {
+      "kind": "explain",
+      "fen": "8/8/8/4k3/8/8/8/RR4K1 w - - 0 1",
+      "say": "Watch the ladder climb.",
+      "autoMoves": [
+        { "san": "Ra5+", "say": "Check! The king must leave the fifth rank — and can never return: the rook holds it." },
+        { "san": "Kd6" },
+        { "san": "Rb6+", "say": "The second rung. See the pattern? The rooks take turns." },
+        { "san": "Kc7", "say": "Uh oh — the king attacks our rook..." },
+        { "san": "Rg6", "say": "...so it simply slides across. Same rank, same fence, but far out of the king's reach. The ladder continues." }
+      ]
+    },
+    {
+      "kind": "challenge",
+      "fen": "8/8/8/4k3/R7/8/8/1R4K1 w - - 0 1",
+      "prompt": "One rook already fences rank 4. Start the ladder — check the king off rank 5!",
+      "hints": [
+        "The a4 rook is the fence — it must stay. Which rook is free to give check?",
+        "Bring the b1 rook up to the fifth rank."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Rb5+", "say": "Check! The king retreats — and the b5 rook becomes the new fence while the a4 rook prepares the next rung." }
+          ],
+          "assert": "check"
+        }
+      ],
+      "rejections": [
+        { "san": "Ra5+", "say": "Wrong rook! Your fence just left rank 4 — the king can walk right back down through it. Keep the fence, check with the OTHER rook." }
+      ],
+      "wrongSay": "One rook holds the fence on rank 4; the other must deliver the check on rank 5.",
+      "successSay": "Fence and hammer — each rook takes a turn at each job."
+    },
+    {
+      "kind": "challenge",
+      "fen": "8/2k5/1R6/R7/8/8/8/6K1 w - - 0 1",
+      "prompt": "The king attacks your b6 rook! Save it — without breaking the fence.",
+      "hints": [
+        "The rook must stay ON the sixth rank to keep the fence — but get out of the king's reach.",
+        "Slide it all the way across the board. Distance is safety."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Rh6", "say": "All the way across — the fence holds, and the king can never catch a rook working from the far side." }
+          ]
+        },
+        {
+          "line": [
+            { "san": "Rg6", "say": "Far out of reach — the fence holds and the ladder is ready to continue." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "Rd6", "say": "Kxd6! You stayed on the right rank but within the king's reach. Slide FAR — the rook works the same from h6." },
+        { "san": "Rb1", "say": "The rook is safe... but you abandoned the sixth rank. The fence is broken and the king strolls forward. Keep rooks on their rank, far away." }
+      ],
+      "wrongSay": "Stay on the sixth rank — just as far from the king as possible.",
+      "successSay": "That sidestep is the only 'trick' in this whole mate. The rest is pure ladder."
+    },
+    {
+      "kind": "challenge",
+      "fen": "2k5/R7/7R/8/8/8/8/6K1 w - - 0 1",
+      "prompt": "The king is on his last rank. Finish the ladder — checkmate in one!",
+      "hints": [
+        "The a7 rook already seals rank 7 — the king can't step down.",
+        "Deliver the final check on the eighth rank, from a safe distance."
+      ],
+      "goal": { "type": "checkmate" },
+      "solutions": [
+        {
+          "line": [
+            { "san": "Rh8#", "say": "Checkmate! The final rung: check on the eighth, fence on the seventh, and the king is out of board. The full ladder, mastered." }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "rejections": [
+        { "san": "Ra8+", "say": "Check — but your fence left rank 7 and the king escapes to d7! In the ladder, the fence NEVER moves until the other rook has checked." }
+      ],
+      "wrongSay": "Fence on seven stays; the h6 rook strikes on eight — from far away so the king can't touch it.",
+      "successSay": "Two rooks, zero help from your king. You can now finish any game where you're two rooks up!"
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "id": "stalemate-and-draw-traps",
+  "title": "Stalemate & Draw Traps",
+  "topic": "fundamentals",
+  "level": 2,
+  "subtitle": "Don't let a won game slip into a draw.",
+  "goals": [
+    "Recognize stalemate before it happens",
+    "Know the dead-draw material combinations",
+    "Convert winning positions safely"
+  ],
+  "estMinutes": 5,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "7k/5K2/8/8/8/8/Q7/8 w - - 0 1",
+      "say": "The cruelest moment in chess: you're up a whole queen, you make one careless move... and the game is a DRAW. Stalemate means the opponent has no legal move but is not in check. Let's make sure it never happens to you.",
+      "highlights": ["h8", "h7", "g7", "g8"]
+    },
+    {
+      "kind": "explain",
+      "fen": "7k/5K2/8/8/8/8/Q7/8 w - - 0 1",
+      "say": "Watch a full queen advantage evaporate in one move.",
+      "autoMoves": [
+        { "san": "Qb1", "say": "Looks harmless... but count Black's moves: g8 and g7 are covered by the king, and now the queen's diagonal covers h7. No moves, no check — STALEMATE. Draw. Half a point thrown away." }
+      ]
+    },
+    {
+      "kind": "challenge",
+      "fen": "7k/5K2/8/8/8/8/Q7/8 w - - 0 1",
+      "prompt": "Same position — your move. One queen move mates, others draw on the spot. Find the mate!",
+      "hints": [
+        "The king's only breathing square is h7. Mate must attack h8 AND cover h7 — or come from the h-file itself.",
+        "Slide the queen to the h-file: check from the front, escape squares already covered by your king."
+      ],
+      "goal": { "type": "checkmate" },
+      "solutions": [
+        {
+          "line": [
+            { "san": "Qh2#", "say": "Checkmate! The h-file check covers h7 too, and your king seals g7 and g8. One line, total control." }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "rejections": [
+        { "san": "Qb1", "say": "STALEMATE — the diagonal quietly seals h7, Black has nothing legal, draw. The difference between +9 and +0.5 was one square." },
+        { "san": "Qa1+", "say": "Check on the long diagonal — but the king ducks to h7 and the game goes on. The h-FILE was the killer, not the diagonal." }
+      ],
+      "wrongSay": "Careful — every non-checking move that seals h7 is a draw. Find the check that covers everything.",
+      "successSay": "Now you see stalemate BEFORE it happens. That half-point stays yours."
+    },
+    {
+      "kind": "intro",
+      "fen": "8/8/4k3/8/3BK3/8/8/8 w - - 0 1",
+      "say": "Draw trap number two: DEAD MATERIAL. Some armies simply cannot checkmate, ever: king alone, king + one bishop, king + one knight. If you're losing, trading into these is salvation; if you're winning, avoid giving your last pawns away!",
+      "highlights": ["d4"]
+    },
+    {
+      "kind": "challenge",
+      "fen": "7k/6p1/6K1/5Q2/8/8/8/8 w - - 0 1",
+      "prompt": "Black is down to a king and one stuck pawn. Mate in one — but one natural move is instant stalemate!",
+      "hints": [
+        "Count Black's legal moves: the king has none, and the g7 pawn is blocked by your king. Zero moves means any quiet move from you is stalemate — you MUST give check.",
+        "Give check on the back rank — the f-file is open all the way to f8."
+      ],
+      "goal": { "type": "checkmate" },
+      "solutions": [
+        {
+          "line": [
+            { "san": "Qf8#", "say": "Checkmate! Check on the eighth, g8 covered by the queen, h7 covered by your king — and the g7 pawn can only watch." }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "rejections": [
+        { "san": "Qf7", "say": "STALEMATE! The king can't move, and the poor g7 pawn is frozen by your own king. Black had exactly zero moves — you had to give check. Always count the opponent's LAST legal moves in the endgame." }
+      ],
+      "wrongSay": "Black's king AND pawn are both frozen — any non-check that keeps it that way is a draw. Check!",
+      "successSay": "The frozen-pawn stalemate is the most common accidental draw in beginner endgames. You're immune now."
+    }
+  ]
+}

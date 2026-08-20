@@ -1,0 +1,122 @@
+{
+  "id": "defend-your-pieces",
+  "title": "Defend Your Pieces",
+  "topic": "fundamentals",
+  "level": 2,
+  "subtitle": "A piece under attack: defend it, move it, or block.",
+  "goals": [
+    "React correctly when a piece is attacked",
+    "Know when defending fails (pawn attacks!)",
+    "Escape attacks WITH a threat of your own"
+  ],
+  "estMinutes": 4,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "3r2k1/6p1/1b5p/5p2/4N2p/8/3P1PP1/6K1 w - - 0 1",
+      "say": "Your pieces will get attacked constantly — that's chess. Each time, you have options: move it, defend it, block the attack, capture the attacker, or counter-attack something bigger. The skill is choosing the RIGHT one.",
+      "highlights": ["e4", "f5"]
+    },
+    {
+      "kind": "challenge",
+      "fen": "3r2k1/6p1/1b5p/5p2/4N2p/8/3P1PP1/6K1 w - - 0 1",
+      "prompt": "The f5 pawn attacks your knight — and almost every escape square is covered. Find the ONE safe square!",
+      "hints": [
+        "Check each knight jump: the rook watches the d-file, the bishop covers c5, and Black's pawns cover g3, g5 and f6.",
+        "Only one landing square has no black piece eyeing it — look toward your own side."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Nc3", "say": "The only safe square! Every other jump landed on a square Black controls. Checking ALL the escape squares is the habit." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "Nd6", "say": "Rxd6 — the rook owns that file. Check who's watching a square before you land there." },
+        { "san": "Ng5", "say": "hxg5! The little h6 pawn was covering g5 all along." },
+        { "san": "Nc5", "say": "Bxc5 — the b6 bishop had that diagonal covered." },
+        { "san": "d3", "say": "You defended the knight with a pawn — but it doesn't help: fxe4, dxe4 and Black traded a 1-point pawn for your 3-point knight. When a PAWN attacks a piece, defending is useless — you must move it." }
+      ],
+      "wrongSay": "That square is covered, or leaves the knight to be captured. Scan every escape square for black attackers.",
+      "successSay": "One safe square out of eight — and you found it. That's real board vision."
+    },
+    {
+      "kind": "challenge",
+      "fen": "6k1/5pp1/6n1/4P3/8/8/3P1PPP/6K1 w - - 0 1",
+      "prompt": "The knight on g6 attacks your e5 pawn. Pawns can't run far — defend it!",
+      "hints": [
+        "A pawn is best defended by another pawn — cheap labor guarding cheap labor.",
+        "Two of your pawns can step up to protect e5."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "d4", "say": "Solid! Now if Nxe5, dxe5 recaptures — the knight won't trade itself for a defended pawn." }
+          ]
+        },
+        {
+          "line": [
+            { "san": "f4", "say": "Good! The f-pawn guards its neighbor. Nxe5 would now just lose the knight for a pawn." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "e6", "say": "fxe6! You pushed the pawn straight into the f7 pawn's capture zone. Running forward isn't always running to safety." }
+      ],
+      "wrongSay": "The e5 pawn needs a bodyguard — which pawns can step up beside it?",
+      "successSay": "Pawns defending pawns costs you nothing — the ideal defense."
+    },
+    {
+      "kind": "challenge",
+      "fen": "1r4k1/6pp/2n5/8/3Q4/8/5PPP/6K1 w - - 0 1",
+      "prompt": "The knight attacks your queen! Retreat is required — but find a retreat WITH check.",
+      "hints": [
+        "The queen must move — but a move that also checks the king costs Black a whole turn.",
+        "Two squares give check along the diagonal to g8. Both are out of the knight's reach."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Qd5+", "say": "Saved with tempo! The queen escapes AND checks — Black must answer the check instead of continuing their plan." }
+          ],
+          "assert": "check"
+        },
+        {
+          "line": [
+            { "san": "Qc4+", "say": "Escape plus check — Black's attack gained nothing, because they now owe you a move." }
+          ],
+          "assert": "check"
+        }
+      ],
+      "rejections": [
+        { "san": "Qd8+", "say": "Rxd8! That check landed on a square the b8 rook defends. A check is only free if the square is safe." }
+      ],
+      "wrongSay": "Safe isn't enough — the best escape squares come with a check attached.",
+      "successSay": "Escaping with tempo — you turned a defensive moment into an attacking one."
+    },
+    {
+      "kind": "challenge",
+      "fen": "r5k1/5ppp/p7/1p6/2B5/8/5PPP/6K1 w - - 0 1",
+      "prompt": "The b5 pawn attacks your bishop. Don't just survive — find the escape square that fights back!",
+      "hints": [
+        "List the bishop's safe squares, then ask which one creates a threat of its own.",
+        "One diagonal square aims straight at the undefended rook in the corner."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Bd5", "say": "The fighting retreat! The bishop is safe AND attacks the a8 rook — now BLACK is the one scrambling to react." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "Bxb5", "say": "axb5 — the a6 pawn was guarding its partner. Count defenders even when you're the one being chased." },
+        { "san": "Bb3", "say": "Safe... and completely passive. One square was safe AND created a threat — attack while you defend!" },
+        { "san": "Be2", "say": "Safe, but it asks nothing of Black. The best retreat squares make threats of their own." }
+      ],
+      "wrongSay": "Retreat, yes — but pick the square that turns defense into attack.",
+      "successSay": "Every forced move is a chance to improve your position. Even retreats can bite."
+    }
+  ]
+}

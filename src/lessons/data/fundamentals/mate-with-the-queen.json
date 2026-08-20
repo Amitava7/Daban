@@ -1,0 +1,114 @@
+{
+  "id": "mate-with-the-queen",
+  "title": "Mate with the Queen",
+  "topic": "fundamentals",
+  "level": 2,
+  "subtitle": "Box in the king, bring your own, deliver mate.",
+  "goals": [
+    "Build the queen's box a knight's-move away",
+    "Shrink the box without stalemate",
+    "Finish with king + queen teamwork"
+  ],
+  "estMinutes": 6,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "8/8/8/4k3/Q7/8/8/4K3 w - - 0 1",
+      "say": "Queen versus lone king is the mate you'll deliver most often — but the queen can't do it alone, and one careless move gives stalemate. The method: the queen boxes the king in from a knight's-move away, your king walks over, and together they finish.",
+      "highlights": ["c4"]
+    },
+    {
+      "kind": "explain",
+      "fen": "8/8/8/4k3/Q7/8/8/4K3 w - - 0 1",
+      "say": "The magic trick: keep the queen a KNIGHT'S move away from their king.",
+      "autoMoves": [
+        { "san": "Qc4", "say": "A knight's-move from the king. From here the queen fences him in — he can never cross her lines." },
+        { "san": "Kd6" },
+        { "san": "Qb5", "say": "The king stepped back — the queen follows, knight's-move away again. Every move, the box shrinks. No checks needed yet!" }
+      ]
+    },
+    {
+      "kind": "challenge",
+      "fen": "8/2k5/8/1Q6/8/8/8/4K3 w - - 0 1",
+      "prompt": "The king retreated to c7. Shrink the box — place the queen a knight's move away again.",
+      "hints": [
+        "From c7, a knight would reach a6, b5, d5, e6... your queen wants one of those squares.",
+        "Two queen moves keep the pattern: one on the a-file, one in the center."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Qa6", "say": "Knight's-move away — the king is squeezed toward the corner and the queen is untouchable." }
+          ]
+        },
+        {
+          "line": [
+            { "san": "Qd5", "say": "Knight's-move away — the box tightens and the king drifts to the edge." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "Qb6+", "say": "Kxb6! You parked the queen right next to the king with no support. The knight's-move distance exists precisely so this can never happen." },
+        { "san": "Qc6+", "say": "Kxc6! Adjacent to the enemy king with no defender — the queen is just food there. Keep the knight's-move distance." }
+      ],
+      "wrongSay": "Picture a knight standing on the black king's square — your queen belongs on one of ITS squares.",
+      "successSay": "That spacing does everything: boxes the king, stays safe, and never risks stalemate."
+    },
+    {
+      "kind": "challenge",
+      "fen": "k7/8/8/1Q6/8/8/8/3K4 w - - 0 1",
+      "prompt": "The king is cornered — the box is perfect. The queen's work is done: bring your KING into the fight!",
+      "hints": [
+        "The queen alone can never mate — she needs her king beside her. And careful: sealing the last square without check is stalemate!",
+        "Leave the queen exactly where she is. March your king toward the corner."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Kc2", "say": "The king marches! The queen holds the cage; the king brings the handcuffs." }
+          ]
+        },
+        {
+          "line": [
+            { "san": "Kd2", "say": "Onward! A few more steps and the king joins the mating net." }
+          ]
+        },
+        {
+          "line": [
+            { "san": "Ke2", "say": "The king starts his walk — the queen holds the fort until he arrives." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "Qb6", "say": "STALEMATE!! The queen now covers a7 as well — the king has NO move and is NOT in check. A completely won game, instantly drawn. Always leave the boxed king one free square until mate." },
+        { "san": "Qb7+", "say": "Kxb7! Right next to the king, undefended, again. The queen keeps her distance until your own king protects her." }
+      ],
+      "wrongSay": "The box is already perfect — improving it risks stalemate. This is a KING move.",
+      "successSay": "Queen boxes, king walks. Remember the rhythm — and remember what Qb6 would have done!"
+    },
+    {
+      "kind": "challenge",
+      "fen": "k7/2K5/8/8/7Q/8/8/8 w - - 0 1",
+      "prompt": "Your king has arrived. Checkmate in one — and beware the stalemate trap!",
+      "hints": [
+        "Your king covers b7 and b8. The queen must attack a8 AND a7 in the same move.",
+        "One line on the board covers both of those squares — the a-file."
+      ],
+      "goal": { "type": "checkmate" },
+      "solutions": [
+        {
+          "line": [
+            { "san": "Qa4#", "say": "Checkmate! The queen owns the whole a-file — a8 checked, a7 sealed — while your king guards b7 and b8. Textbook teamwork." }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "rejections": [
+        { "san": "Qd4", "say": "STALEMATE! You sealed a7 without giving check — no moves, no check, draw. The winning move covers a7 and CHECKS a8 at the same time." },
+        { "san": "Qh8+", "say": "Check — but only along the back rank. The king slips out to a7. You need one move that covers the corner AND its neighbor." }
+      ],
+      "wrongSay": "Find the line that hits a8 and a7 together — check and cage in one.",
+      "successSay": "King-and-queen mate complete. This exact finish will close out hundreds of your games."
+    }
+  ]
+}
