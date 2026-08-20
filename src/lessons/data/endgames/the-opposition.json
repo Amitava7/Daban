@@ -1,0 +1,114 @@
+{
+  "id": "the-opposition",
+  "title": "The Opposition",
+  "topic": "endgames",
+  "level": 5,
+  "subtitle": "The king duel that decides pawn endings.",
+  "goals": [
+    "Take and keep the opposition",
+    "Defend drawn endings precisely",
+    "Steal the opposition with a pawn tempo"
+  ],
+  "estMinutes": 6,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "8/8/3k4/8/3K4/8/8/8 w - - 0 1",
+      "say": "When two kings face each other with one square between them, neither may step forward — so whoever must move first has to give way. Having your opponent on move in that stand-off is called HAVING THE OPPOSITION, and it decides most king-and-pawn endings. It's the closest thing chess has to a staring contest.",
+      "highlights": ["d4", "d5", "d6"]
+    },
+    {
+      "kind": "challenge",
+      "fen": "8/8/3k4/8/8/3K4/8/8 w - - 0 1",
+      "prompt": "Step up and TAKE the opposition!",
+      "hints": [
+        "Move so the kings face each other with exactly one square between — with BLACK to move.",
+        "Straight forward: after Kd4, Black faces you and must be the one to blink."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Kd4", "say": "Face to face, one square apart, Black to move — YOU have the opposition. Whatever Black does now, he steps aside and your king advances past him." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "Kc4", "say": "A sidestep — no confrontation, no gain. The opposition is taken by facing the enemy king directly with HIM to move: Kd4." }
+      ],
+      "wrongSay": "Put your king directly in front of Black's, one square away, so that Black must move first.",
+      "successSay": "The staring contest is won by arriving second. Position first, then let them blink."
+    },
+    {
+      "kind": "challenge",
+      "fen": "8/3k4/8/4K3/4P3/8/8/8 b - - 0 1",
+      "prompt": "You're BLACK, defending a pawn down. Exactly one move draws — the defensive opposition!",
+      "hints": [
+        "White's king is one square ahead of its pawn — that wins ONLY if White gets the opposition. Deny it!",
+        "Face the white king directly: king to e7, and White can never make progress."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Ke7", "say": "The only move! Kings face off with WHITE to move — you have the opposition. Now you mirror every step: Kd5, Kd7! Kf5, Kf7! The pawn can advance but the king can never clear its path. Draw." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "Ke8", "say": "One square too shy! White plays Ke6! seizing the opposition, and outflanks: your king gets pushed off the queening path square by square. Only DIRECT opposition — Ke7 — holds the draw." },
+        { "san": "Kd8", "say": "Kd6! White grabs the opposition and shoulders through — the pawn walks home behind the king. Face him head-on with Ke7." }
+      ],
+      "wrongSay": "Meet the white king face to face, one square apart, with White to move. There's exactly one square that does it.",
+      "successSay": "Down a pawn, dead drawn — because you knew one word: opposition. This defense saves countless half-points."
+    },
+    {
+      "kind": "challenge",
+      "fen": "8/4k3/8/4K3/8/4P3/8/8 w - - 0 1",
+      "prompt": "The kings are locked and it's YOUR move — Black has the opposition. Steal it back with the endgame's oldest trick!",
+      "hints": [
+        "If your king moves, Black mirrors forever. You need to pass the turn... and kings can't pass. Who can?",
+        "The pawn! A quiet pawn step changes nothing on the board except WHOSE TURN it is."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "e4", "say": "The spare tempo! Same king stand-off — but now BLACK must move..." },
+            { "san": "Kd7" },
+            { "san": "Kf6", "say": "...and you outflank immediately. The pawn 'wasted' a move so your king wouldn't have to. Tempo is a currency: the side with a spare pawn move is rich." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "Kd5", "say": "Kd7! — mirrored. Kf5, Kf7! — mirrored again. The king dance never ends because Black holds the opposition. Only a PAWN move can pass the turn back to Black." },
+        { "san": "Kf5", "say": "Kf7! Black keeps the mirror going forever. You must lose a move to win the game — and only the pawn can lose one for you." }
+      ],
+      "wrongSay": "Any king move gets mirrored. Find the move that keeps the position but flips the turn.",
+      "successSay": "Losing a move to win the game — the deepest little paradox in chess, and now it's yours."
+    },
+    {
+      "kind": "challenge",
+      "fen": "8/8/3k4/1K6/P7/8/8/8 b - - 0 1",
+      "prompt": "You're BLACK against the dreaded ROOK pawn. There's a fortress that saves you — run to it!",
+      "hints": [
+        "Rook pawns are the great exception: the defender draws if his king reaches the corner — no opposition needed!",
+        "Head straight for c8, b8, a8. In the corner, White's only ways to make progress are stalemate. That's a draw."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Kc7", "say": "Straight to the corner! Once your king touches c8–b8–a8, nothing evicts it: every White try ends in stalemate. Rook pawns can't outflank — there's no other side of the board to use." }
+          ]
+        },
+        {
+          "line": [
+            { "san": "Kd7", "say": "On the road to c8 and the corner fortress — where the a-pawn's dreams go to die. Against rook pawns, the corner is an automatic draw." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "Kd5", "say": "Chasing the pawn from behind loses the race: Kb6! and White's king seizes the front, shepherding the pawn home. Run to the CORNER — the one fortress that never falls." }
+      ],
+      "wrongSay": "Against a rook pawn, forget fancy opposition — just get your king to the queening corner.",
+      "successSay": "The rook-pawn corner fortress: the exception that saves 'hopeless' endings. Check for it before you ever resign a pawn ending!"
+    }
+  ]
+}
