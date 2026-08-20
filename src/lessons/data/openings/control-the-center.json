@@ -1,0 +1,136 @@
+{
+  "id": "control-the-center",
+  "title": "Control the Center",
+  "topic": "openings",
+  "level": 3,
+  "subtitle": "Why e4, d4, e5 and d5 decide the opening.",
+  "goals": [
+    "Occupy the center with pawns",
+    "Fight back for the center as Black",
+    "Recapture toward the center"
+  ],
+  "estMinutes": 5,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+      "say": "The four central squares — e4, d4, e5, d5 — are the high ground of chess. Pieces placed there control the most squares, and armies that own the center can switch attacks from wing to wing. Every good opening begins with a fight for these four squares.",
+      "highlights": ["e4", "d4", "e5", "d5"]
+    },
+    {
+      "kind": "explain",
+      "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+      "say": "Watch the central battle begin.",
+      "autoMoves": [
+        { "san": "e4", "say": "White grabs a central square and opens lines for the queen and bishop." },
+        { "san": "e5", "say": "Black answers symmetrically — refusing to concede the middle." },
+        { "san": "d4", "say": "White strikes again, fighting for BOTH central squares..." },
+        { "san": "exd4", "say": "...and Black must react. The center is never given away for free." }
+      ]
+    },
+    {
+      "kind": "challenge",
+      "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+      "prompt": "Make the strongest kind of first move: stake a pawn claim in the center!",
+      "hints": [
+        "Which pawn moves place a pawn ON a central square?",
+        "The king's pawn or the queen's pawn, two squares forward."
+      ],
+      "highlights": ["e4", "d4"],
+      "solutions": [
+        {
+          "line": [
+            { "san": "e4", "say": "The most popular first move in history — center control plus open lines for queen and bishop." }
+          ]
+        },
+        {
+          "line": [
+            { "san": "d4", "say": "The other main move — a center pawn that's already protected by your queen." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "h4", "say": "The rook pawn fights for h5 and g5 — nowhere near the center. First moves should stake a central claim." },
+        { "san": "Nf3", "say": "A perfectly good developing move — but this challenge asks for a PAWN claim in the center. Pawns are how you occupy squares." }
+      ],
+      "wrongSay": "Put a pawn onto one of the four central squares.",
+      "successSay": "Either central pawn advance is a fine start to a lifetime of good openings."
+    },
+    {
+      "kind": "challenge",
+      "fen": "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1",
+      "prompt": "White took e4. You're Black — claim YOUR share of the center!",
+      "hints": [
+        "Don't let White build a second center pawn unopposed.",
+        "Mirror with the e-pawn, challenge with the d-pawn, or fight for d4 with the c-pawn."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "e5", "say": "Classical and strong — Black plants a pawn in the center and blocks White's e-pawn." }
+          ]
+        },
+        {
+          "line": [
+            { "san": "d5", "say": "The counter-strike! You challenge White's center pawn immediately — the Scandinavian spirit." }
+          ]
+        },
+        {
+          "line": [
+            { "san": "c5", "say": "The Sicilian — you fight for the d4 square from the side. The most popular reply at every level." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "h6", "say": "A wasted move — it controls nothing central and develops nothing. White will happily take the whole center with d4 next." }
+      ],
+      "wrongSay": "Answer in the center — with the e-, d- or c-pawn.",
+      "successSay": "Whoever you play, the center must be contested — never surrendered."
+    },
+    {
+      "kind": "challenge",
+      "fen": "r1bqkbnr/pppp1ppp/2n5/8/3pP3/5N2/PPP2PPP/RNBQKB1R w KQkq - 0 4",
+      "prompt": "Black captured on d4. Recapture — but with the right piece!",
+      "hints": [
+        "Two of your pieces can take the d4 pawn. Which recapture is SAFE?",
+        "Before recapturing with the queen, look at what the c6 knight attacks."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Nxd4", "say": "Correct — the knight recaptures and sits proudly in the center. The queen would have been kicked... or worse." }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "rejections": [
+        { "san": "Qxd4", "say": "Nxd4!! The c6 knight was waiting — your queen falls for a mere knight. ALWAYS check what defends a square before the queen steps on it." },
+        { "san": "c3", "say": "A real gambit idea — but it gives away a pawn for speed. For now, simply recapture: the knight does it with a gain in central presence." }
+      ],
+      "wrongSay": "The d4 pawn should be recaptured — by the piece that can't be punished.",
+      "successSay": "Recaptures are moves too — always pick the one that improves your position."
+    },
+    {
+      "kind": "challenge",
+      "fen": "rnbqkbnr/ppp1pppp/8/3p4/3P4/8/PPP1PPPP/RNBQKBNR w KQkq - 0 2",
+      "prompt": "Black has planted a pawn on d5. Attack it from the side — the most popular second move at master level!",
+      "hints": [
+        "You can't win d5 by force — but you can pressure it with a neighboring pawn.",
+        "The c-pawn is White's classic lever against a d5 pawn."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "c4", "say": "The Queen's Gambit! You offer a wing pawn to lure Black's center pawn away — a 'gambit' Black can never safely keep. Center beats wing." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "e4", "say": "dxe4 — Black simply takes, and regaining that pawn demands deep gambit preparation. Pressure d5 with the c-pawn instead: same idea, no risk." },
+        { "san": "Nc3", "say": "It attacks d5 — but it also blocks your c2 pawn, your best lever against Black's center. Pawn lever first, knight after." }
+      ],
+      "wrongSay": "Attack the d5 pawn with a pawn — from the side, not head-on.",
+      "successSay": "Levers — side-on pawn strikes — are how centers are broken. You just played the most famous one."
+    }
+  ]
+}

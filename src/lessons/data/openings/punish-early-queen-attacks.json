@@ -1,0 +1,110 @@
+{
+  "id": "punish-early-queen-attacks",
+  "title": "Punish Early Queen Attacks",
+  "topic": "openings",
+  "level": 3,
+  "subtitle": "Defend against Scholar's Mate and gain time doing it.",
+  "goals": [
+    "Neutralize the four-move mate",
+    "Defend while developing",
+    "Turn defense into counterattack"
+  ],
+  "estMinutes": 6,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "rnbqkbnr/pppp1ppp/8/4p2Q/4P3/8/PPPP1PPP/RNB1KBNR b KQkq - 1 2",
+      "say": "Every beginner meets this: 2.Qh5!?, hunting the four-move checkmate on f7. Don't panic — early queen sorties are BAD chess, and today you'll learn to prove it: defend calmly, develop with every move, and watch the queen become a target.",
+      "highlights": ["h5", "f7", "e5"]
+    },
+    {
+      "kind": "challenge",
+      "fen": "rnbqkbnr/pppp1ppp/8/4p2Q/4P3/8/PPPP1PPP/RNB1KBNR b KQkq - 1 2",
+      "prompt": "The queen eyes both e5 and f7. Defend the REAL threat — and develop while you do it.",
+      "hints": [
+        "f7 is still guarded by your king — the immediate threat is Qxe5+, snacking your center pawn with check.",
+        "One knight move defends e5 and develops toward the center."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Nc6", "say": "Calm and strong — e5 is defended, a piece is developed, and White's queen has achieved nothing. Defense with development is the whole recipe." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "g6", "say": "Qxe5+! Check — and the queen forks your h8 rook through the hole you just opened. The e5 pawn was the real threat, not f7." },
+        { "san": "Nf6", "say": "Qxe5+ wins the pawn with check. The knight attacked the queen but forgot the job: e5 needed a defender first." }
+      ],
+      "wrongSay": "Ask what the queen actually threatens THIS move — then defend it while developing.",
+      "successSay": "Rule one against early queens: no panic, just development that defends."
+    },
+    {
+      "kind": "challenge",
+      "fen": "r1bqkbnr/pppp1ppp/2n5/4p2Q/2B1P3/8/PPPP1PPP/RNB1K1NR b KQkq - 3 3",
+      "prompt": "Now the bishop joins the queen against f7 — checkmate is threatened! Find the ONE move that stops everything.",
+      "hints": [
+        "Queen and bishop both aim at f7: Qxf7 would be MATE. You must break the queen's path to f7.",
+        "One pawn move blocks the h5–f7 diagonal AND attacks the queen. Two jobs, one move."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "g6", "say": "Exactly! The pawn slams the diagonal shut AND kicks the queen — she must retreat and White has already lost time. Defense has never felt so aggressive." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "Nf6", "say": "Qxf7# — the four-move checkmate! The knight blocked nothing on the h5–f7 diagonal. Against a mate threat, only moves that stop the mate count." },
+        { "san": "Nd4", "say": "Qxf7# — checkmate! Yes, your knight attacked the queen, but mate outranks every threat in chess. Parry first." },
+        { "san": "d6", "say": "Qxf7# — still mate! The queen covers d7 and e7 along the seventh rank, so opening d7 saved nothing. Block the diagonal with g6." }
+      ],
+      "wrongSay": "Checkmate on f7 is threatened — only a move that blocks the h5–f7 diagonal (with tempo!) saves the day.",
+      "successSay": "One modest pawn move refuted the most famous trap in chess. Remember g6 forever."
+    },
+    {
+      "kind": "challenge",
+      "fen": "r1bqkbnr/pppp1p1p/2n3p1/4p3/2B1P3/5Q2/PPPP1PPP/RNB1K1NR b KQkq - 1 4",
+      "prompt": "The queen re-aims at f7 down the f-file. Shut the attack down for good — with development!",
+      "hints": [
+        "Qf3 + Bc4 hit f7 again. This time the attack line is the f-FILE — put a piece in the way.",
+        "Your g8 knight's natural developing square happens to block the file perfectly."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Nf6", "say": "The f-file is blocked, the knight is developed, and White's 'attack' is officially over — three queen moves for nothing while you built an army. This is why early queen raids fail." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "Nd4", "say": "Qxf7# — checkmate again! The knight attacked the queen from a proud square, but the f-file stayed open. The mate threat ALWAYS comes first." },
+        { "san": "d5", "say": "exd5 — White captures, the bishop's diagonal reopens with the threat renewed, and you're a pawn down. Block the f-file with the knight instead." }
+      ],
+      "wrongSay": "The mate threat runs down the f-file now. Which developing move physically blocks it?",
+      "successSay": "Three threats parried, three pieces developed. Count the tempo: you're winning the opening race 3–0."
+    },
+    {
+      "kind": "challenge",
+      "fen": "r1bqkb1r/pppp1p1p/2n2np1/4p3/2B1P3/1Q6/PPPP1PPP/RNB1K1NR b KQkq - 3 5",
+      "prompt": "The stubborn queen swings to b3, plotting Bxf7+ once more. Time to punish her — attack the queen with a threat she can't ignore!",
+      "hints": [
+        "Chasing the queen is only great when your chasing move ALSO does something. Look for a knight jump with a nasty follow-up.",
+        "From d4 the knight hits the queen AND eyes c2 — the fork square of king and rook."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Nd4", "say": "Brutal! The queen is attacked and Nxc2+ — royal-forking king and rook — hangs over White's head. The 'attacker' now scrambles to survive. That's the full punishment for early queen raids." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "Na5", "say": "It hits the queen, but from the rim with no follow-up — she steps aside and shrugs. Nd4 attacks her AND threatens the c2 fork: chase with purpose." },
+        { "san": "Nxe4", "say": "Bxf7+! The bishop is untouchable — the queen guards it straight through the now-empty diagonal — and your king is dragged into the open. The pawn grab walked into White's one real threat." }
+      ],
+      "wrongSay": "Attack the queen — with the knight move that carries a threat of its own.",
+      "successSay": "Defended, developed, and now attacking: the complete anti-queen-raid masterclass. White's opening is in ruins."
+    }
+  ]
+}

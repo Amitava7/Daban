@@ -1,0 +1,110 @@
+{
+  "id": "castle-to-safety",
+  "title": "Castle to Safety",
+  "topic": "openings",
+  "level": 3,
+  "subtitle": "Tuck the king away before the fight begins.",
+  "goals": [
+    "Castle early on either wing",
+    "Recognize when one side is unsafe",
+    "Choose king safety over pawn grabs"
+  ],
+  "estMinutes": 5,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "r1bqk2r/pppp1ppp/2n2n2/2b1p3/2B1P3/3P1N2/PPP2PPP/RNBQK2R w KQkq - 1 5",
+      "say": "Learn to castle to safety. A king in the center is a target on an open board — one tactic away from disaster. Castling solves two problems at once: the king gets a pawn shield, and a rook wakes up.",
+      "highlights": ["g1", "e1"]
+    },
+    {
+      "kind": "challenge",
+      "fen": "r1bqk2r/pppp1ppp/2n2n2/2b1p3/2B1P3/3P1N2/PPP2PPP/RNBQK2R w KQkq - 1 5",
+      "prompt": "Your kingside pieces are developed and the path is clear. Castle!",
+      "hints": [
+        "King two squares toward the h1 rook — both pieces move in one turn.",
+        "Tap the king, then the g1 square."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "O-O", "say": "Safe! The king hides behind f2, g2, h2, and the rook eyes the center files. Now the real fight can begin on your terms." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "Nxe5", "say": "Nxe5! The c6 knight recaptures and you've traded a developed knight for one pawn — with your king still in the middle. Safety first, snacks later." },
+        { "san": "Ng5", "say": "A one-piece attack with an uncastled king — Black defends f7 easily and your knight gets pushed around. Castle first, attack second." }
+      ],
+      "wrongSay": "Everything is ready — this is the moment to castle kingside.",
+      "successSay": "Develop, castle, THEN attack — the professional move order."
+    },
+    {
+      "kind": "challenge",
+      "fen": "r1bqk2r/pppp1ppp/2n2n2/2b1p3/2B1P3/3P1N2/PPP2PPP/RNBQ1RK1 b kq - 2 5",
+      "prompt": "White has castled — don't fall behind. You're Black: castle too!",
+      "hints": [
+        "Your kingside is clear: bishop and knight are both developed.",
+        "King to g8, rook to f8 — one move."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "O-O", "say": "Level again — both kings are safe, both h-rooks awake. Castling isn't just for White!" }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "Nxe4", "say": "dxe4! The e4 pawn was guarded by d3 — you lost a whole knight grabbing it, with your king still in the center. Castle first; count pawns later." },
+        { "san": "Rf8", "say": "That rook shuffle throws away your castling rights forever — the one move that did the same job better WAS castling." }
+      ],
+      "wrongSay": "Match White's king safety — castle kingside now.",
+      "successSay": "When both sides castle early, the game is decided by skill — not by cheap central ambushes."
+    },
+    {
+      "kind": "challenge",
+      "fen": "r1bqk2r/ppp2ppp/2np1n2/2b1p3/4P3/2NP4/PPPQ2PP/R3K2R w KQkq - 0 1",
+      "prompt": "You want to castle — but look closely at g1. Kingside is poisoned! Castle the OTHER way.",
+      "hints": [
+        "The c5 bishop stares straight through the open f2 hole at g1 — the king may not castle INTO check.",
+        "Your queenside is clear: b1, c1, d1 are all empty. Go long!"
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "O-O-O", "say": "Castled long! The king ducks to c1 — away from that laser bishop — and your rook lands on the d-file instantly. When one wing is compromised, use the other." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "Kf1", "say": "The king shuffles sideways, loses castling forever, and buries the h1 rook. Queenside castling was legal and solved everything in one move." },
+        { "san": "Ke2", "say": "Into the center?! The king blocks his own pieces and stands in the crossfire. Castle long — b1, c1 and d1 are clear." }
+      ],
+      "wrongSay": "Kingside castling is illegal here — the c5 bishop covers g1. But the queenside is wide open...",
+      "successSay": "Two castling options means a flexible king. Always check BOTH wings."
+    },
+    {
+      "kind": "challenge",
+      "fen": "r1bqk2r/pppp1ppp/2n2n2/2b1p3/2B1P3/2N2N2/PPPP1PPP/R1BQK2R w KQkq - 6 5",
+      "prompt": "A pawn seems free, an attack looks tempting — but what does the position really demand?",
+      "hints": [
+        "Ask the three opening questions: Are my pieces out? Is my king safe? THEN can I attack?",
+        "Minor pieces developed: check. King safety: not yet. That's your answer."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "O-O", "say": "The disciplined move. The e5 'free' pawn was defended, the knight raid premature — castling completes your setup and threatens nothing less than a perfect game." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "Nxe5", "say": "Nxe5! It was never free — the c6 knight guards it. You gave a knight for a pawn because the king rush blurred your counting." },
+        { "san": "Ng5", "say": "The knight attacks f7 — but Black castles or plays d5 and your 'attack' evaporates, leaving a misplaced knight. One-piece attacks fail against decent defense." },
+        { "san": "a3", "say": "A do-nothing move while your king stands in the center. If you can't find a developing move, castling is almost always right." }
+      ],
+      "wrongSay": "Pieces developed, king in the center — the position is begging for one particular move.",
+      "successSay": "Develop, castle, connect the rooks. Master that rhythm and you're never worse out of the opening."
+    }
+  ]
+}
