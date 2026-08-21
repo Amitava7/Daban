@@ -1,6 +1,7 @@
 import React, { useMemo, useRef, useState } from 'react';
 import { View, Text, Pressable, StyleSheet, LayoutChangeEvent } from 'react-native';
 import Animated, { LinearTransition } from 'react-native-reanimated';
+import Svg, { Line, Polygon } from 'react-native-svg';
 import { useTheme } from '../context/ThemeContext';
 import { ChessPiece } from './ChessPiece';
 import { dlog } from '../utils/debugLog';
@@ -22,6 +23,12 @@ export interface Highlight {
   kind: 'good' | 'bad' | 'warn' | 'brand' | 'selected' | 'legal' | 'lastmove';
 }
 
+/** Coaching arrow drawn over the board (lesson hints). */
+export interface BoardArrow {
+  from: string;
+  to: string;
+}
+
 interface BoardProps {
   pieces?: Record<string, PieceData> | PieceData[];
   highlights?: Highlight[];
@@ -33,6 +40,7 @@ interface BoardProps {
   legalMoves?: string[];
   lastMove?: { from: string; to: string } | null;
   animate?: boolean;
+  arrows?: BoardArrow[];
 }
 
 function normalizePieces(pieces: BoardProps['pieces']): PieceData[] {
@@ -47,6 +55,12 @@ function sqToCoord(sq: string, flipped: boolean): { col: number; row: number } {
   const col = flipped ? 7 - file : file;
   const row = flipped ? rank - 1 : 8 - rank;
   return { col, row };
+}
+
+function squareCenter(sq: string, flipped: boolean, squareSize: number): { x: number; y: number } | null {
+  if (!/^[a-h][1-8]$/.test(sq)) return null;
+  const { col, row } = sqToCoord(sq, flipped);
+  return { x: (col + 0.5) * squareSize, y: (row + 0.5) * squareSize };
 }
 
 interface AnimatedPieceProps {
@@ -120,6 +134,7 @@ export function Board({
   legalMoves = [],
   lastMove,
   animate = false,
+  arrows = [],
 }: BoardProps) {
   const { colors } = useTheme();
   const [measuredSize, setMeasuredSize] = useState<number>(size ?? 0);
@@ -300,6 +315,64 @@ export function Board({
               );
             })
           ))}
+
+          {/* Coaching arrows (lesson hints). Drawn above the squares but below
+              the pieces, so a piece never disappears behind an arrow. */}
+          {arrows.length > 0 && (
+            <Svg
+              pointerEvents="none"
+              width={boardSize}
+              height={boardSize}
+              style={StyleSheet.absoluteFill}
+            >
+              {arrows.map((a, i) => {
+                const start = squareCenter(a.from, flipped, squareSize);
+                const end = squareCenter(a.to, flipped, squareSize);
+                if (!start || !end) return null;
+
+                const dx = end.x - start.x;
+                const dy = end.y - start.y;
+                const len = Math.hypot(dx, dy) || 1;
+                const ux = dx / len;
+                const uy = dy / len;
+
+                const head = squareSize * 0.34;
+                const inset = squareSize * 0.22;      // stop short of the square's edge
+                const tipX = end.x - ux * inset;
+                const tipY = end.y - uy * inset;
+                const baseX = tipX - ux * head;
+                const baseY = tipY - uy * head;
+                // Perpendicular unit vector for the arrowhead's wings.
+                const px = -uy;
+                const py = ux;
+                const halfWidth = head * 0.5;
+
+                return (
+                  <React.Fragment key={`${a.from}${a.to}${i}`}>
+                    <Line
+                      x1={start.x + ux * inset * 0.5}
+                      y1={start.y + uy * inset * 0.5}
+                      x2={baseX}
+                      y2={baseY}
+                      stroke={colors.brand}
+                      strokeWidth={squareSize * 0.15}
+                      strokeLinecap="round"
+                      opacity={0.85}
+                    />
+                    <Polygon
+                      points={[
+                        `${tipX},${tipY}`,
+                        `${baseX + px * halfWidth},${baseY + py * halfWidth}`,
+                        `${baseX - px * halfWidth},${baseY - py * halfWidth}`,
+                      ].join(' ')}
+                      fill={colors.brand}
+                      opacity={0.85}
+                    />
+                  </React.Fragment>
+                );
+              })}
+            </Svg>
+          )}
 
           {/* Pieces overlay (absolute, animated). Rendered after squares so they appear on top.
               They are pointerEvents='none' so taps fall through to squares. */}

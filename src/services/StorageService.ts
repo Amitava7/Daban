@@ -6,6 +6,7 @@ const KEYS = {
   SAVED_GAME: 'daban_saved_game',
   OPENING_MASTERY: 'daban_opening_mastery',
   ENDGAME_PROGRESS: 'daban_endgame_progress',
+  LESSON_PROGRESS: 'daban_lesson_progress',
 };
 
 export interface Settings {
@@ -43,6 +44,18 @@ export interface SavedGame {
 
 export type OpeningMastery = Record<string, { played: number; correct: number }>;
 export type EndgameCompleted = Record<string, boolean>;
+
+export interface LessonRecord {
+  completed: boolean;
+  /** Best run: percentage of challenges solved first try, without leaning on hints. */
+  bestScorePct: number;
+  stars: 0 | 1 | 2 | 3;
+  /** Furthest step reached, so an interrupted lesson can resume. */
+  lastStepIndex: number;
+  completedAt?: string;
+}
+
+export type LessonProgress = Record<string, LessonRecord>;
 
 const DEFAULT_SETTINGS: Settings = {
   level: 4,
@@ -88,6 +101,9 @@ export const Storage = {
 
   getEndgameProgress: () => get<EndgameCompleted>(KEYS.ENDGAME_PROGRESS, {}),
   saveEndgameProgress: (p: EndgameCompleted) => set(KEYS.ENDGAME_PROGRESS, p),
+
+  getLessonProgress: () => get<LessonProgress>(KEYS.LESSON_PROGRESS, {}),
+  saveLessonProgress: (p: LessonProgress) => set(KEYS.LESSON_PROGRESS, p),
 };
 
 // Standard Elo calculation

@@ -8,6 +8,9 @@ export type RootStackParamList = {
   Review: undefined;
   Openings: undefined;
   OpeningDrill: { openingId: string };
+  Lessons: undefined;
+  LessonTopic: { topicId: string };
+  LessonPlayer: { lessonId: string };
   Endgames: undefined;
   EndgamePuzzle: { puzzleId: string };
   Progress: undefined;

@@ -556,6 +556,17 @@ export function isPromotion(fen: string, from: string, to: string): boolean {
   }
 }
 
+/** What sits on a square right now — used to decide if the user may pick it up. */
+export function pieceAt(fen: string, sq: string): { type: string; color: 'w' | 'b' } | null {
+  try {
+    const chess = new Chess(fen);
+    const piece = chess.get(sq as never) as { type: string; color: 'w' | 'b' } | undefined;
+    return piece ? { type: piece.type, color: piece.color } : null;
+  } catch {
+    return null;
+  }
+}
+
 export function sideToMoveLabel(state: LessonRunState): string {
   return state.userColor === 'w' ? 'White to Move' : 'Black to Move';
 }
