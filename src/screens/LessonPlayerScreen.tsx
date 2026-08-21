@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useReducer, useRef, useState } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, StyleSheet, useWindowDimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -78,6 +78,7 @@ function LessonRunner({
   lessonId, lesson, title, onExit, onGoToLesson, completeLesson, recordLessonStep,
 }: RunnerProps) {
   const { colors } = useTheme();
+  const { width, height } = useWindowDimensions();
   const [state, dispatch] = useReducer(lessonReducer, lesson, initLesson);
   const [selected, setSelected] = useState<string | null>(null);
   const [pendingPromotion, setPendingPromotion] = useState<{ from: string; to: string } | null>(null);
@@ -140,6 +141,10 @@ function LessonRunner({
     setPendingPromotion(null);
   };
 
+  // Leave the coach panel at least ~45% of the screen so the board is never
+  // clipped by it on tall phones.
+  const boardSize = Math.min(width, Math.max(240, height * 0.45));
+
   const hintsLeft = challenge ? challenge.hints.length - state.hintsUsed : 0;
   const canHint = !!challenge
     && (state.phase === 'awaiting-move' || state.phase === 'feedback-bad')
@@ -151,8 +156,9 @@ function LessonRunner({
 
   return (
     <SafeAreaView style={[styles.safe, { backgroundColor: colors.bg2 }]} edges={['top', 'bottom']}>
-      <View style={styles.boardWrap}>
+      <View style={[styles.boardWrap, { height: boardSize }]}>
         <Board
+          size={boardSize}
           pieces={pieces}
           highlights={state.highlights}
           arrows={state.arrows}
@@ -191,6 +197,7 @@ function LessonRunner({
           />
         ) : (
           <ScrollView
+            style={styles.coachArea}
             contentContainerStyle={styles.coachScroll}
             showsVerticalScrollIndicator={false}
           >
@@ -234,24 +241,33 @@ function LessonRunner({
               </View>
             </View>
 
-            {challenge && (
-              <View style={styles.progressBlock}>
-                <View style={styles.progressLabelRow}>
-                  <Text style={[styles.progressLabel, { color: colors.ink }]}>
-                    Challenge {state.challengeIndex}/{state.challengeTotal}
-                  </Text>
-                  {state.hintsUsed > 0 && (
-                    <Text style={[styles.hintMeta, { color: colors.inkMute }]}>
-                      {state.hintsUsed} hint{state.hintsUsed > 1 ? 's' : ''} used
-                    </Text>
-                  )}
-                </View>
-                <View style={[styles.track, { backgroundColor: colors.surface3 }]}>
-                  <View style={[styles.fill, { width: `${progress * 100}%`, backgroundColor: colors.good }]} />
-                </View>
+            {step && step.kind === 'intro' && state.stepIndex === 0 && (
+              <View style={[styles.goals, { borderColor: colors.borderSoft }]}>
+                <Text style={[styles.goalsLabel, { color: colors.inkMute }]}>In this lesson</Text>
+                {lesson.goals.map(goal => (
+                  <Text key={goal} style={[styles.goalItem, { color: colors.ink2 }]}>· {goal}</Text>
+                ))}
               </View>
             )}
           </ScrollView>
+        )}
+
+        {challenge && state.phase !== 'lesson-complete' && (
+          <View style={styles.progressBlock}>
+            <View style={styles.progressLabelRow}>
+              <Text style={[styles.progressLabel, { color: colors.ink }]}>
+                Challenge {state.challengeIndex}/{state.challengeTotal}
+              </Text>
+              {state.hintsUsed > 0 && (
+                <Text style={[styles.hintMeta, { color: colors.inkMute }]}>
+                  {state.hintsUsed} hint{state.hintsUsed > 1 ? 's' : ''} used
+                </Text>
+              )}
+            </View>
+            <View style={[styles.track, { backgroundColor: colors.surface3 }]}>
+              <View style={[styles.fill, { width: `${progress * 100}%`, backgroundColor: colors.good }]} />
+            </View>
+          </View>
         )}
 
         {pendingPromotion && (
@@ -363,23 +379,28 @@ function ScoreCard({ state, lessonId, onReplay, onExit, onGoToLesson }: ScoreCar
 
 const styles = StyleSheet.create({
   safe: { flex: 1 },
-  boardWrap: { width: '100%' },
+  boardWrap: { width: '100%', alignItems: 'center', justifyContent: 'center' },
   panel: {
     flex: 1,
     borderTopWidth: 1,
     borderTopLeftRadius: 18,
     borderTopRightRadius: 18,
-    marginTop: -8,
+    marginTop: 8,
     paddingHorizontal: 14,
     paddingTop: 6,
     paddingBottom: 10,
+    gap: 10,
   },
   panelHead: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   headBtn: { width: 32, height: 32, alignItems: 'center', justifyContent: 'center' },
   headBtnText: { fontSize: 20 },
   panelTitle: { flex: 1, textAlign: 'center', fontSize: 15, fontWeight: '600' },
 
-  coachScroll: { paddingVertical: 10, gap: 12 },
+  coachArea: { flex: 1 },
+  coachScroll: { flexGrow: 1, justifyContent: 'center', paddingVertical: 10, gap: 12 },
+  goals: { borderTopWidth: 1, paddingTop: 10, gap: 4 },
+  goalsLabel: { fontSize: 11, fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: 1 },
+  goalItem: { fontSize: 13, lineHeight: 18 },
   coachRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 10 },
   avatar: {
     width: 44, height: 44, borderRadius: 999, borderWidth: 1,
