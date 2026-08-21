@@ -7,7 +7,8 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
-    "validate:lessons": "node scripts/validate-lessons.js"
+    "validate:lessons": "node scripts/validate-lessons.js",
+    "test:engine": "node scripts/test-lesson-engine.js"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^2.1.2",
@@ -29,6 +30,8 @@
   "private": true,
   "devDependencies": {
     "@react-native/metro-config": "^0.85.3",
-    "babel-preset-expo": "^55.0.21"
+    "@types/react": "~19.1.0",
+    "babel-preset-expo": "^55.0.21",
+    "typescript": "^5.9.3"
   }
 }
