@@ -12,7 +12,7 @@ const DATA_DIR = path.join(__dirname, '..', 'src', 'lessons', 'data');
 const CONFIG_SRC = fs.readFileSync(path.join(__dirname, '..', 'src', 'lessons', 'config.ts'), 'utf8');
 const INDEX_SRC = fs.readFileSync(path.join(__dirname, '..', 'src', 'lessons', 'index.ts'), 'utf8');
 
-const TOPICS = ['basics', 'fundamentals', 'openings', 'tactics', 'strategy', 'endgames'];
+const TOPICS = ['basics', 'fundamentals', 'openings', 'tactics', 'strategy', 'endgames', 'mating-patterns', 'combinations', 'opening-traps', 'masterpieces'];
 const ASSERTS = ['checkmate', 'check', 'capture', 'promotion', 'stalemate', 'draw'];
 
 let errors = [];

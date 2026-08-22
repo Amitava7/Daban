@@ -8,7 +8,11 @@ export type TopicId =
   | 'openings'
   | 'tactics'
   | 'strategy'
-  | 'endgames';
+  | 'endgames'
+  | 'mating-patterns'
+  | 'combinations'
+  | 'opening-traps'
+  | 'masterpieces';
 
 export interface Arrow {
   from: string; // square, e.g. "g1"

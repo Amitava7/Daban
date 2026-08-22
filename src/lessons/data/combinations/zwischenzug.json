@@ -1,0 +1,75 @@
+{
+  "id": "zwischenzug",
+  "title": "The Zwischenzug",
+  "topic": "combinations",
+  "level": 4,
+  "subtitle": "The in-between move: recaptures can wait, threats cannot.",
+  "goals": [
+    "Break the recapture reflex",
+    "Insert a bigger threat mid-exchange",
+    "Count sequences, not single trades"
+  ],
+  "estMinutes": 6,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "r2q2k1/pp3ppp/8/6B1/8/2b5/PP3PPP/R2Q2K1 w - - 0 1",
+      "say": "Zwischenzug — German for 'in-between move' — is the art of NOT recapturing. Your opponent takes a piece and waits for the automatic recapture... but recaptures aren't forced. If you have a check or a bigger capture available, play it FIRST and recapture later. This one habit — pausing before every recapture — wins more material at club level than any tactic.",
+      "highlights": ["c3", "g5", "d8"]
+    },
+    {
+      "kind": "challenge",
+      "fen": "r2q2k1/pp3ppp/8/6B1/8/2b5/PP3PPP/R2Q2K1 w - - 0 1",
+      "prompt": "Black just captured your knight on c3, expecting bxc3. Both bishops hang — but don't recapture yet. Find the in-between blow!",
+      "hints": [
+        "Before recapturing, scan your own captures: what does your g5 bishop see down its diagonal?",
+        "Bxd8! Take the QUEEN first — Black must recapture, and only then do you take the c3 bishop."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Bxd8", "say": "The zwischenzug — while your opponent waited for bxc3, you took the most valuable piece on the board!" },
+            { "san": "Rxd8" },
+            { "san": "bxc3", "say": "NOW the recapture, at your leisure. Count it: you gave a knight and a bishop, and won a bishop and a QUEEN. The 'automatic' bxc3 would have left the trade dead even." }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "rejections": [
+        { "san": "bxc3", "say": "Qxg5! — the reflex recapture, and Black's queen calmly takes your bishop: dead-even trade. Your g5 bishop was staring at the queen the whole time. Recaptures can WAIT." }
+      ],
+      "wrongSay": "Two of your pieces can capture something. One target is worth nine points. Take THAT one first.",
+      "successSay": "The pause before recapturing — from today, make it a permanent habit."
+    },
+    {
+      "kind": "challenge",
+      "fen": "r2q1rk1/pp2pppp/2p5/3N4/6n1/7P/PPPQ1PP1/R5K1 w - - 0 1",
+      "prompt": "Trade tension: your d5 knight is attacked by the c6 pawn, and Black's g4 knight hangs to your h3 pawn. Everyone expects the swap-off. Squeeze an extra pawn out of it!",
+      "hints": [
+        "Your knight is doomed anyway — so before it dies, can it TAKE something? With check, even?",
+        "Nxe7+! The doomed knight grabs a pawn with check — then you capture on g4, and when Black rounds up your knight, you're a clean pawn ahead."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Nxe7+", "say": "The desperado zwischenzug — the knight was lost anyway, so it sells itself for a pawn WITH CHECK, buying the tempo for..." },
+            { "san": "Kh8" },
+            { "san": "hxg4", "say": "...the capture on g4. Black will now win your e7 knight back with Qxe7 — but total the ledger: knight for knight, plus the e7 pawn in your pocket. The 'obvious' hxg4 first would have netted exactly nothing." }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "rejections": [
+        { "san": "hxg4", "say": "cxd5 — knights traded, material even, opportunity gone. Your d5 knight was doomed: doomed pieces should always grab something on the way out. Nxe7+!" }
+      ],
+      "wrongSay": "Your knight can't be saved — so make its last move count. Check the pawns it can reach.",
+      "successSay": "Doomed piece + in-between capture = free material. This exact pattern appears in half of all club-level trades."
+    },
+    {
+      "kind": "intro",
+      "fen": "r2q2k1/pp3ppp/8/6B1/8/2b5/PP3PPP/R2Q2K1 w - - 0 1",
+      "say": "The zwischenzug checklist, before EVERY recapture: (1) Do I have a check? (2) Do I have a capture of something bigger? (3) Is there a mate threat? Only when all three answers are 'no' do you recapture. Your opponents recapture automatically — that half-second pause is your edge.",
+      "highlights": ["d8"]
+    }
+  ]
+}

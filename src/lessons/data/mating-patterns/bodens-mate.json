@@ -1,0 +1,112 @@
+{
+  "id": "bodens-mate",
+  "title": "Boden's Mate",
+  "topic": "mating-patterns",
+  "level": 4,
+  "subtitle": "Criss-cross bishops demolish the castled king (London, 1853).",
+  "goals": [
+    "Recognize the criss-cross bishop pattern",
+    "Sacrifice the queen to open the diagonal",
+    "Replay the original 1853 combination"
+  ],
+  "estMinutes": 7,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "2k1rb1r/ppp3pp/2np1q2/5b2/2B2P2/2P1BQ2/PP1N1P1P/2KR3R b - - 8 13",
+      "say": "London, 1853: Schulder has just castled queenside against Samuel Boden — straight into immortality. Boden's Mate kills a queenside-castled king with two bishops slicing across each other like scissors. The trigger is always the same: a queen sacrifice on c3 (or c6) to rip open the king's diagonal. You're playing Black. Watch the c3 pawn.",
+      "highlights": [
+        "c3",
+        "a3",
+        "c4"
+      ]
+    },
+    {
+      "kind": "challenge",
+      "fen": "2kr3r/pp1n1pp1/2p5/8/4QB2/8/P4PPP/5BK1 w - - 0 1",
+      "prompt": "Warm up with the pattern from the White side: the black king castled long, and your bishops point at him from BOTH diagonals. Rip the cover off!",
+      "hints": [
+        "Count your attackers on c6: the queen hits it, and after it falls, the f1 bishop's diagonal to a6 opens with deadly effect.",
+        "Sacrifice the queen on c6! The recapture is forced — and then Ba6 is mate: one bishop checks, the other seals b8."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Qxc6+",
+              "say": "The Boden sacrifice — the queen dies to drag the b7 pawn off its diagonal..."
+            },
+            {
+              "san": "bxc6"
+            },
+            {
+              "san": "Ba6#",
+              "say": "The scissors close: Ba6 checks along the freshly opened diagonal while your f4 bishop covers b8. Two minor pieces, one dead king, queen well spent."
+            }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Ba6",
+          "say": "One blade of the scissors — but bxa6 just takes it: the b7 pawn still guards the diagonal. The QUEEN must remove that pawn first, by force: Qxc6+!"
+        }
+      ],
+      "wrongSay": "The b7 pawn is the king's whole roof. Which forcing sacrifice makes it move?",
+      "successSay": "Queen sac on c6, mate with the bishops — the Boden formula against every long-castled king."
+    },
+    {
+      "kind": "challenge",
+      "fen": "2k1rb1r/ppp3pp/2np1q2/5b2/2B2P2/2P1BQ2/PP1N1P1P/2KR3R b - - 8 13",
+      "prompt": "Now the real thing, exactly as Boden played it in 1853. White just castled long — find the five-move demolition. It starts with a quiet center break!",
+      "hints": [
+        "Your f8 bishop dreams of a3 — but your OWN d6 pawn blocks its diagonal. One pawn move fixes that and attacks a bishop at the same time.",
+        "d5! clears the f8–a3 diagonal with tempo. Then Qxc3+!! forces bxc3, and Ba3# closes the scissors with the f5 bishop covering b1."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "d5",
+              "say": "The point most players miss: this clears your OWN bishop's path to a3 — and it attacks the c4 bishop, so White has no time to react."
+            },
+            {
+              "san": "Bxd5"
+            },
+            {
+              "san": "Qxc3+",
+              "say": "THE queen sacrifice. The c3 pawn was the king's last shield — and now it must capture, opening the a3–c1 diagonal..."
+            },
+            {
+              "san": "bxc3"
+            },
+            {
+              "san": "Ba3#",
+              "say": "Boden's Mate, London 1853. The a3 bishop checks, the f5 bishop covers b1 and d3 — criss-cross. This exact picture has ended thousands of games since; now you've played the original."
+            }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Qxc3+",
+          "say": "bxc3 — and now Ba3+ is impossible: your OWN d6 pawn blocks the f8-bishop's diagonal! The queen died for nothing. First d5!, clearing the diagonal with tempo, THEN the sacrifice. Move order is the whole combination."
+        }
+      ],
+      "wrongSay": "Two steps: deflect the c4 bishop with a pawn break, then sacrifice the queen on c3.",
+      "successSay": "A deflection, a queen sac, and a criss-cross mate — 1853's finest, played by you."
+    },
+    {
+      "kind": "intro",
+      "fen": "2kr4/ppp5/8/8/5B2/8/PP3PPP/2KR4 w - - 0 1",
+      "say": "Remember the anatomy: against a king castled long, the squares b8 and the b7-pawn's diagonal are the two weak beams. One bishop aims at each. Any forcing move that removes the b-pawn — usually a queen sacrifice on c6 or c3 — brings the whole roof down. From today, every long-castled king you face should make you glance at those diagonals.",
+      "highlights": [
+        "b8",
+        "a6",
+        "b7"
+      ]
+    }
+  ]
+}

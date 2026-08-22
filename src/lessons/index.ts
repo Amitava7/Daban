@@ -43,6 +43,29 @@ const REGISTRY: Record<string, () => Lesson> = {
   'queen-vs-pawn': () => require('./data/endgames/queen-vs-pawn.json'),
   'rook-endgame-lucena': () => require('./data/endgames/rook-endgame-lucena.json'),
   'rook-endgame-philidor': () => require('./data/endgames/rook-endgame-philidor.json'),
+  // Mating Patterns
+  'spot-the-mate': () => require('./data/mating-patterns/spot-the-mate.json'),
+  'arabian-and-damianos': () => require('./data/mating-patterns/arabian-and-damianos.json'),
+  'bodens-mate': () => require('./data/mating-patterns/bodens-mate.json'),
+  'anastasias-mate': () => require('./data/mating-patterns/anastasias-mate.json'),
+  'philidors-legacy': () => require('./data/mating-patterns/philidors-legacy.json'),
+  'greek-gift': () => require('./data/mating-patterns/greek-gift.json'),
+  // Combinations
+  'zwischenzug': () => require('./data/combinations/zwischenzug.json'),
+  'clearance-sacrifice': () => require('./data/combinations/clearance-sacrifice.json'),
+  'attraction': () => require('./data/combinations/attraction.json'),
+  'desperado-and-mad-rook': () => require('./data/combinations/desperado-and-mad-rook.json'),
+  // Opening Traps
+  'lasker-trap': () => require('./data/opening-traps/lasker-trap.json'),
+  'elephant-trap': () => require('./data/opening-traps/elephant-trap.json'),
+  'gambit-traps': () => require('./data/opening-traps/gambit-traps.json'),
+  'kieninger-and-noahs-ark': () => require('./data/opening-traps/kieninger-and-noahs-ark.json'),
+  // Master Games
+  'opera-game': () => require('./data/masterpieces/opera-game.json'),
+  'torre-lasker-windmill': () => require('./data/masterpieces/torre-lasker-windmill.json'),
+  'marshalls-gold-coins': () => require('./data/masterpieces/marshalls-gold-coins.json'),
+  'game-of-the-century': () => require('./data/masterpieces/game-of-the-century.json'),
+  'immortal-studies': () => require('./data/masterpieces/immortal-studies.json'),
 };
 
 export function getLessonById(id: string): Lesson | undefined {
