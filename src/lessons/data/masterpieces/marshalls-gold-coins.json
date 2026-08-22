@@ -86,7 +86,7 @@
       "rejections": [
         {
           "san": "Rxg3",
-          "say": "hxg3 — wait: after your rook takes, White's h2 pawn recaptures and the moment is gone. The KNIGHT collects with check: Ne2+ first, the fork does the rest."
+          "say": "hxg3! — the h2 pawn recaptures your rook and the moment is gone. The KNIGHT collects with check: Ne2+ first, then the fork does the rest."
         }
       ],
       "wrongSay": "King on g1, queen on g3 — a knight's dream. Which square forks them both?",

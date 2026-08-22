@@ -53,7 +53,7 @@
         },
         {
           "san": "Nf4",
-          "say": "You saved the knight... into a pawn-down endgame of retreats — wait, worse: the g4 knight escapes too and you've achieved nothing. When BOTH pieces hang, the side to move should cash a desperado, not run."
+          "say": "The knight runs — and Black's g4 knight runs too: nothing gained for either side. When BOTH pieces hang, the side to move should cash a desperado, not retreat. Nxe7+ was a free pawn."
         }
       ],
       "wrongSay": "The knight can't be saved profitably — so make it eat. Check its reach.",

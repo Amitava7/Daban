@@ -54,7 +54,7 @@
         },
         {
           "san": "Nd5",
-          "say": "Flashy — but Nxd5 exd5... wait, simpler: ...Qd6 holds and the b5 pawn lives. The thematic blow strips the king's cover directly: Nxb5!"
+          "say": "Flashy — but Black holds with ...Qd6, and the b5 pawn survives to tell the tale. The thematic blow strips the king's cover directly: Nxb5!"
         }
       ],
       "wrongSay": "A developed army must attack before the defender untangles. Which capture opens the road to Black's king?",
@@ -92,7 +92,7 @@
         },
         {
           "san": "Bxf6",
-          "say": "gxf6 — wait, worse: Qxf6 no... simply: it releases the pressure and Black consolidates. The d-file is the artery: cut into it with Rxd7!"
+          "say": "Trading off the pinning bishop releases all the pressure — Black recaptures and finally untangles. The d-file is the artery: cut into it with Rxd7!"
         }
       ],
       "wrongSay": "The pin on the d-file is worth more than any single piece. Feed the file.",

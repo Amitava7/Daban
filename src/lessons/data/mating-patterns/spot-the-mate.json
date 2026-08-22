@@ -15,7 +15,10 @@
       "kind": "intro",
       "fen": "r6k/6pp/5N2/8/8/8/5PP1/6KR w - - 0 1",
       "say": "Strong players don't calculate mates — they RECOGNIZE them. This speed round shows six classic mating pictures, each one move away. No hints needed if the pattern is in your head; that's the goal. Ready?",
-      "highlights": ["h7", "f6"]
+      "highlights": [
+        "h7",
+        "f6"
+      ]
     },
     {
       "kind": "challenge",
@@ -25,11 +28,16 @@
         "The f6 knight already covers g8 — and it can protect a rook that comes very close.",
         "Capture on h7: the rook is untouchable under the knight's guard."
       ],
-      "goal": { "type": "checkmate" },
+      "goal": {
+        "type": "checkmate"
+      },
       "solutions": [
         {
           "line": [
-            { "san": "Rxh7#", "say": "The Arabian mate — the oldest recorded mating pattern, from medieval shatranj manuscripts. Knight guards rook, rook guards everything else." }
+            {
+              "san": "Rxh7#",
+              "say": "The Arabian mate — the oldest recorded mating pattern, from medieval shatranj manuscripts. Knight guards rook, rook guards everything else."
+            }
           ],
           "assert": "checkmate"
         }
@@ -45,11 +53,16 @@
         "The g6 pawn controls h7 — so a queen landing there is protected.",
         "Take the h7 pawn. The king has nowhere left."
       ],
-      "goal": { "type": "checkmate" },
+      "goal": {
+        "type": "checkmate"
+      },
       "solutions": [
         {
           "line": [
-            { "san": "Qxh7#", "say": "Damiano's picture: a humble pawn on g6 turns h7 into a supported mating square. Whole attacking systems exist just to plant that pawn." }
+            {
+              "san": "Qxh7#",
+              "say": "Damiano's picture: a humble pawn on g6 turns h7 into a supported mating square. Whole attacking systems exist just to plant that pawn."
+            }
           ],
           "assert": "checkmate"
         }
@@ -65,11 +78,16 @@
         "Your queen and bishop both aim at h7 along b1–h7. Count the defenders of h7: zero.",
         "The queen lands on h7 with the bishop backing her up."
       ],
-      "goal": { "type": "checkmate" },
+      "goal": {
+        "type": "checkmate"
+      },
       "solutions": [
         {
           "line": [
-            { "san": "Qh7#", "say": "The battery mate: queen touches the king, bishop guards the queen from across the board. The ...h6 pawn push never saves anyone from this." }
+            {
+              "san": "Qh7#",
+              "say": "The battery mate: queen touches the king, bishop guards the queen from across the board. The ...h6 pawn push never saves anyone from this."
+            }
           ],
           "assert": "checkmate"
         }
@@ -83,13 +101,18 @@
       "prompt": "Mate in one — but the back rank looks defended...",
       "hints": [
         "The d8 rook guards the back rank — but who guards the ROOK?",
-        "Capture d8. Your queen supports from f3... no wait — check what really protects the capture: nothing needs to! Count the escape squares."
+        "Capture on d8 and count the recaptures: there are none. The pawn wall on f7–h7 does the rest."
       ],
-      "goal": { "type": "checkmate" },
+      "goal": {
+        "type": "checkmate"
+      },
       "solutions": [
         {
           "line": [
-            { "san": "Rxd8#", "say": "The 'defended' back rank had one guard and you attacked it once — with mate. The f7/g7/h7 wall did the rest. Guards that are merely equal in number always lose the back rank." }
+            {
+              "san": "Rxd8#",
+              "say": "The 'defended' back rank had one guard and you attacked it once — with mate. The f7/g7/h7 wall did the rest. Guards that are merely equal in number always lose the back rank."
+            }
           ],
           "assert": "checkmate"
         }
@@ -105,11 +128,16 @@
         "The rooks on c8 and e8 block their own king's escape — the 'epaulettes' on his shoulders.",
         "Strike straight down the file, one knight's-breath away from the king."
       ],
-      "goal": { "type": "checkmate" },
+      "goal": {
+        "type": "checkmate"
+      },
       "solutions": [
         {
           "line": [
-            { "san": "Qd6#", "say": "The epaulette mate! The queen covers c7, d7 and e7 from d6, and the king's own rooks seal the back rank. Crowded kings die in their own furniture." }
+            {
+              "san": "Qd6#",
+              "say": "The epaulette mate! The queen covers c7, d7 and e7 from d6, and the king's own rooks seal the back rank. Crowded kings die in their own furniture."
+            }
           ],
           "assert": "checkmate"
         }
@@ -125,11 +153,16 @@
         "Your f5 knight covers g7 and h6 — the dark escape squares.",
         "The e8 rook is the only back-rank guard, and your rook attacks it."
       ],
-      "goal": { "type": "checkmate" },
+      "goal": {
+        "type": "checkmate"
+      },
       "solutions": [
         {
           "line": [
-            { "san": "Rxe8#", "say": "Back rank plus knight net: g7 was covered by the f5 knight, so capturing the guard ended everything at once. Two patterns stacked — that's how real mates happen." }
+            {
+              "san": "Rxe8#",
+              "say": "Back rank plus knight net: g7 was covered by the f5 knight, so capturing the guard ended everything at once. Two patterns stacked — that's how real mates happen."
+            }
           ],
           "assert": "checkmate"
         }

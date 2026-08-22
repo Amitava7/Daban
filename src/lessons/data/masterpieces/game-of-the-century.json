@@ -15,7 +15,11 @@
       "kind": "intro",
       "fen": "r2q1rk1/pp2ppbp/1np2np1/2Q3B1/3PP1b1/2N2N2/PP3PPP/3RKB1R b K - 6 11",
       "say": "New York, 1956. Donald Byrne, one of America's strongest masters, is playing a 13-year-old named Bobby Fischer — and has just played 11.Bg5?, one careless tempo. What follows was christened 'The Game of the Century' before the year was out. Fischer's response begins a combination that runs TWENTY moves deep and includes the most celebrated queen sacrifice in modern chess. You're Bobby. Find move one.",
-      "highlights": ["a4", "c3", "e4"]
+      "highlights": [
+        "a4",
+        "c3",
+        "e4"
+      ]
     },
     {
       "kind": "challenge",
@@ -28,18 +32,37 @@
       "solutions": [
         {
           "line": [
-            { "san": "Na4", "say": "The move that announced Fischer to the world. The knight is 'hanging' — but Nxa4 loses to Nxe4!, when both g5 and c5 fall apart..." },
-            { "san": "Qa3" },
-            { "san": "Nxc3", "say": "Byrne declined, so the knight takes anyway — deflecting the b-pawn..." },
-            { "san": "bxc3" },
-            { "san": "Nxe4", "say": "The point: a clean central pawn, tempo against the g5 bishop, and White's king will NEVER castle. A 13-year-old just out-calculated a master in his own position — and the real fireworks haven't even started." }
+            {
+              "san": "Na4",
+              "say": "The move that announced Fischer to the world. The knight is 'hanging' — but Nxa4 loses to Nxe4!, when both g5 and c5 fall apart..."
+            },
+            {
+              "san": "Qa3"
+            },
+            {
+              "san": "Nxc3",
+              "say": "Byrne declined, so the knight takes anyway — deflecting the b-pawn..."
+            },
+            {
+              "san": "bxc3"
+            },
+            {
+              "san": "Nxe4",
+              "say": "The point: a clean central pawn, tempo against the g5 bishop, and White's king will NEVER castle. A 13-year-old just out-calculated a master in his own position — and the real fireworks haven't even started."
+            }
           ],
           "assert": "capture"
         }
       ],
       "rejections": [
-        { "san": "Ne8", "say": "Passive — and White consolidates with Bh6 or e5, a happy man. Fischer's judgment: when the enemy king lingers in the center, INVEST material to keep it there. Na4!!" },
-        { "san": "Nxe4", "say": "Right idea, wrong order! Nxe4 Nxe4 and the knight on b6 never joined — the deflection Na4!! comes first, so that the recapture on c3/e4 arrives with the whole army." }
+        {
+          "san": "Ne8",
+          "say": "Passive — and White consolidates with Bh6 or e5, a happy man. Fischer's judgment: when the enemy king lingers in the center, INVEST material to keep it there. Na4!!"
+        },
+        {
+          "san": "Nxe4",
+          "say": "Right idea, wrong order! Nxe4 Nxe4 and the knight on b6 never joined — the deflection Na4!! comes first, so that the recapture on c3/e4 arrives with the whole army."
+        }
       ],
       "wrongSay": "The knight move looks like a blunder — that's exactly why it's immortal. Aim at White's overloaded c3 knight.",
       "successSay": "Na4!! — judged by many the finest single move of the 1950s. Played by a child, now replayed by you."
@@ -55,13 +78,22 @@
       "solutions": [
         {
           "line": [
-            { "san": "Be6", "say": "THE MOVE OF THE CENTURY. The queen hangs; Fischer doesn't care. Declining with Bxe6 loses to Qb5+! forking, so Byrne must take the queen — and feed the windmill you'll play next. A 13-year-old, offering his queen to a master, correct in every line: this is why the game has its name." }
+            {
+              "san": "Be6",
+              "say": "THE MOVE OF THE CENTURY. The queen hangs; Fischer doesn't care. Declining with Bxe6 loses to Qb5+! forking, so Byrne must take the queen — and feed the windmill you'll play next. A 13-year-old, offering his queen to a master, correct in every line: this is why the game has its name."
+            }
           ]
         }
       ],
       "rejections": [
-        { "san": "Qxc5", "say": "dxc5! — wait: the d4 pawn recaptures and White is FINE, material even, attack gone. The century move keeps the queen en prise: Be6!!, because the windmill it unleashes is worth more than she is." },
-        { "san": "Qa5", "say": "The queen scurries to safety — and Qxa5 wait, no: simply, White trades queens and survives. Fischer's Be6!! refuses the whole question: the bishop check on c4 is worth more than the queen." }
+        {
+          "san": "Qxc5",
+          "say": "dxc5! — the d4 pawn recaptures and White is FINE: material even, attack gone. The century move keeps the queen en prise: Be6!!, because the windmill it unleashes is worth more than she is."
+        },
+        {
+          "san": "Qa5",
+          "say": "The queen scurries to safety — and White simply consolidates a piece to the good on the queenside. Fischer's Be6!! refuses the whole question: the bishop check on c4 is worth more than the queen."
+        }
       ],
       "wrongSay": "Every queen retreat lets White breathe. The winning move doesn't touch the queen at all.",
       "successSay": "Be6!! — chess's most famous quiet move. Now collect the payment."
@@ -77,23 +109,54 @@
       "solutions": [
         {
           "line": [
-            { "san": "Bxc4+", "say": "First blood — the bishop that made Be6!! possible collects a bishop..." },
-            { "san": "Kg1" },
-            { "san": "Ne2+", "say": "The knight windmill starts: check..." },
-            { "san": "Kf1" },
-            { "san": "Nxd4+", "say": "...swing and CAPTURE — the d4 pawn falls with another check..." },
-            { "san": "Kg1" },
-            { "san": "Ne2+", "say": "...swing back, check..." },
-            { "san": "Kf1" },
-            { "san": "Nc3+", "say": "...and out with a third check, hitting the d1 rook on the way..." },
-            { "san": "Kg1" },
-            { "san": "axb6", "say": "Harvest complete: the a-pawn quietly collects the b6 bishop. Count Fischer's haul for the queen: rook, TWO bishops and a pawn — plus a raging attack. Byrne played on to move 41 and was mated by a 13-year-old. The Game of the Century, and you just played its heart." }
+            {
+              "san": "Bxc4+",
+              "say": "First blood — the bishop that made Be6!! possible collects a bishop..."
+            },
+            {
+              "san": "Kg1"
+            },
+            {
+              "san": "Ne2+",
+              "say": "The knight windmill starts: check..."
+            },
+            {
+              "san": "Kf1"
+            },
+            {
+              "san": "Nxd4+",
+              "say": "...swing and CAPTURE — the d4 pawn falls with another check..."
+            },
+            {
+              "san": "Kg1"
+            },
+            {
+              "san": "Ne2+",
+              "say": "...swing back, check..."
+            },
+            {
+              "san": "Kf1"
+            },
+            {
+              "san": "Nc3+",
+              "say": "...and out with a third check, hitting the d1 rook on the way..."
+            },
+            {
+              "san": "Kg1"
+            },
+            {
+              "san": "axb6",
+              "say": "Harvest complete: the a-pawn quietly collects the b6 bishop. Count Fischer's haul for the queen: rook, TWO bishops and a pawn — plus a raging attack. Byrne played on to move 41 and was mated by a 13-year-old. The Game of the Century, and you just played its heart."
+            }
           ],
           "assert": "capture"
         }
       ],
       "rejections": [
-        { "san": "axb6", "say": "Greed before checks! Qxc3 — White's queen kills your windmill conductor and survives. The checks come FIRST — Bxc4+! — so White's queen never gets a move." }
+        {
+          "san": "axb6",
+          "say": "Greed before checks! Qxc3 — White's queen kills your windmill conductor and survives. The checks come FIRST — Bxc4+! — so White's queen never gets a move."
+        }
       ],
       "wrongSay": "Eleven forced moves, every Black move a check until the last. The light bishop leads.",
       "successSay": "Queen for rook, two bishops and a pawn — arithmetic even a master couldn't accept until it was on the board. Immortality, re-enacted."
