@@ -1,0 +1,95 @@
+{
+  "id": "lasker-trap",
+  "title": "The Lasker Trap",
+  "topic": "opening-traps",
+  "level": 4,
+  "subtitle": "An underpromotion on move seven wins a queen (Albin).",
+  "goals": [
+    "Punish greedy pawn grabs in the Albin",
+    "Win with a knight underpromotion",
+    "Recognize the trap from both sides"
+  ],
+  "estMinutes": 7,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "rnbqkbnr/ppp2ppp/8/4P3/2Pp4/4P3/PP3PPP/RNBQKBNR b KQkq - 0 4",
+      "say": "The Albin Countergambit: 1.d4 d5 2.c4 e5!? — Black offers a pawn for a monster on d4. White just played 4.e3?, trying to dissolve that pawn, and stepped into the Lasker Trap: a forced sequence featuring the rarest beauty in chess — a knight UNDERPROMOTION on move seven that wins the queen. You're Black. Nine moves of mayhem start with a bishop check.",
+      "highlights": [
+        "d4",
+        "e3",
+        "b4"
+      ]
+    },
+    {
+      "kind": "challenge",
+      "fen": "rnbqkbnr/ppp2ppp/8/4P3/2Pp4/4P3/PP3PPP/RNBQKBNR b KQkq - 0 4",
+      "prompt": "White's 4.e3? was the losing move. Play the whole punishment — bishop check, pawn storm, and the famous underpromotion!",
+      "hints": [
+        "Start with Bb4+ — the block on d2 is forced-ish, and then your d-pawn starts eating: dxe3, exf2+, and the promotion square g1 has a surprise on it.",
+        "When your pawn reaches g1, do NOT take a queen — Rxg1 would follow with check-safety. Promote to a KNIGHT with check, and the g4-bishop check wins the queen next."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Bb4+",
+              "say": "Check! White must block — and the natural Bd2 walks deeper into the pit."
+            },
+            {
+              "san": "Bd2"
+            },
+            {
+              "san": "dxe3",
+              "say": "The pawn bites — threatening the bishop on d2 AND f2. White grabs your bishop, believing he's winning a piece..."
+            },
+            {
+              "san": "Bxb4"
+            },
+            {
+              "san": "exf2+",
+              "say": "...but the pawn storms on with check. The king must step out (Kxf2?? drops the king into ...Qh4+ ideas; Ke2 is the main line)..."
+            },
+            {
+              "san": "Ke2"
+            },
+            {
+              "san": "fxg1=N+",
+              "say": "THE MOVE. A knight, not a queen! Underpromotion WITH CHECK — a new queen would allow Rxg1 with the king safe, but the knight check forces the rook to capture with the king still stranded on e2..."
+            },
+            {
+              "san": "Rxg1"
+            },
+            {
+              "san": "Bg4+",
+              "say": "The point: check on g4, and whatever blocks or moves, the d1 queen falls next. Emanuel Lasker's namesake trap — a whole queen won by refusing one."
+            }
+          ],
+          "assert": "check"
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Nc6",
+          "say": "Development at the wrong second — White plays exd4 and breathes again, a healthy pawn up. The window is NOW, while e3 hangs in the air: Bb4+!"
+        },
+        {
+          "san": "dxe3",
+          "say": "One move early! After fxe3 the storm fizzles — White's king keeps f2 covered. The bishop check comes FIRST: Bb4+ forces the block that clogs White's escape."
+        }
+      ],
+      "wrongSay": "The sequence is forced from the first check: Bb4+, then let the d-pawn feed.",
+      "successSay": "fxg1=N+!! — one of the only famous underpromotions in opening theory, and you played the whole nine-move trap."
+    },
+    {
+      "kind": "intro",
+      "fen": "rnbqkbnr/ppp2ppp/8/4P3/2PpP3/8/PP3PPP/RNBQKBNR b KQkq - 0 4",
+      "say": "The other side of the coin: if you face the Albin as White, the losing move was 4.e3?. The safe path: develop normally with 4.Nf3 and 5.g3 — let the d4 pawn sit, don't try to dissolve it. Traps punish greed and haste; knowing WHERE the mine is buried means you'll never step on it.",
+      "highlights": [
+        "e3",
+        "f3",
+        "g3"
+      ]
+    }
+  ]
+}

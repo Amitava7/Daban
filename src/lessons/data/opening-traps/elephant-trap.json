@@ -1,0 +1,88 @@
+{
+  "id": "elephant-trap",
+  "title": "The Elephant Trap",
+  "topic": "opening-traps",
+  "level": 4,
+  "subtitle": "The QGD pawn that was never really free.",
+  "goals": [
+    "Punish premature pawn grabs in the QGD",
+    "Use the pinned-piece illusion in reverse",
+    "Win a piece by move nine"
+  ],
+  "estMinutes": 6,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "r1bqkb1r/pppn1ppp/5n2/3N2B1/3P4/8/PP2PPPP/R2QKBNR b KQkq - 0 6",
+      "say": "Queen's Gambit Declined — and White just grabbed 'the free pawn' with 6.Nxd5??, believing your f6 knight is pinned by the g5 bishop. The Elephant Trap has been catching that exact greed since the 1800s: the pin is an ILLUSION, because the recapture on d5 comes with a hidden bite. You're Black; win a whole piece by move nine.",
+      "highlights": [
+        "d5",
+        "f6",
+        "g5"
+      ]
+    },
+    {
+      "kind": "challenge",
+      "fen": "r1bqkb1r/pppn1ppp/5n2/3N2B1/3P4/8/PP2PPPP/R2QKBNR b KQkq - 0 6",
+      "prompt": "White thinks your f6 knight is pinned. Prove it isn't — take the knight and play the whole refutation!",
+      "hints": [
+        "Take on d5! If White 'wins your queen' with Bxd8, count what YOU get: the check on b4 forces the queen into a fatal block.",
+        "Nxd5!, and after Bxd8 comes Bb4+! — the queen must block on d2, your bishop takes with check, and only then do you recapture the trapped d8 bishop."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Nxd5",
+              "say": "The 'pinned' knight moves — because the punishment for Bxd8 is already loaded..."
+            },
+            {
+              "san": "Bxd8"
+            },
+            {
+              "san": "Bb4+",
+              "say": "The zwischenzug check that powers the whole trap. Nothing blocks well: the queen must do it herself..."
+            },
+            {
+              "san": "Qd2"
+            },
+            {
+              "san": "Bxd2+",
+              "say": "The queen falls with check — White's king must recapture..."
+            },
+            {
+              "san": "Kxd2"
+            },
+            {
+              "san": "Kxd8",
+              "say": "And finally the stranded d8 bishop is collected. Final count: you've won a full piece, White's king has lost castling and stands in the center. The pin was always an illusion — pins against the QUEEN can be broken by checks."
+            }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Nb6",
+          "say": "The knight retreats and White simply keeps the extra pawn — the 'trap' never sprang. The refutation is the capture itself: Nxd5!, because the b4 check wins everything back with interest."
+        },
+        {
+          "san": "h6",
+          "say": "A polite question to the bishop — but White consolidates the extra pawn. The refutation is immediate and forcing: Nxd5! The 'pin' on your knight was never real."
+        }
+      ],
+      "wrongSay": "The f6 knight is only FAKE-pinned — a check exists that wins the queen back with interest. Start by taking d5.",
+      "successSay": "The Elephant Trap: 150 years old and still catching players who trust a pin without checking the checks."
+    },
+    {
+      "kind": "intro",
+      "fen": "r1bqkb1r/pppn1ppp/4pn2/3p2B1/2PP4/2N5/PP2PPPP/R2QKBNR w KQkq - 2 5",
+      "say": "Facing this as White? The mine is 5.cxd5 exd5 6.Nxd5?? — the d5 pawn is poisoned while the b4 check exists. The safe move order: 6.e3 first (blunting b4-checks), and only ever consider pawn grabs once your king can castle. In the QGD, patience wins the pawn back later — greed loses a bishop now.",
+      "highlights": [
+        "d5",
+        "e3",
+        "b4"
+      ]
+    }
+  ]
+}

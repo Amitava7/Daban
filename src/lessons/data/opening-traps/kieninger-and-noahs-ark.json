@@ -1,0 +1,121 @@
+{
+  "id": "kieninger-and-noahs-ark",
+  "title": "Kieninger & Noah's Ark",
+  "topic": "opening-traps",
+  "level": 4,
+  "subtitle": "A smothered knight mate and a bishop buried alive.",
+  "goals": [
+    "Deliver the Budapest Gambit's smothered mate",
+    "Bury the Ruy Lopez bishop with pawns",
+    "Spot 'winning' moves that lose on the spot"
+  ],
+  "estMinutes": 7,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "r1b1k2r/ppppqppp/2n5/4P3/1bP2Bn1/P4N2/1P1NPPPP/R2QKB1R b KQkq - 0 7",
+      "say": "The Kieninger Trap, Budapest Gambit: White just played 7.a3?, attacking your b4 bishop and expecting a retreat. But look at White's smothered king-corner-in-waiting: e1 boxed by its own army, and the d3 square guarded by... nothing. The bishop is bait. You're Black — mate in three, starting with a recapture that ignores the threat entirely.",
+      "highlights": [
+        "e5",
+        "d3",
+        "b4"
+      ]
+    },
+    {
+      "kind": "challenge",
+      "fen": "r1b1k2r/ppppqppp/2n5/4P3/1bP2Bn1/P4N2/1P1NPPPP/R2QKB1R b KQkq - 0 7",
+      "prompt": "White attacks your bishop with a3, licking his lips. Ignore it — mate in three!",
+      "hints": [
+        "Take the e5 pawn with the g4 knight — if White grabs your bishop, count the guards of d3: zero, and a knight there is CHECKMATE.",
+        "Ngxe5! (the g4 knight!), and after axb4?? comes Nd3# — the king smothered by six of his own men."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Ngxe5",
+              "say": "The bishop stays en prise — on purpose. Your knights now BOTH cover d3, and White sees only the hanging bishop..."
+            },
+            {
+              "san": "axb4"
+            },
+            {
+              "san": "Nd3#",
+              "say": "The Kieninger Trap: checkmate on move eight. The e1 king is walled in by his own queen, bishop, knight and pawns — the d3 knight attacks through the crowd, protected by its e5 twin. White 'won a bishop' and lost everything."
+            }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Bxd2+",
+          "say": "Qxd2 — you traded the bait bishop for a knight and the mate evaporated: Nd3# needed the e5 CAPTURE first, planting the second knight that guards d3. Ngxe5! and let White take the bishop."
+        },
+        {
+          "san": "Bc5",
+          "say": "The meek retreat — playable, but you walked past a checkmate in three. When a trap position appears, calculate the 'ignored' threat first: Ngxe5! wins on the spot."
+        }
+      ],
+      "wrongSay": "The bishop is bait for WHITE, not you. Which capture readies Nd3#?",
+      "successSay": "Ngxe5 and Nd3# — the smothered mate hiding inside the Budapest since 1930. Bishop well spent."
+    },
+    {
+      "kind": "challenge",
+      "fen": "r1bqkbnr/2p2ppp/p2p4/1p6/3QP3/1B6/PPP2PPP/RNB1K2R b KQkq - 0 8",
+      "prompt": "Now the slow-motion trap: Noah's Ark. White's queen just recaptured on d4 in the Ruy Lopez — and the b3 bishop is already standing in its grave. Bury it with three pawn moves!",
+      "hints": [
+        "The plan: hit the queen with c5, gain time, then play c4 — the bishop's whole diagonal becomes a tomb of pawns.",
+        "c5! (queen must move), then Be6 challenges, and after the queen retreats: c4! — the a6-b5-c4 pawn wave entombs the b3 bishop forever."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "c5",
+              "say": "Tempo on the queen — she must step aside while your pawn wave builds..."
+            },
+            {
+              "san": "Qd5"
+            },
+            {
+              "san": "Be6",
+              "say": "Blocking the f7 threat and offering a trade the queen must decline or accept badly..."
+            },
+            {
+              "san": "Qc6+"
+            },
+            {
+              "san": "Bd7",
+              "say": "The little shuffle — the queen has run out of squares that keep the pin on your position..."
+            },
+            {
+              "san": "Qd5"
+            },
+            {
+              "san": "c4",
+              "say": "THE ARK CLOSES. Look at the b3 bishop: a6, b5, c4 — a pawn wall on every light square it could ever use. It will sit on b3 until it's rounded up by ...Be6 or simply stay a spectator for the whole game. You're effectively a piece up without capturing anything. That's Noah's Ark — pawns as a prison."
+            }
+          ]
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Bb7",
+          "say": "It develops, but White's queen recentralizes and the b3 bishop lives free. The trap needs TEMPO: c5! first — every pawn move must hit the queen so White never gets one free move to save the bishop with a4 or c4."
+        }
+      ],
+      "wrongSay": "Three pawn moves — c5, then c4 — with a queen-hit in between. Build the wall.",
+      "successSay": "The Noah's Ark trap: no sacrifice, no checkmate — just three pawns quietly deleting a bishop from the game. Positional traps are traps too."
+    },
+    {
+      "kind": "intro",
+      "fen": "r1bqkbnr/2p2ppp/p2p4/1p6/3NP3/1B6/PPP2PPP/RNB1K2R b KQkq - 0 8",
+      "say": "The defensive lessons: in the Budapest, White avoids Kieninger by castling or playing e3 before ever touching the b4 bishop. In the Ruy Lopez, White avoids the Ark by recapturing on d4 with the KNIGHT — a piece the c5–c4 wave cannot embarrass. Every famous trap is one careless natural move away — and one known move from harmless.",
+      "highlights": [
+        "d4",
+        "b3"
+      ]
+    }
+  ]
+}
