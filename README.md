@@ -16,6 +16,9 @@ A fully offline mobile chess app that teaches you while you play. Every move is 
 | 8 | **Endgames** | Daily essential endgame + category progress |
 | 9 | **Progress** | ELO trend, insight cards (patterns behind your mistakes) |
 | 10 | **Settings** | Difficulty slider (Lv 1–10 ≈ ELO), coach personality, dark mode |
+| 11 | **Lessons** | Topic grid + "next lesson" resume card |
+| 12 | **Lesson Topic** | Lessons in a topic with star scores and unlock gating |
+| 13 | **Lesson Player** | Guided challenges: coach bubble, hints, arrows, scoring |
 
 ## Color Configuration
 
@@ -57,11 +60,35 @@ src/
     Pill.tsx           ← inline status chip
     Sparkline.tsx      ← SVG line chart (ELO trend, eval graph)
     StatChip.tsx       ← stat block (ELO, streak, accuracy)
+  lessons/             ← the guided-lessons knowledge base + runtime
+    types.ts           ← lesson/step schema (authoritative)
+    config.ts          ← topics + lesson metadata (menus render from this)
+    index.ts           ← lessonId → JSON registry
+    LessonEngine.ts    ← pure reducer driving every lesson
+    progress.ts        ← unlock/star/next-lesson helpers
+    data/<topic>/*.json ← one file per lesson
   screens/             ← one file per screen (see table above)
   navigation/
     AppNavigator.tsx   ← stack navigator wiring all screens
     types.ts           ← route param types
 ```
+
+## Lessons
+
+A chess.com-style guided lessons section: 51 lessons across 10 topics, from
+piece basics to Fischer's Game of the Century. Lessons are **data, not code** —
+adding one needs no changes to the app.
+
+```bash
+npm run validate:lessons   # replay every FEN/SAN through chess.js
+npm run test:engine        # drive every lesson through the real reducer
+node scripts/probe-lesson.js   # position workbench for lesson authors
+```
+
+- **[docs/lessons/README.md](docs/lessons/README.md)** — authoring workflow (start here)
+- [docs/lessons/AUTHORING.md](docs/lessons/AUTHORING.md) — sourcing material and writing lessons
+- [docs/lessons/VALIDATION.md](docs/lessons/VALIDATION.md) — verification toolchain and failure catalogue
+- [docs/LESSONS_PLAN.md](docs/LESSONS_PLAN.md) — runtime architecture
 
 ## Running Locally
 

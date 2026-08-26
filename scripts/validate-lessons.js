@@ -316,11 +316,21 @@ for (const topic of fs.readdirSync(DATA_DIR)) {
 files.sort();
 files.forEach(validateLesson);
 
-// Registry entries pointing at missing files
-const registered = [...INDEX_SRC.matchAll(/'([a-z0-9-]+)':\s*\(\)\s*=>\s*require\('\.\/data\/([a-z]+)\/([a-z0-9-]+)\.json'\)/g)];
+// Registry entries pointing at missing files. This is an ERROR, not a warning:
+// Metro resolves every require() when bundling the release APK, so a registry
+// entry without its JSON file fails the Android build (and only there, ~8
+// minutes in). Register a lesson in index.ts only once its data file exists.
+// NOTE: the topic segment must allow hyphens ("mating-patterns"), or entire
+// topics silently escape this check.
+const registered = [...INDEX_SRC.matchAll(/'([a-z0-9-]+)':\s*\(\)\s*=>\s*require\('\.\/data\/([a-z-]+)\/([a-z0-9-]+)\.json'\)/g)];
 for (const [, id, topic, base] of registered) {
   const p = path.join(DATA_DIR, topic, `${base}.json`);
-  if (!fs.existsSync(p)) warn('index.ts', `registered lesson "${id}" has no data file yet (${topic}/${base}.json)`);
+  if (!fs.existsSync(p)) {
+    err('index.ts', `registered lesson "${id}" has no data file (${topic}/${base}.json) — this breaks the release bundle`);
+  }
+}
+if (registered.length !== lessonCount) {
+  warn('index.ts', `${registered.length} registry entries vs ${lessonCount} data files — every lesson must be registered to be reachable`);
 }
 
 for (const w of warnings) console.log('WARN ', w);
