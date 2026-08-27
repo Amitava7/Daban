@@ -32,6 +32,8 @@ const REGISTRY: Record<string, () => Lesson> = {
   'discovered-attacks': () => require('./data/tactics/discovered-attacks.json'),
   'remove-the-defender': () => require('./data/tactics/remove-the-defender.json'),
   'back-rank-mates': () => require('./data/tactics/back-rank-mates.json'),
+  'trapped-pieces': () => require('./data/tactics/trapped-pieces.json'),
+  'defensive-resources': () => require('./data/tactics/defensive-resources.json'),
   // Strategy
   'open-files-and-rooks': () => require('./data/strategy/open-files-and-rooks.json'),
   'passed-pawns': () => require('./data/strategy/passed-pawns.json'),
@@ -50,11 +52,14 @@ const REGISTRY: Record<string, () => Lesson> = {
   'anastasias-mate': () => require('./data/mating-patterns/anastasias-mate.json'),
   'philidors-legacy': () => require('./data/mating-patterns/philidors-legacy.json'),
   'greek-gift': () => require('./data/mating-patterns/greek-gift.json'),
+  'more-mating-nets': () => require('./data/mating-patterns/more-mating-nets.json'),
   // Combinations
   'zwischenzug': () => require('./data/combinations/zwischenzug.json'),
   'clearance-sacrifice': () => require('./data/combinations/clearance-sacrifice.json'),
   'attraction': () => require('./data/combinations/attraction.json'),
   'desperado-and-mad-rook': () => require('./data/combinations/desperado-and-mad-rook.json'),
+  'quiet-moves': () => require('./data/combinations/quiet-moves.json'),
+  'counting-exchanges': () => require('./data/combinations/counting-exchanges.json'),
   // Opening Traps
   'lasker-trap': () => require('./data/opening-traps/lasker-trap.json'),
   'elephant-trap': () => require('./data/opening-traps/elephant-trap.json'),

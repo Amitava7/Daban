@@ -1,0 +1,123 @@
+{
+  "id": "trapped-pieces",
+  "title": "Trapped Pieces",
+  "topic": "tactics",
+  "level": 4,
+  "subtitle": "A piece with no safe square is already lost.",
+  "goals": [
+    "Punish greedy raids by taking away every escape square",
+    "Count a piece's flight squares before it grabs material",
+    "Cut your losses when your own piece is caught"
+  ],
+  "estMinutes": 6,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "rnb1kbnr/ppp1pppp/8/8/8/2N5/PqPPPPPP/R1BQKBNR w KQkq - 0 1",
+      "say": "You don't always win a piece by attacking it — sometimes you win it by taking away every square it could run to. Black has just snatched the b2 pawn, and the queen looks safe: nothing attacks her twice. Count her escape squares instead. That's the trapped-piece question, and it decides the game right here.",
+      "highlights": [
+        "b2",
+        "b1",
+        "c1"
+      ]
+    },
+    {
+      "kind": "challenge",
+      "fen": "rnb1kbnr/ppp1pppp/8/8/8/2N5/PqPPPPPP/R1BQKBNR w KQkq - 0 1",
+      "prompt": "Black grabbed the b2 pawn. Punish the raid — trap the queen!",
+      "hints": [
+        "Don't chase her: fence her in. Which white move attacks the queen AND removes her escape along the b-file?",
+        "Rb1! The rook hits her while the c1 bishop covers b2 — every square she can reach loses her."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Rb1",
+              "say": "The cage closes. Count her options: Qa3 and Qxc2 drop her to a minor piece, Qxc1+ gives queen for bishop, and Qxa2 walks into Ra1. There is no square on the board where she survives — one quiet rook move won a queen."
+            }
+          ]
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Na4",
+          "say": "It attacks the queen — and she simply steps to a3, c3 or takes on c2. Chasing a queen usually just improves her. The winning idea is to remove every square at once: Rb1!"
+        },
+        {
+          "san": "Bxb2",
+          "say": "You captured her — but that was never possible for free: Black is not obliged to leave her there. The rook move keeps the attack AND the cage; here the bishop's job is to guard b2, not to trade itself."
+        }
+      ],
+      "wrongSay": "Stop thinking 'attack the queen' and start thinking 'which squares can she reach?'",
+      "successSay": "A trapped piece is worth more than any tactic: the opponent must simply hand it over."
+    },
+    {
+      "kind": "challenge",
+      "fen": "rnb1kbnr/ppp1pppp/8/8/8/2N5/PqPPPPPP/1RBQKBNR b Kkq - 1 1",
+      "prompt": "Now play the other side. Your queen is trapped — find the escape that costs the LEAST.",
+      "hints": [
+        "She cannot be saved. When a piece is lost, the goal changes: get the most material for it.",
+        "Qxc1+! Taking the bishop with check means you lose queen for bishop plus a pawn instead of queen for nothing."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Qxc1+",
+              "say": "The right surrender. Queen for a bishop and a pawn still loses material — but 'lost piece' does not mean 'give it away'. Grab whatever it can reach on the way down, and prefer doing it with check."
+            }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Qa3",
+          "say": "Rb3! and the queen is rounded up for nothing at all — you handed over nine points and got zero. If a piece must die, it should take something with it."
+        },
+        {
+          "san": "Qxa2",
+          "say": "Ra1! traps her again on a2 with no compensation. The c1 bishop was the only material within reach — take THAT one, with check."
+        }
+      ],
+      "wrongSay": "The queen is lost either way. Which escape square at least captures something valuable?",
+      "successSay": "Cutting losses is a skill. A doomed piece should always eat on the way out."
+    },
+    {
+      "kind": "challenge",
+      "fen": "rnb1kbnr/ppp1pppp/1q6/8/8/2N5/PPPPPPPP/R1BQKBNR b KQkq - 0 1",
+      "prompt": "Rewind one move: your queen eyes b2 and the pawn looks free. Knowing what you now know — what should you play?",
+      "hints": [
+        "Before grabbing a wing pawn with the queen, count her escape squares from that square. Here she'd have almost none.",
+        "Develop instead. Any healthy developing move is worth far more than the b2 pawn."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Nf6",
+              "say": "Correct — a developing move, and the b2 pawn stays exactly where it is: poisoned. Masters call b2 and b7 'poisoned pawns' precisely because the queen who takes them so often never comes home."
+            }
+          ]
+        },
+        {
+          "line": [
+            {
+              "san": "Nc6",
+              "say": "Development instead of greed. Strong players do sometimes take on b2 — but only after counting every escape square, which is exactly the calculation most players skip."
+            }
+          ]
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Qxb2",
+          "say": "And we are back to Rb1! trapping her. The pawn was bait: one pawn for a queen is the worst trade in chess. Count the escape squares BEFORE the raid, not after."
+        }
+      ],
+      "wrongSay": "The lesson of this whole exercise: don't send the queen where she has no exits. Play a normal move.",
+      "successSay": "Poisoned pawns punish greed. Now you'll count flight squares before every raid — yours and theirs."
+    }
+  ]
+}

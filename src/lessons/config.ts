@@ -155,6 +155,12 @@ export const LESSONS: LessonMeta[] = [
   { id: 'back-rank-mates', topic: 'tactics', level: 4, estMinutes: 6,
     title: 'Back-Rank Mates',
     subtitle: 'A trapped king behind its own pawns is a target.' },
+  { id: 'trapped-pieces', topic: 'tactics', level: 4, estMinutes: 6,
+    title: 'Trapped Pieces',
+    subtitle: 'A piece with no safe square is already lost.' },
+  { id: 'defensive-resources', topic: 'tactics', level: 5, estMinutes: 7,
+    title: 'Defensive Resources',
+    subtitle: 'Only moves, counter-blows, and saving the game with checks.' },
 
   // ——— Strategy (Levels 4–5) ———
   { id: 'open-files-and-rooks', topic: 'strategy', level: 4, estMinutes: 6,
@@ -206,6 +212,9 @@ export const LESSONS: LessonMeta[] = [
   { id: 'greek-gift', topic: 'mating-patterns', level: 5, estMinutes: 8,
     title: 'The Greek Gift',
     subtitle: 'Bxh7+!! — the most famous sacrifice in chess, start to mate.' },
+  { id: 'more-mating-nets', topic: 'mating-patterns', level: 5, estMinutes: 7,
+    title: 'More Mating Nets',
+    subtitle: 'Six more finishing pictures every attacker should own.' },
 
   // ——— Combinations (Levels 4–5) ———
   { id: 'zwischenzug', topic: 'combinations', level: 4, estMinutes: 6,
@@ -220,6 +229,12 @@ export const LESSONS: LessonMeta[] = [
   { id: 'desperado-and-mad-rook', topic: 'combinations', level: 5, estMinutes: 7,
     title: 'Desperado & the Mad Rook',
     subtitle: 'Doomed pieces sell themselves — sometimes for half a point.' },
+  { id: 'quiet-moves', topic: 'combinations', level: 5, estMinutes: 7,
+    title: 'Quiet Moves',
+    subtitle: 'The hardest moves to find make no noise at all.' },
+  { id: 'counting-exchanges', topic: 'combinations', level: 5, estMinutes: 6,
+    title: 'Counting Exchanges',
+    subtitle: 'Play the whole capture sequence in your head before move one.' },
 
   // ——— Opening Traps (Level 4) ———
   { id: 'lasker-trap', topic: 'opening-traps', level: 4, estMinutes: 7,

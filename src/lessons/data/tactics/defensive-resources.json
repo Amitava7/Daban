@@ -1,0 +1,138 @@
+{
+  "id": "defensive-resources",
+  "title": "Defensive Resources",
+  "topic": "tactics",
+  "level": 5,
+  "subtitle": "Only moves, counter-blows, and saving the game with checks.",
+  "goals": [
+    "Find the single move that survives",
+    "Answer a threat with a bigger threat",
+    "Rescue lost positions with perpetual check"
+  ],
+  "estMinutes": 7,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "6k1/6p1/4p3/7Q/8/1r6/8/K7 w - - 0 1",
+      "say": "Every lesson so far has been about attacking. This one is about the other half of chess — the half that decides most games between club players. Three defensive skills: finding the ONLY move, meeting a threat with a bigger one, and — when the position is truly lost — forcing a draw by perpetual check. White is a whole rook down here. Watch what he can still do.",
+      "highlights": [
+        "h5",
+        "e8",
+        "g8"
+      ]
+    },
+    {
+      "kind": "challenge",
+      "fen": "6k1/6p1/4p3/7Q/8/1r6/8/K7 w - - 0 1",
+      "prompt": "You're a rook down and losing. Save the half-point — start the perpetual!",
+      "hints": [
+        "You cannot win. You can, however, check forever — if every check leaves the king exactly one square.",
+        "Qe8+ forces Kh7 (the only legal move), and Qh5+ forces the king straight back to g8. Repetition = draw."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Qe8+",
+              "say": "Check along the back rank — and the king has exactly ONE legal answer..."
+            },
+            {
+              "san": "Kh7"
+            },
+            {
+              "san": "Qh5+",
+              "say": "...and now the h-file check forces him straight back. One legal move again."
+            },
+            {
+              "san": "Kg8"
+            },
+            {
+              "san": "Qe8+",
+              "say": "The position has repeated. Black is a rook up and cannot escape the checks: if he ever blocks, he loses the blocking piece; if he runs, there is nowhere to run. Draw by repetition — half a point rescued from a lost game."
+            }
+          ],
+          "assert": "check"
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Qh6",
+          "say": "A quiet approach move: Black answers ...Rb1+ and mates or queens. In a lost position the ONLY plan is a forced series of checks — Qe8+ starts it."
+        },
+        {
+          "san": "Qd5",
+          "say": "You centralize instead of checking — and ...Rb1+ follows, converting the extra rook at leisure. Only forcing checks matter here."
+        }
+      ],
+      "wrongSay": "Lost positions are saved by checks, not by good moves. Which check leaves the king one square?",
+      "successSay": "Perpetual check: the swindler's parachute. Before you resign, always count your checks."
+    },
+    {
+      "kind": "challenge",
+      "fen": "6k1/5ppp/8/8/8/8/5PPP/3R2K1 b - - 0 1",
+      "prompt": "You're Black, facing a back-rank threat with your king boxed in. Defend — permanently.",
+      "hints": [
+        "Rd8+ is coming, and you have nothing on the back rank to stop it. Make a door for the king instead.",
+        "h6 (or g6) gives the king air. One pawn move and the back rank threat is gone forever."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "h6",
+              "say": "Luft. Now Rd8+ is met by Kh7 and White has achieved nothing. The cheapest defensive move in chess: spend one tempo, delete an entire family of threats."
+            }
+          ]
+        },
+        {
+          "line": [
+            {
+              "san": "g6",
+              "say": "Air on the other flank — the back rank is no longer a mating square, and the king can breathe on g7."
+            }
+          ]
+        }
+      ],
+      "rejections": [
+        {
+          "san": "f6",
+          "say": "It opens f7 for the king, but weakens e6 and the a2–g8 diagonal permanently — and after Rd8+ Kf7 the king is out in the open. The safest luft comes from the ROOK pawn: h6."
+        }
+      ],
+      "wrongSay": "The threat is mate on the back rank. Give your king a square before it becomes urgent.",
+      "successSay": "Prophylactic defence: fix the weakness before the attack arrives, not during it."
+    },
+    {
+      "kind": "challenge",
+      "fen": "r4rk1/ppp2ppp/8/3q4/8/2P5/PP3PPP/R2Q1RK1 w - - 0 1",
+      "prompt": "Black's queen has invaded on d5, eyeing your loose pieces. Don't cower — challenge her!",
+      "hints": [
+        "Retreating or bracing leaves her dominating the board. Can you challenge the invader directly?",
+        "Qxd5 offers the trade on your terms — an invader is only strong while she is allowed to stay."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Qxd5",
+              "say": "The simplest defence in chess: trade off the attacker. An invading queen with no partners is just a piece — and once she is gone, every threat she carried disappears with her."
+            }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "rejections": [
+        {
+          "san": "f3",
+          "say": "A defensive pawn move that weakens the king's diagonal and does nothing about the queen. When defending, prefer moves that CHALLENGE the attacker over moves that merely brace for it."
+        },
+        {
+          "san": "b3",
+          "say": "It guards nothing that matters and creates a new hole on c3. Passive defence loses slowly; active defence — trade or challenge — ends the problem."
+        }
+      ],
+      "wrongSay": "You have two active answers: trade her off, or hit her with a rook. Pick one.",
+      "successSay": "Trade, challenge, or counterattack — three active defences, all better than shuffling."
+    }
+  ]
+}

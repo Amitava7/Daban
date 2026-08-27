@@ -1,0 +1,97 @@
+{
+  "id": "counting-exchanges",
+  "title": "Counting Exchanges",
+  "topic": "combinations",
+  "level": 5,
+  "subtitle": "Play the whole capture sequence in your head before move one.",
+  "goals": [
+    "Count attackers and defenders on a square",
+    "Follow the sequence to the end before capturing",
+    "See why equal numbers can still lose material"
+  ],
+  "estMinutes": 6,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "3r2k1/pp3ppp/2n5/3p4/8/2N1B3/PP3PPP/3R2K1 w - - 0 1",
+      "say": "Every capture you will ever consider is really a question about a SEQUENCE: I take, he takes, I take, he takes — who is ahead when the smoke clears? The method: list the attackers, list the defenders, then play the trades out in your head, cheapest piece first, adding up the points. Do it once slowly here and it becomes automatic forever.",
+      "highlights": ["d5"]
+    },
+    {
+      "kind": "challenge",
+      "fen": "3r2k1/pp3ppp/2n5/3p4/8/2N1B3/PP3PPP/3R2K1 w - - 0 1",
+      "prompt": "Count the d5 pawn: two attackers, one defender. Cash it in!",
+      "hints": [
+        "Attackers: the c3 knight and the d1 rook. Defender: only the d8 rook (the c6 knight does not touch d5).",
+        "More attackers than defenders — and you start with the cheapest piece: Nxd5!"
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Nxd5", "say": "Cheapest attacker first — the knight takes the pawn..." },
+            { "san": "Rxd5" },
+            { "san": "Rxd5", "say": "And your rook recaptures. Add it up: you won a pawn and a rook (6), you lost a knight (3). Net gain: three points, a clean piece for a pawn. Two attackers against one defender always ends in your favour when you start cheap." }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "rejections": [
+        { "san": "Rxd5", "say": "Wrong order! Rxd5 Rxd5 and now Nxd5 leaves you only even — worse, if Black recaptures differently you can end up behind. ALWAYS start a capture sequence with your cheapest attacker." },
+        { "san": "Bd4", "say": "A reasonable-looking move that ignores a free piece. Count every contested square before playing anything quiet: here the arithmetic wins material by force." }
+      ],
+      "wrongSay": "Two attackers, one defender — take with the cheapest attacker and follow the recaptures.",
+      "successSay": "Cheapest attacker first. That single rule is most of exchange counting."
+    },
+    {
+      "kind": "challenge",
+      "fen": "3r1rk1/pp3ppp/2n1b3/3p4/8/2N1B3/PP3PPP/3R1RK1 w - - 0 1",
+      "prompt": "Same pawn, one extra defender. Count again — and play the move the arithmetic actually supports!",
+      "hints": [
+        "Attackers: knight and rook. Defenders: the e6 bishop and the d8 rook. Two versus two — so Black gets the LAST capture.",
+        "Run it: Nxd5 Bxd5 Rxd5 Rxd5 — you gave a knight and a rook (8) for a pawn and a bishop (4). It loses four points. Don't capture: improve instead."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Bd4", "say": "Correct — you didn't take. Play the sequence out and it costs four points: knight and rook (8) for pawn and bishop (4), because with equal numbers the DEFENDER gets the final capture. The bishop improves instead and keeps the pawn under pressure." }
+          ]
+        },
+        {
+          "line": [
+            { "san": "Bf4", "say": "Also right: the capture loses material, so you improved a piece instead. Knowing when NOT to take is exactly the same skill as knowing when to." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "Nxd5", "say": "Bxd5! and the sequence runs against you: Rxd5 Rxd5 leaves you knight-and-rook down for pawn-and-bishop — minus four. Equal attackers and defenders means the defender captures last." },
+        { "san": "Rxd5", "say": "Bxd5 and you have simply lost the exchange for a pawn. When the count is even, the side that captures LAST comes out ahead — and that is Black here." }
+      ],
+      "wrongSay": "Finish the arithmetic before touching the pawn. If the total is negative, find a quiet improving move.",
+      "successSay": "Two versus two is not 'even' — whoever captures last wins the argument."
+    },
+    {
+      "kind": "challenge",
+      "fen": "3r2k1/pp3ppp/2n5/3q4/8/2N1B3/PP3PPP/3R2K1 w - - 0 1",
+      "prompt": "Now the queen occupies the square. Count once more — and take what the position offers!",
+      "hints": [
+        "The target is worth nine points now, and the same two attackers hit it against one defender.",
+        "Nxd5! Rxd5 Rxd5 — the arithmetic is overwhelming."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Nxd5", "say": "The cheapest attacker takes the most valuable target — always the dream trade..." },
+            { "san": "Rxd5" },
+            { "san": "Rxd5", "say": "Final count: you won a queen and a rook (14) for a knight (3). Eleven points. The same counting method that told you to decline last time tells you to charge in here — the method never changes, only the numbers do." }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "rejections": [
+        { "san": "Bd4", "say": "A quiet move while a queen hangs to a knight. Whenever a big piece stands on a contested square, count immediately — this one wins eleven points by force." }
+      ],
+      "wrongSay": "The queen is only defended once and you attack twice. Start with the cheapest attacker.",
+      "successSay": "List attackers, list defenders, play the trades out cheapest-first, add the points. Every time."
+    }
+  ]
+}

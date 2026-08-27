@@ -1,0 +1,142 @@
+{
+  "id": "quiet-moves",
+  "title": "Quiet Moves",
+  "topic": "combinations",
+  "level": 5,
+  "subtitle": "The hardest moves to find make no noise at all.",
+  "goals": [
+    "Look beyond checks and captures",
+    "Create unanswerable threats instead of forcing sequences",
+    "Recognize when zugzwang does the work for you"
+  ],
+  "estMinutes": 7,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "3r3k/7p/3R3Q/8/8/8/7K/8 w - - 0 1",
+      "say": "Every tactic you have learned so far is FORCING — check, capture, threat. That is why they are findable: the candidate list is short. The hardest moves in chess are the opposite. A quiet move gives no check and takes nothing; it simply creates a threat the opponent cannot meet. Grandmasters call these the moves that win games — and engines call them the moves humans miss.",
+      "highlights": [
+        "d6",
+        "d7",
+        "g7"
+      ]
+    },
+    {
+      "kind": "challenge",
+      "fen": "3r3k/7p/3R3Q/8/8/8/7K/8 w - - 0 1",
+      "prompt": "No check wins here. Find the quiet move that leaves Black helpless — mate in two!",
+      "hints": [
+        "Qxh7 is mate only if the h7 pawn's defender is gone; checks along the 6th achieve nothing. Ask instead: what does Black's rook actually defend?",
+        "Rd7! Quiet — no check, no capture — and it threatens Qxh7# while attacking the rook. Black cannot cover both."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Rd7",
+              "say": "The quiet killer. It threatens Qxh7# and simultaneously attacks the d8 rook — Black cannot parry both, and every rook move on the d-file loses to the mate..."
+            },
+            {
+              "san": "Kg8"
+            },
+            {
+              "san": "Qg7#",
+              "say": "Checkmate. The move that won the game was the one that made no noise at all. When checks and captures fail, ask: what quiet move creates TWO threats?"
+            }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Rd8+",
+          "say": "You traded your rook for his and the attack is over. Grabbing at a check is how quiet wins get missed — the rook was worth more on d7 than on d8."
+        },
+        {
+          "san": "Qxh7+",
+          "say": "Kxh7 — the pawn was defended by the king. Recount the defenders before every 'mating' capture: the quiet Rd7 first removes Black's ability to answer."
+        }
+      ],
+      "wrongSay": "Neither check works. Look for a move that threatens mate AND something else at the same time.",
+      "successSay": "Two threats, no check — the anatomy of every good quiet move."
+    },
+    {
+      "kind": "challenge",
+      "fen": "r6k/4RQ1p/8/8/8/8/8/5K2 w - - 0 1",
+      "prompt": "Again: no check mates. Find the silent move that ends it.",
+      "hints": [
+        "The a8 rook is Black's only defender of the back rank. Can you attack it without releasing your grip on the king?",
+        "Ra7! Quiet, and now Rxa8 is unstoppable mate — the rook cannot run without allowing it."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Ra7",
+              "say": "The rook slides across, still guarding the 7th rank and now attacking the last defender. Black is in total zugzwang — every move loses..."
+            },
+            {
+              "san": "h5"
+            },
+            {
+              "san": "Rxa8#",
+              "say": "Checkmate. Black had a full rook and could do nothing with it, because the quiet Ra7 attacked it while the queen kept the king in its box."
+            }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Qxh7+",
+          "say": "Kxh7 and your attack is gone — a queen for a pawn. The defender to remove was the ROOK, and the way to remove it was quiet."
+        },
+        {
+          "san": "Re8+",
+          "say": "Rxe8! and Black is fine. Trading into the defender never works when the defender is the more valuable piece — attack it quietly instead."
+        }
+      ],
+      "wrongSay": "Black's rook is the only thing holding the position. Attack it without giving check.",
+      "successSay": "Quiet moves that attack the last defender are the cleanest wins in chess."
+    },
+    {
+      "kind": "challenge",
+      "fen": "6k1/6p1/6K1/7Q/8/8/8/8 w - - 0 1",
+      "prompt": "Pure zugzwang: Black has only a king and a pawn, and every move loses. Find the waiting move that mates in two!",
+      "hints": [
+        "Do not check — a check would give the king somewhere to go. Instead take away his squares and hand him the move.",
+        "Qh4! Now ...Kf8 (his only king move) allows Qd8#, and any pawn move allows mate too."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Qh4",
+              "say": "The waiting move. Black is not in check — and that is exactly the problem: he must move, and every single move walks into mate..."
+            },
+            {
+              "san": "Kf8"
+            },
+            {
+              "san": "Qd8#",
+              "say": "Checkmate by zugzwang. The queen never gave a check until the last move; she simply removed every square and made Black move himself into the grave. That is the deepest kind of quiet move."
+            }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Qd5+",
+          "say": "Check — and the king escapes to h6 or f8 with time to breathe. Checking a boxed-in king RELEASES him. Take his moves away instead and let him do the work."
+        },
+        {
+          "san": "Qh7+",
+          "say": "Kf8! and the king walks out of the box. Against a king with no squares, every check is a favour — the winning move is one that simply waits."
+        }
+      ],
+      "wrongSay": "Checking releases the king. Find the waiting move that leaves him no legal move that survives.",
+      "successSay": "Zugzwang: your opponent's obligation to move is your best attacking piece."
+    }
+  ]
+}
