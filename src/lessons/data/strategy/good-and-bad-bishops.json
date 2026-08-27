@@ -1,0 +1,71 @@
+{
+  "id": "good-and-bad-bishops",
+  "title": "Good and Bad Bishops",
+  "topic": "strategy",
+  "level": 4,
+  "subtitle": "Your pawns decide whether your bishop is a piece or a spectator.",
+  "goals": [
+    "Tell a good bishop from a bad one instantly",
+    "Place pawns off your bishop's colour",
+    "Rescue a bad bishop by re-routing it"
+  ],
+  "estMinutes": 6,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "6k1/pp3pp1/2p1b2p/2Pp4/3P4/4B1P1/PP3P1P/6K1 w - - 0 1",
+      "say": "A 'bad' bishop is not a weaker piece — it is a bishop trapped behind its OWN pawns. Look at Black's bishop on e6: his pawns sit on d5 and c6, light squares, exactly where the bishop wants to go. Now look at yours on e3: your pawns are on dark... no, on c5 and d4 — also dark. Whichever bishop has fewer of its own pawns in the way is the good one, and the whole plan of the position follows from that single judgment.",
+      "highlights": ["e6", "d5", "c6", "e3"]
+    },
+    {
+      "kind": "challenge",
+      "fen": "6k1/pp3pp1/2p1b2p/2Pp4/3P4/4B1P1/PP3P1P/6K1 w - - 0 1",
+      "prompt": "Black's bishop is hemmed in by his own pawns on c6 and d5. Activate YOUR bishop on the free diagonal!",
+      "hints": [
+        "Your bishop wants a diagonal that your own pawns don't block. The kingside dark squares are wide open.",
+        "Bf4 takes the b8–h2 diagonal, where nothing of yours stands in the way."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Bf4", "say": "Your bishop breathes; his does not. That asymmetry — one bishop with open diagonals, one staring at its own pawn chain — is worth more than a pawn in the long run, and it decides the plan: trade rooks, reach an endgame, and win with the better minor piece." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "b4", "say": "Careful: this puts another pawn on a dark square, the same colour as your bishop — the first step toward making it bad. Keep YOUR pawns off your bishop's colour." },
+        { "san": "Bd2", "say": "Passive: from d2 the bishop looks at its own pawn on d4. Every bishop move should ask 'is this diagonal open?', and this one isn't." }
+      ],
+      "wrongSay": "Put your bishop on a diagonal your own pawns don't block.",
+      "successSay": "Good bishop, bad bishop — the difference is just which squares your pawns occupy."
+    },
+    {
+      "kind": "challenge",
+      "fen": "6k1/pp3pp1/3pb2p/2p5/2P5/3PB1P1/PP3P1P/6K1 w - - 0 1",
+      "prompt": "Now YOUR bishop is the bad one — your d3 and c4 pawns block it. Start the re-route!",
+      "hints": [
+        "You can't move the pawns quickly, so move the bishop instead: find a route to the other side of your own pawn chain.",
+        "Bd2 heads for c3 or b4 — outside the chain, where it finally has a diagonal."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Bd2", "say": "The re-route begins. A bad bishop is not a permanent condition — it's a placement problem. Two tempi spent walking the bishop around your own pawns will often be the best two moves in the position." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "d4", "say": "This fixes MORE pawns on dark squares, permanently entombing your bishop. When your bishop is bad, never add pawns to its colour — either move the pawns off it or re-route the bishop." },
+        { "san": "Bf4", "say": "It looks active, but ...g5 or ...e5 kicks it and you've lost time. The healthy plan is the patient one: walk the bishop out via d2." }
+      ],
+      "wrongSay": "Your own pawns block the bishop. Walk it around them.",
+      "successSay": "Re-route the bishop or move the pawns — a bad bishop is a problem you can always solve."
+    },
+    {
+      "kind": "intro",
+      "fen": "6k1/pp3pp1/2p1b2p/2Pp4/3P4/4B1P1/PP3P1P/6K1 w - - 0 1",
+      "say": "The rule to carry into every game: **put your pawns on the opposite colour to your bishop.** It makes your bishop good, gives your pawns protection your bishop cannot provide anyway, and — when you have to choose which minor piece to keep — tells you instantly which one is actually working.",
+      "highlights": ["d5", "c6", "e6"]
+    }
+  ]
+}

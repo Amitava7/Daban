@@ -39,6 +39,11 @@ const REGISTRY: Record<string, () => Lesson> = {
   'passed-pawns': () => require('./data/strategy/passed-pawns.json'),
   'knight-outposts': () => require('./data/strategy/knight-outposts.json'),
   'weak-squares-and-holes': () => require('./data/strategy/weak-squares-and-holes.json'),
+  'the-bishop-pair': () => require('./data/strategy/the-bishop-pair.json'),
+  'good-and-bad-bishops': () => require('./data/strategy/good-and-bad-bishops.json'),
+  'isolated-queens-pawn': () => require('./data/strategy/isolated-queens-pawn.json'),
+  'minority-attack': () => require('./data/strategy/minority-attack.json'),
+  'prophylaxis': () => require('./data/strategy/prophylaxis.json'),
   // Endgames
   'king-and-pawn-endgames': () => require('./data/endgames/king-and-pawn-endgames.json'),
   'the-opposition': () => require('./data/endgames/the-opposition.json'),

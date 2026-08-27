@@ -1,0 +1,71 @@
+{
+  "id": "prophylaxis",
+  "title": "Prophylaxis",
+  "topic": "strategy",
+  "level": 5,
+  "subtitle": "Ask what your opponent wants — then take it away.",
+  "goals": [
+    "Find the opponent's best idea before your own",
+    "Spend a tempo to kill a plan permanently",
+    "Recognize when prevention beats action"
+  ],
+  "estMinutes": 7,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "r1bq1rk1/pp2ppbp/2np1np1/8/2BNP3/2N1B3/PPP2PPP/R2Q1RK1 w - - 0 1",
+      "say": "Nimzowitsch's great idea, and the habit that separates strong players from everyone else: before choosing your move, ask what your OPPONENT would play if it were their turn — then consider simply preventing it. A prophylactic move often looks like it does nothing. What it does is delete an entire plan from the position, permanently.",
+      "highlights": ["g4", "c4", "e3"]
+    },
+    {
+      "kind": "challenge",
+      "fen": "r1bq1rk1/pp2ppbp/2np1np1/8/2BNP3/2N1B3/PPP2PPP/R2Q1RK1 w - - 0 1",
+      "prompt": "Ask the prophylactic question: what does Black want? Then stop it!",
+      "hints": [
+        "Black's most annoying idea is ...Ng4, hitting your e3 bishop and dragging your position around. Take the square away before he gets there.",
+        "h3 — one modest pawn move deletes ...Ng4 forever."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "h3", "say": "Prophylaxis. The move creates no threat and wins no material — it simply removes Black's most natural active idea from the board for the rest of the game. Nimzowitsch: 'the threat is stronger than the execution' applies to your opponent's threats too. Kill them before they exist." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "f4", "say": "Ambitious — and after ...Ng4! your bishop is harassed and the e4 pawn hangs. Grabbing space before dealing with the opponent's key square is how good positions collapse." },
+        { "san": "Qd2", "say": "A natural developing move that walks into ...Ng4, when your bishop must move again. Ask what Black wants FIRST; the developing move will still be there next turn." }
+      ],
+      "wrongSay": "Which black knight jump would irritate you most? Take that square away.",
+      "successSay": "The prophylactic question: 'what does he want?' Ask it every single move."
+    },
+    {
+      "kind": "challenge",
+      "fen": "r1bq1rk1/pp3ppp/2n2n2/2bpp3/8/2N1PN2/PPPPBPPP/R1BQ1RK1 w - - 0 1",
+      "prompt": "Black's bishop on c5 eyes your king. Prevent the invasion before it starts!",
+      "hints": [
+        "Black would love ...Bb4 or ...Ng4-e3 style ideas, and his bishop is the most annoying piece. Which pawn move takes squares from it?",
+        "a3 removes b4 from the bishop and prepares b4 to chase it entirely."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "a3", "say": "A quiet pawn move that takes b4 from the bishop and prepares to gain a tempo with b2–b4. Prophylaxis is rarely spectacular — it is a tempo spent to make your opponent's pieces worse for the next thirty moves." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "d4", "say": "A central advance that opens lines toward your own king while Black's pieces are the better placed. Before opening the position, remove the enemy's best-placed piece from its best square." },
+        { "san": "Nxd5", "say": "A capture that helps Black: ...Nxd5 activates his pieces and opens the e-file toward your king. Not every capture is progress — ask what it does for HIM." }
+      ],
+      "wrongSay": "Take a square away from Black's most active piece.",
+      "successSay": "Prevention costs a tempo and saves a game. That is the trade prophylaxis always offers."
+    },
+    {
+      "kind": "intro",
+      "fen": "r1bq1rk1/pp2ppbp/2np1np1/8/2BNP3/2N1B3/PPP2PPP/R2Q1RK1 w - - 0 1",
+      "say": "Build the habit with three questions, in this order, every move: (1) What is my opponent threatening RIGHT NOW? (2) What does he want to do NEXT? (3) Only then — what do I want? Most blunders below master level come from skipping straight to question three.",
+      "highlights": ["g4", "h3"]
+    }
+  ]
+}

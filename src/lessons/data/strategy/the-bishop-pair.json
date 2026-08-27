@@ -1,0 +1,91 @@
+{
+  "id": "the-bishop-pair",
+  "title": "The Bishop Pair",
+  "topic": "strategy",
+  "level": 4,
+  "subtitle": "Two bishops cover every square on the board — keep them.",
+  "goals": [
+    "Value the bishop pair correctly",
+    "Open the position when you hold it",
+    "Decline trades that give it away"
+  ],
+  "estMinutes": 6,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "r4rk1/pp3ppp/2n1b3/8/8/2N1B3/PP3PPP/R4RK1 w - - 0 1",
+      "say": "One bishop sees half the board forever. TWO bishops see all of it — and that difference is worth roughly half a pawn in most positions, more as the board opens. Strong players treat the bishop pair as a real material advantage: they avoid trading either one, and they open lines to make them count. The corollary matters just as much: when your opponent has the pair, trade one off at the first chance.",
+      "highlights": [
+        "e3",
+        "c3"
+      ]
+    },
+    {
+      "kind": "challenge",
+      "fen": "r4rk1/pp3ppp/2n1b3/8/8/2N1B3/PP3PPP/R4RK1 w - - 0 1",
+      "prompt": "Your bishop is eyed by Black's knight and bishop. Keep it — and improve it!",
+      "hints": [
+        "Every trade of a bishop hands away half of your future advantage. Find a square where the bishop is both safe and active.",
+        "Bc5 grabs an active diagonal, hits f8 and keeps the pair intact."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Bc5",
+              "say": "The bishop steps to an aggressive square and — crucially — stays on the board. Every exchange you decline here preserves an advantage that grows as pawns come off. 'Two bishops' is not a slogan; it's a half-pawn you can bank."
+            }
+          ]
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Bd4",
+          "say": "Also safe, but it invites ...Nxd4 and suddenly you're down to one bishop. Before every bishop move, ask: does this square offer a trade my opponent WANTS?"
+        },
+        {
+          "san": "Nd5",
+          "say": "A fine-looking knight move that ignores the real asset. With two bishops your plan is to keep them and open lines — knight play comes second."
+        }
+      ],
+      "wrongSay": "Move the bishop somewhere active where it cannot be traded off.",
+      "successSay": "Keep the pair, open the board — the two halves of the same plan."
+    },
+    {
+      "kind": "challenge",
+      "fen": "r4rk1/pp3ppp/4b3/3n4/8/2B1B3/PP3PPP/R4RK1 w - - 0 1",
+      "prompt": "You hold both bishops against bishop and knight. Play the move that makes them bite!",
+      "hints": [
+        "Bishops love open diagonals. Which move puts a bishop on the long diagonal and eyes both wings?",
+        "Bd2–c3 style ideas are slow; here Bc5 grabs an open diagonal at once and keeps both bishops."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Bc5",
+              "say": "The bishops now rake diagonals across the whole board, and Black's knight has no protected square in front of them. This is the pair converting: not by tactics, but by controlling squares neither bishop could reach alone."
+            }
+          ]
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Bxa7",
+          "say": "A pawn grab that walks into ...Ra8 trapping the bishop — and even if it escaped, you'd be trading your greatest asset for a wing pawn. With the pair, patience beats greed."
+        }
+      ],
+      "wrongSay": "Activate a bishop along a long diagonal without trading anything.",
+      "successSay": "Two bishops on open diagonals beat bishop-and-knight in almost every endgame."
+    },
+    {
+      "kind": "intro",
+      "fen": "r4rk1/pp3ppp/2n1b3/8/8/2N1B3/PP3PPP/R4RK1 w - - 0 1",
+      "say": "The practical rules: (1) With the pair, open the position and avoid trades. (2) Against the pair, trade one bishop even at the cost of a tempo, or keep the position closed so the bishops bump into pawns. (3) In endgames, two bishops beat bishop-and-knight so consistently that many strong players will decline a pawn to keep them.",
+      "highlights": [
+        "c3",
+        "e3"
+      ]
+    }
+  ]
+}
