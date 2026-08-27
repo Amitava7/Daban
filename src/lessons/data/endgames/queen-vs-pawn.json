@@ -1,0 +1,102 @@
+{
+  "id": "queen-vs-pawn",
+  "title": "Queen vs. Pawn",
+  "topic": "endgames",
+  "level": 5,
+  "subtitle": "Stop a pawn one step from promotion.",
+  "goals": [
+    "Win with the check-and-approach spiral",
+    "Convert the frozen moments into king steps",
+    "Know the bishop-pawn and rook-pawn draws"
+  ],
+  "estMinutes": 6,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "8/8/1K6/7Q/8/8/4pk2/8 w - - 0 1",
+      "say": "You won the pawn race and queened first — but the enemy pawn stands one step from its own coronation, and your king is far away. Queen versus pawn on the seventh: usually a win, but only with exact technique — and two famous pawns can hold a DRAW. Time to learn both sides.",
+      "highlights": ["e2", "e1"]
+    },
+    {
+      "kind": "challenge",
+      "fen": "8/8/1K6/7Q/8/8/4pk2/8 w - - 0 1",
+      "prompt": "The queen can't stop the pawn from afar forever — your king must help. Start the winning machine: check, and force the king IN FRONT of his own pawn!",
+      "hints": [
+        "The pawn only promotes when its king steps aside. Check him until he's forced onto e1 — blocking his own pawn — then your king gets a free step.",
+        "Qf5+ drives the king to the fatal square, then march: Kc5!"
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Qf5+", "say": "Check — and the king's only reasonable shelter is in front of his own pawn..." },
+            { "san": "Ke1" },
+            { "san": "Kc5", "say": "THE trick: with the king self-blocked on e1, the pawn is frozen — so this moment is a free step for YOUR king. Repeat the spiral: check, force the block, step closer." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "Kc5", "say": "e1=Q! You strolled while the pawn crowned — now it's a queen ending and the win is gone. The king may only approach during the FROZEN moments; force the block first with checks." },
+        { "san": "Qe5", "say": "It eyes the pawn, but Kf1! and next the pawn promotes under escort — no check, no frozen moment, no time. Every move must force something." }
+      ],
+      "wrongSay": "Check the king toward e1 — only when he blocks his own pawn do you earn a king step.",
+      "successSay": "Check, block, step — the spiral that reels your king in from anywhere on the board."
+    },
+    {
+      "kind": "challenge",
+      "fen": "8/8/8/2K5/5Q2/8/4p3/4k3 w - - 0 1",
+      "prompt": "The spiral continues: the king is blocked on e1 and yours is closing in. Play the full squeeze!",
+      "hints": [
+        "The pawn is frozen while its king stands on e1 — take another free step, and be ready to re-check when he unblocks.",
+        "Kd4! If the king slips out to d1, pin the pawn from f1 and f2 — it can never promote while pinned to its king."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Kd4", "say": "Another free step — and watch: Black's king has exactly ONE legal move..." },
+            { "san": "Kd1" },
+            { "san": "Qf1+", "say": "Check! — covering the queening square at the same time..." },
+            { "san": "Kd2" },
+            { "san": "Qf2", "say": "The pin! The pawn is nailed to its king and can never promote — while your king strolls to e3 or d3 next move to end everything. The squeeze is complete." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "Qf1+", "say": "Kxf1! The queen stepped adjacent to the king with no protection — check, capture, draw. She keeps her distance until your own king backs her up." },
+        { "san": "Kd5", "say": "A step in the wrong rhythm — every approach must come during a frozen moment or with a concrete follow-up. Kd4 kept the king in the box." }
+      ],
+      "wrongSay": "Free step now, then answer the unblock with checks and the f-file pin.",
+      "successSay": "Frozen king, pinned pawn, marching monarch — the complete winning method against a center pawn."
+    },
+    {
+      "kind": "challenge",
+      "fen": "8/8/8/8/6Q1/8/2K1p3/4k3 w - - 0 1",
+      "prompt": "Your king has arrived. Finish with precision — one natural-looking move throws the win away!",
+      "hints": [
+        "Careful: the pawn is defended by its king. Look for the quiet move that ends everything at once.",
+        "Qg1 — check on the back rank while your king covers d1 and d2. Count every escape."
+      ],
+      "goal": { "type": "checkmate" },
+      "solutions": [
+        {
+          "line": [
+            { "san": "Qg1#", "say": "Checkmate! The back-rank check meets your king's coverage of d1 and d2 — the pawn never got to be anything but a bystander. Technique to the very last move." }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "rejections": [
+        { "san": "Qxe2+", "say": "Kxe2!! The pawn was defended by its king — you just handed back the queen and the game is a draw. At the finish line, greed is fatal: the quiet Qg1 was mate." }
+      ],
+      "wrongSay": "Not the pawn — the KING. One queen move mates immediately.",
+      "successSay": "Won with a mate, not a grab. The last move of good technique is always the safest one."
+    },
+    {
+      "kind": "explain",
+      "fen": "8/8/8/6K1/8/3Q4/2p5/1k6 b - - 0 1",
+      "say": "Now the exception every strong player knows: the BISHOP PAWN (c- or f-file). Watch Black's fiendish defense — White's queen attacks the pawn, and Black...",
+      "autoMoves": [
+        { "san": "Ka1", "say": "...dives into the corner! Now Qxc2 is STALEMATE — a2, b1 and b2 are all covered, but there's no check. And any other try lets the pawn keep threatening to queen. With White's king this far away: DRAW. The same trick works for rook pawns (a/h) — but never for center or knight pawns. Know your exceptions!" }
+      ]
+    }
+  ]
+}

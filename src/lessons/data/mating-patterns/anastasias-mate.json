@@ -1,0 +1,139 @@
+{
+  "id": "anastasias-mate",
+  "title": "Anastasia's Mate",
+  "topic": "mating-patterns",
+  "level": 5,
+  "subtitle": "Knight seals the escape, queen sac opens the h-file.",
+  "goals": [
+    "Post the knight on e7 to seal g8 and g6",
+    "Sacrifice the queen on h7",
+    "Deliver the rook mate on the h-file"
+  ],
+  "estMinutes": 7,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "r4rk1/pp3ppp/2b5/3N3Q/8/4R3/P4PPP/6K1 w - - 0 1",
+      "say": "Named after the 1803 novel 'Anastasia und das Schachspiel', this is the most elegant of all h-file mates. The star is a knight on e7: from there it covers BOTH g8 and g6 — the king's front door and back door. With those sealed, a queen sacrifice on h7 drags the king into the open, and a rook arrives on the h-file to finish. Three pieces, perfect choreography.",
+      "highlights": [
+        "e7",
+        "g8",
+        "g6",
+        "h7"
+      ]
+    },
+    {
+      "kind": "challenge",
+      "fen": "r4r2/pp2Nppk/2b5/8/8/4R3/P4PPP/6K1 w - - 0 3",
+      "prompt": "Warm up with the final picture: the queen has already given herself on h7 and the king took. One rook move ends it.",
+      "hints": [
+        "The e7 knight seals g8 and g6; the g7 pawn blocks its own king. What's left?",
+        "Swing the rook to the h-file."
+      ],
+      "goal": {
+        "type": "checkmate"
+      },
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Rh3#",
+              "say": "That's the picture: rook checks the file, knight owns both g-squares, the king's own pawn completes the coffin. Now let's build it from scratch."
+            }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "wrongSay": "Every escape is pre-sealed — the rook just has to arrive. Which file?",
+      "successSay": "Finishing picture memorized. Now the full five-move choreography."
+    },
+    {
+      "kind": "challenge",
+      "fen": "r4rk1/pp3ppp/2b5/3N3Q/8/4R3/P4PPP/6K1 w - - 0 1",
+      "prompt": "The full Anastasia. Rook lifted to e3, queen on h5, knight ready. Five moves — begin with the knight!",
+      "hints": [
+        "The knight must seal the king's escape squares BEFORE the sacrifice: which jump covers both g8 and g6?",
+        "Ne7+! Then give the whole queen on h7 — the king must take — and swing the rook to h3."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Ne7+",
+              "say": "The seal. From e7 the knight controls g8 AND g6 — the king's only reply is the corner."
+            },
+            {
+              "san": "Kh8"
+            },
+            {
+              "san": "Qxh7+",
+              "say": "The queen gives herself to tear the king out of his shell — he MUST capture..."
+            },
+            {
+              "san": "Kxh7"
+            },
+            {
+              "san": "Rh3#",
+              "say": "Anastasia's Mate. The rook checks down the h-file; g8 and g6 belong to the knight; g7 is the king's own pawn. A full queen invested, a full point collected."
+            }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Rh3",
+          "say": "The rook arrives before the doors are locked — Black just plays ...g6! hitting your queen, and the king breathes through g7. The KNIGHT seals first: Ne7+!"
+        },
+        {
+          "san": "Qxh7+",
+          "say": "Kxh7 and the king strolls back via g6 or g8 — nothing was sealed! The knight check comes FIRST; the sacrifice only works against a king in a locked room."
+        }
+      ],
+      "wrongSay": "Lock the room, then burn it: knight seals, queen sacrifices, rook mates.",
+      "successSay": "Ne7+, Qxh7+!!, Rh3# — say it like a spell. You'll cast it in a real game someday."
+    },
+    {
+      "kind": "challenge",
+      "fen": "6k1/pp6/4r3/8/3n3q/2B5/PP3PPP/5RK1 b - - 0 1",
+      "prompt": "Now from the BLACK side — same pattern, mirrored. Your knight, your queen sac, your rook. Five moves to mate the white king!",
+      "hints": [
+        "Mirror the choreography: which knight jump checks the king AND seals g1 plus g3?",
+        "Ne2+!, then Qxh2+!! forces Kxh2, and your rook slides to h6 for mate."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Ne2+",
+              "say": "The seal, upside down: from e2 the knight owns g1 and g3."
+            },
+            {
+              "san": "Kh1"
+            },
+            {
+              "san": "Qxh2+",
+              "say": "The mirror sacrifice — White's king must take..."
+            },
+            {
+              "san": "Kxh2"
+            },
+            {
+              "san": "Rh6#",
+              "say": "Anastasia in reverse. Patterns have no color: once the shape lives in your head, you'll execute it — and see it coming — from either side of the board."
+            }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Qxh2+",
+          "say": "Kxh2 and the king escapes via g1 — unsealed! Knight first, always: Ne2+ locks both dark squares before the queen invests herself."
+        }
+      ],
+      "wrongSay": "Same spell, other color: knight to e2 with check, queen sac on h2, rook to h6.",
+      "successSay": "Executed from both sides — Anastasia's Mate is now permanently yours."
+    }
+  ]
+}

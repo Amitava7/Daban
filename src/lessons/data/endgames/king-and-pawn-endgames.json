@@ -1,0 +1,120 @@
+{
+  "id": "king-and-pawn-endgames",
+  "title": "King & Pawn Endgames",
+  "topic": "endgames",
+  "level": 4,
+  "subtitle": "The square of the pawn, and escorting it home.",
+  "goals": [
+    "Use the square rule to catch runners",
+    "Escort pawns with the king in front",
+    "Win races with the outside passer decoy"
+  ],
+  "estMinutes": 6,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "8/8/8/8/P4k2/8/8/7K b - - 0 1",
+      "say": "In pawn endgames the king transforms: from hunted to hunter. Two skills decide almost every one: counting whether a king can CATCH a running pawn, and using your king as the escort your own pawn needs. Master these and 'equal' endgames become wins.",
+      "highlights": ["a4", "a8", "e8", "e4"]
+    },
+    {
+      "kind": "challenge",
+      "fen": "8/8/8/8/P4k2/8/8/7K b - - 0 1",
+      "prompt": "White's a-pawn is sprinting and your king is the only defense. Can you catch it? Use the SQUARE rule!",
+      "hints": [
+        "Draw a square from the pawn to its queening rank: a4–a8–e8–e4. If your king can step INSIDE it, the pawn is caught.",
+        "e4 and e5 are inside the square. Anything further right is a spectator's seat."
+      ],
+      "highlights": ["e4", "e8", "a8"],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Ke4", "say": "Inside the square! Now for every pawn step your king takes one too — mathematically guaranteed to arrive in time." }
+          ]
+        },
+        {
+          "line": [
+            { "san": "Ke5", "say": "Inside the square on the diagonal — the fastest route in king geometry. The pawn will be met at the door." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "Kf5", "say": "One square outside! Count it: a5, a6, a7, a8 — your king arrives exactly one move late and the pawn queens. The square rule is unforgiving arithmetic." }
+      ],
+      "wrongSay": "Visualize the box from a4 to e8. Your king must step INSIDE it this very move.",
+      "successSay": "No more move-by-move counting — one glance at the square tells you catch or no catch."
+    },
+    {
+      "kind": "challenge",
+      "fen": "8/4k3/8/8/4P3/8/4K3/8 w - - 0 1",
+      "prompt": "Your pawn wants to promote — but pawns can't walk alone. Which piece leads the parade?",
+      "hints": [
+        "Golden rule: the KING leads, the pawn follows. A pawn ahead of its escort gets blockaded and eaten.",
+        "Bring your king up in front of the pawn before pushing anything."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Ke3", "say": "The escort takes the lead. The king will clear the road ahead; the pawn strolls safely behind. This order — king first — wins; the reverse draws." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "e5", "say": "Ke6! The black king blockades in front, your king is too far behind to help, and the pawn is frozen — then lost. Pawns ahead of their king are orphans." }
+      ],
+      "wrongSay": "Don't touch the pawn yet — the king must get in front of it first.",
+      "successSay": "King endings are footraces where the king is the star. The pawn is just the trophy."
+    },
+    {
+      "kind": "challenge",
+      "fen": "5k2/8/5K2/4P3/8/8/8/8 w - - 0 1",
+      "prompt": "Your king stands proudly ahead of its pawn — the winning setup. Now convert: escort the pawn all the way!",
+      "hints": [
+        "With the king on the 6th rank in front of the pawn, this is ALWAYS winning. Advance the pawn under the king's wing.",
+        "Push e6, and when the black king blocks on e8, push e7 — he'll have to step aside, and your king shields the coronation."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "e6", "say": "Forward, behind the king's shield..." },
+            { "san": "Ke8" },
+            { "san": "e7", "say": "The pawn reaches the seventh — protected by your king — and Black is in zugzwang: he MUST abandon the queening square." },
+            { "san": "Kd7" },
+            { "san": "Kf7", "say": "The king takes the last guard post: e8 is secured, and nothing in the world stops e8=Q next move." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "Kg6", "say": "Drifting sideways lets the black king plant himself on e7 in front of the pawn. Your king was already perfectly placed — march the PAWN behind it." }
+      ],
+      "wrongSay": "King on the 6th, ahead of the pawn — the position wins itself if you advance the pawn under cover.",
+      "successSay": "King ahead on the sixth = always winning. Burn that picture into memory — it's the destination of every winning pawn ending."
+    },
+    {
+      "kind": "challenge",
+      "fen": "8/8/3k4/5p2/P2K1P2/8/8/8 w - - 0 1",
+      "prompt": "The famous OUTSIDE passed pawn: your a-pawn can't queen by itself — but that was never its job. Use it as bait!",
+      "hints": [
+        "Push the a-pawn: Black's king MUST chase it — it's too dangerous to ignore. Then count what your king does with the free time.",
+        "While the king trudges to the a-file, your king raids the OTHER side of the board and wins the f-pawn — and the game."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "a5", "say": "The decoy runs! Black's king has no choice but to chase..." },
+            { "san": "Kc6" },
+            { "san": "Ke5", "say": "...while your king heads the other way — toward the REAL prize." },
+            { "san": "Kb5" },
+            { "san": "Kxf5", "say": "The a-pawn will be caught — but your king has eaten the f-pawn and now escorts his own passer home, miles ahead of the returning king. The outside passer wins by dying." }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "rejections": [
+        { "san": "Kc4", "say": "Babysitting the a-pawn wastes its whole purpose — it's a DECOY, not a treasure. Push it and let Black's king pay the chasing fee while yours raids the kingside." }
+      ],
+      "wrongSay": "The a-pawn is a decoy, not a queen candidate. Push it and make the enemy king pay for every step.",
+      "successSay": "The outside passed pawn — the endgame's most famous sacrifice. It trades its life for the whole opposite wing."
+    }
+  ]
+}

@@ -1,0 +1,109 @@
+{
+  "id": "forks",
+  "title": "Forks",
+  "topic": "tactics",
+  "level": 3,
+  "subtitle": "One move, two targets — the knight's favorite trick.",
+  "goals": [
+    "Fork with knights, pawns and queens",
+    "Fork through checks for maximum force",
+    "Pick the safe fork square"
+  ],
+  "estMinutes": 6,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "r3k3/5ppp/8/3N4/8/8/5PPP/6K1 w - - 0 1",
+      "say": "A fork attacks two targets with one move — the defender can only save one. Knights are the fork masters (their weird jumps can't be blocked), but every piece, even the humble pawn, can fork. Whenever two enemy pieces stand a 'move-shape' apart, alarm bells should ring.",
+      "highlights": ["c7", "e8", "a8"]
+    },
+    {
+      "kind": "challenge",
+      "fen": "r3k3/5ppp/8/3N4/8/8/5PPP/6K1 w - - 0 1",
+      "prompt": "King and rook, one knight. Fork them!",
+      "hints": [
+        "Find the square from which the knight attacks BOTH e8 and a8.",
+        "c7 is a knight's jump from the king, the rook — and your knight."
+      ],
+      "highlights": ["c7"],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Nc7+", "say": "The royal fork! Check forces the king to move..." },
+            { "san": "Kd7" },
+            { "san": "Nxa8", "say": "...and the rook is yours. When a fork includes CHECK, the opponent never gets to save the other piece." }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "wrongSay": "Look for the single square that attacks king AND rook at once.",
+      "successSay": "King forks are the deadliest — check always comes first, so the second target is doomed."
+    },
+    {
+      "kind": "challenge",
+      "fen": "6k1/6pp/8/3n1b2/8/4P3/5PPP/6K1 w - - 0 1",
+      "prompt": "Even a pawn can fork! Attack the knight and bishop with one push.",
+      "hints": [
+        "A pawn attacks two squares diagonally in front of it — perfect fork geometry.",
+        "Push the e-pawn one square: it hits d5 and f5 simultaneously."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "e4", "say": "The one-cent fork! Both minor pieces are attacked by your cheapest soldier..." },
+            { "san": "Nb4" },
+            { "san": "exf5", "say": "...the knight escaped, so the bishop pays. A pawn just beat a bishop in a fair fight." }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "wrongSay": "Your e-pawn attacks diagonally — find the push that hits both pieces.",
+      "successSay": "Pawn forks win a piece for practically nothing. Watch for enemy pieces standing one square apart on the same rank."
+    },
+    {
+      "kind": "challenge",
+      "fen": "r5k1/2p3pp/8/8/8/8/3Q1PPP/6K1 w - - 0 1",
+      "prompt": "The queen forks along two diagonals at once. Check the king and win the rook!",
+      "hints": [
+        "Find a central square where the queen's diagonals reach BOTH g8 and a8.",
+        "d5 — one diagonal checks the king, the other diagonal skewers into the corner."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Qd5+", "say": "The double-diagonal fork — check!" },
+            { "san": "Kh8" },
+            { "san": "Qxa8+", "say": "The rook falls — with ANOTHER check. Centralized queens see everything." }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "wrongSay": "One central square lets the queen hit g8 and a8 at the same time.",
+      "successSay": "Queen forks along crossing lines are everywhere in real games — especially against loose pieces on open diagonals."
+    },
+    {
+      "kind": "challenge",
+      "fen": "3q1rk1/6pp/5p2/2N5/8/8/5PPP/6K1 w - - 0 1",
+      "prompt": "Two fork squares beckon your knight — but one is guarded. Find the SAFE royal-family fork!",
+      "hints": [
+        "Check every candidate square for enemy defenders before jumping in.",
+        "d7 hits queen and rook — but who's watching d7? e6 hits them both too..."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Ne6", "say": "The safe fork — queen and rook attacked, and nothing can touch the knight on e6!" },
+            { "san": "Qd6" },
+            { "san": "Nxf8", "say": "The queen fled, so you cash in the rook. Even after Kxf8, you've won rook for knight — the exchange." }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "rejections": [
+        { "san": "Nd7", "say": "Qxd7! The queen herself was guarding d7 — your fork became a free knight for Black. ALWAYS check who defends the fork square." }
+      ],
+      "wrongSay": "Both d7 and e6 fork queen and rook — but only one square is actually safe. Count defenders!",
+      "successSay": "A fork is only as good as its square. Safe square + two targets = won material, every time."
+    }
+  ]
+}

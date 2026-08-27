@@ -1,0 +1,99 @@
+{
+  "id": "clearance-sacrifice",
+  "title": "Clearance Sacrifice",
+  "topic": "combinations",
+  "level": 5,
+  "subtitle": "Give up a piece to vacate the one square that matters.",
+  "goals": [
+    "Spot when your own piece is in the way",
+    "Vacate lines and squares with tempo",
+    "Sacrifice for geometry, not material"
+  ],
+  "estMinutes": 6,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "r1bq1rk1/pp3ppp/8/8/4N3/8/P1Q2PPP/1B4K1 w - - 0 1",
+      "say": "Sometimes the piece blocking your winning idea is YOUR OWN. A clearance sacrifice throws that piece away — ideally with check or a threat — so the piece behind it can strike. You're not sacrificing FOR material; you're paying rent on a square. Look at this position: your queen and bishop form a battery on the b1–h7 diagonal... except your own knight stands on e4, right in the way.",
+      "highlights": [
+        "e4",
+        "h7",
+        "b1"
+      ]
+    },
+    {
+      "kind": "challenge",
+      "fen": "r1bq1rk1/pp3ppp/8/8/4N3/8/P1Q2PPP/1B4K1 w - - 0 1",
+      "prompt": "Your knight blocks your own queen-bishop battery. Clear the diagonal — with check — and mate!",
+      "hints": [
+        "The knight must move ANYWHERE to open the diagonal — but the best clearance moves come with check, so Black never gets a breath.",
+        "Nf6+!! — whether Black captures or ducks, the diagonal is open and Qxh7 is mate."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Nf6+",
+              "say": "Clearance with check! The knight steps off the diagonal AND forces the reply — Black can capture or duck, but cannot fix h7..."
+            },
+            {
+              "san": "gxf6"
+            },
+            {
+              "san": "Qxh7#",
+              "say": "The battery fires: queen takes h7, bishop guards her from b1. The knight didn't die for material — it died for one empty square on a diagonal. That's clearance."
+            }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Nc3",
+          "say": "The diagonal is open... but with no check, Black gets one move — ...g6! — and the mate is gone forever. Clearance must come WITH TEMPO: Nf6+!"
+        },
+        {
+          "san": "Ng5",
+          "say": "It clears the diagonal and eyes h7 — but no check! Black plays ...h6 or ...g6 and survives. The clearance square is f6: check first, mate second."
+        }
+      ],
+      "wrongSay": "Any knight move opens the diagonal — but only ONE does it with check. Find it.",
+      "successSay": "When your attack looks blocked, check whether the roadblock is your own piece — then sell it with tempo."
+    },
+    {
+      "kind": "challenge",
+      "fen": "r1bq1rk1/pp3ppp/8/8/4N3/8/P1Q2PPP/1B4K1 w - - 0 1",
+      "prompt": "Same position, deeper question: Black could DECLINE the knight with ...Kh8 instead of capturing. Prove the sacrifice still mates — play it against the decline.",
+      "hints": [
+        "If the king ducks to h8, is h7 any better defended? Count again.",
+        "Nf6+ Kh8, and Qxh7 is STILL mate — now the knight even guards the queen a second time."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Nf6+",
+              "say": "The same clearance check..."
+            },
+            {
+              "san": "Kh8"
+            },
+            {
+              "san": "Qxh7#",
+              "say": "Mate anyway — declined sacrifices must be checked too, and this one is airtight: the queen is guarded by the b1 bishop AND now by the f6 knight. A true clearance sac works against every reply."
+            }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Nd6",
+          "say": "The diagonal opens — but without check, and Black plays ...g6 with time to spare. Only the f6 check denies Black that single saving tempo. (And notice: before ANY knight move, Qh7 wasn't even legal — your own knight blocked the queen's path. That's the whole lesson.)"
+        }
+      ],
+      "wrongSay": "Same first move as before — the point is what happens when Black doesn't take.",
+      "successSay": "Capture or decline, the diagonal opens and h7 falls. Verified against every defense — like all your sacrifices should be."
+    }
+  ]
+}

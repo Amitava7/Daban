@@ -1,0 +1,183 @@
+{
+  "id": "immortal-studies",
+  "title": "Immortal Studies",
+  "topic": "masterpieces",
+  "level": 6,
+  "subtitle": "Réti's two-hare king walk and the Saavedra underpromotion.",
+  "goals": [
+    "Walk the king along impossible diagonals",
+    "Chase two goals with every move",
+    "Win with the most famous underpromotion ever"
+  ],
+  "estMinutes": 9,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "7K/8/k1P5/7p/8/8/8/8 w - - 0 1",
+      "say": "Composed endgame studies are chess distilled to pure idea. First, Richard Réti, 1921: White's king stands OUTSIDE the square of Black's h-pawn, and Black's king guards White's c-pawn. Every engine of common sense says White loses. Réti's discovery: a king moving on the DIAGONAL loses no time — it can chase both goals at once. 'The hunt of two hares': catch the pawn OR promote your own, and Black can only stop one.",
+      "highlights": [
+        "h5",
+        "c6",
+        "g7",
+        "e5"
+      ]
+    },
+    {
+      "kind": "challenge",
+      "fen": "7K/8/k1P5/7p/8/8/8/8 w - - 0 1",
+      "prompt": "Hopeless, says arithmetic: the h-pawn queens in four, your king needs five. Play Réti's thirteen-move miracle and DRAW — chase both hares!",
+      "hints": [
+        "Move the king DIAGONALLY — g7, f6, e5 — every step both chases the h-pawn and approaches your c-pawn. Black cannot defend both futures.",
+        "Kg7! h4 Kf6! Kb6 (else the king catches the pawn via e5-f4) Ke5! — and now h3 is met by Kd6! promoting together with Black. Both hares, one hunter."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Kg7",
+              "say": "One diagonal step — and suddenly the king threatens BOTH to chase the h-pawn (via f6-g5) and to support c7 (via f6-e7). Black pushes..."
+            },
+            {
+              "san": "h4"
+            },
+            {
+              "san": "Kf6",
+              "say": "Still both hares: f6 eyes g5 (catching the pawn) AND e7 (escorting yours). Black must spend a move stopping the c-pawn..."
+            },
+            {
+              "san": "Kb6"
+            },
+            {
+              "san": "Ke5",
+              "say": "The miracle square: e5 attacks the h-pawn's future via f4 AND stands one step from d6, where it shields the c-pawn home. Black cannot prevent both..."
+            },
+            {
+              "san": "h3"
+            },
+            {
+              "san": "Kd6",
+              "say": "The king abandons the h-pawn — because now his own pawn queens by force alongside it..."
+            },
+            {
+              "san": "h2"
+            },
+            {
+              "san": "c7",
+              "say": "Lockstep — both pawns one square from glory..."
+            },
+            {
+              "san": "Kb7"
+            },
+            {
+              "san": "Kd7",
+              "say": "The escort takes the last guard post: c8 is secured..."
+            },
+            {
+              "san": "h1=Q"
+            },
+            {
+              "san": "c8=Q+",
+              "say": "Both sides queen — WITH CHECK for White, no less. Draw agreed: from a position every calculation calls lost. Réti's king walked a path that exists only in chess geometry, where the diagonal costs nothing. The most famous half-point in history."
+            }
+          ],
+          "assert": "check"
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Kg8",
+          "say": "The straight-line chase — h4! and the pawn simply outruns you: count it, four steps to two... hopeless. Only the DIAGONAL walk chases two goals at once: Kg7!"
+        },
+        {
+          "san": "c7",
+          "say": "Kb7! and the pawn falls next move, while the h-pawn runs untouched. The pawn can't save itself — only the two-hare KING walk saves the game: Kg7!"
+        }
+      ],
+      "wrongSay": "Straight lines lose. Which king step moves toward BOTH pawns at once?",
+      "successSay": "The Réti maneuver — one diagonal, two hares, half a point from nothing. Every endgame book on Earth opens with what you just played."
+    },
+    {
+      "kind": "intro",
+      "fen": "8/8/1KP5/3r4/8/8/8/k7 w - - 0 1",
+      "say": "Now the Saavedra position, 1895 — found by an amateur monk reading a newspaper column, and possibly the most famous single move in study history. White: king and one pawn. Black: a ROOK — and rooks massacre lone pawns. Black's plan is brutal: check forever, and the instant your pawn promotes to a queen, sacrifice the rook for stalemate. Your job: promote anyway. The solution will surprise you on move six.",
+      "highlights": [
+        "c6",
+        "c8",
+        "d5"
+      ]
+    },
+    {
+      "kind": "challenge",
+      "fen": "8/8/1KP5/3r4/8/8/8/k7 w - - 0 1",
+      "prompt": "Rook versus pawn — and the rook has a stalemate trick loaded. Thirteen moves: escort the pawn, dodge the checks, and find the promotion nobody expects!",
+      "hints": [
+        "Walk the king down the b-file beside your pawn: each rook check gets answered one square lower — until Kc2, when Rd4 sets the stalemate trap: c8=Q?? Rc4+! Qxc4 stalemate!",
+        "So DON'T take a queen. Promote to a ROOK: c8=R! — now Ra4 threatens mate tries, and Kb3! double-attacks the rook while threatening Rc1#. Black loses everything."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "c7",
+              "say": "The pawn steps up — and the rook's checking machine starts..."
+            },
+            {
+              "san": "Rd6+"
+            },
+            {
+              "san": "Kb5",
+              "say": "Down the ladder — staying beside the pawn, never blocking its path. Note: not Kb7?? when Rd7 pins the pawn forever..."
+            },
+            {
+              "san": "Rd5+"
+            },
+            {
+              "san": "Kb4",
+              "say": "Again one rung lower — the rook keeps checking..."
+            },
+            {
+              "san": "Rd4+"
+            },
+            {
+              "san": "Kb3",
+              "say": "And again..."
+            },
+            {
+              "san": "Rd3+"
+            },
+            {
+              "san": "Kc2",
+              "say": "The checks run out — the king attacks the rook. Black plays his trump card: the stalemate trap..."
+            },
+            {
+              "san": "Rd4"
+            },
+            {
+              "san": "c8=R",
+              "say": "THE SAAVEDRA MOVE. A rook, not a queen! c8=Q?? Rc4+! Qxc4 would be STALEMATE — the buried king on a1 has no moves. The modest rook promotion sidesteps the trap entirely, and now Black's rook is lost: Ra4 is forced..."
+            },
+            {
+              "san": "Ra4"
+            },
+            {
+              "san": "Kb3",
+              "say": "The quiet killer: the king attacks the a4 rook AND threatens Rc1# — checkmate on the back rank. Black cannot parry both. One pawn beat a full rook, thanks to an underpromotion a Spanish monk spotted in 1895. The most celebrated single move in endgame history — played by you, on your board."
+            }
+          ]
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Kb7",
+          "say": "Rd7! — pinning the pawn to your king, and it never promotes: the rook just shuffles on the seventh forever. The king walks DOWN the board beside the pawn, never onto its file's seventh-rank crossfire: c7 first!"
+        },
+        {
+          "san": "Ka6",
+          "say": "Rd6! — the rook pins your pawn sideways against the king, and it never moves again. The winning geometry is exact: push c7 NOW, then ladder the king straight down the b-file, one rung per check."
+        }
+      ],
+      "wrongSay": "Pawn first, then walk the check-ladder down — and remember: the promotion at the end is NOT a queen.",
+      "successSay": "c8=R!! — the Saavedra. You've now played both of the most famous endgame studies ever composed. These two ideas — the diagonal king and the anti-stalemate underpromotion — will win and save real games for you."
+    }
+  ]
+}

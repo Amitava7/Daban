@@ -1,0 +1,123 @@
+{
+  "id": "the-pawn",
+  "title": "The Pawn",
+  "topic": "basics",
+  "level": 1,
+  "subtitle": "Small steps forward, captures sideways, dreams of promotion.",
+  "goals": [
+    "Move pawns one or two squares forward",
+    "Capture diagonally",
+    "Promote a pawn into a queen"
+  ],
+  "estMinutes": 4,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+      "say": "Pawns are the soul of chess. They march straight forward one square at a time — or two squares on their very first move. But here's the twist: they capture diagonally, one square forward-left or forward-right.",
+      "highlights": ["e3", "e4"],
+      "arrows": [{ "from": "e2", "to": "e4" }]
+    },
+    {
+      "kind": "explain",
+      "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+      "say": "Watch pawns advance and capture.",
+      "autoMoves": [
+        { "san": "e4", "say": "Two squares from its starting post — allowed only on a pawn's first move." },
+        { "san": "e5" },
+        { "san": "d4", "say": "Another two-square jump, offering a pawn duel..." },
+        { "san": "exd4", "say": "...and Black captures diagonally. Pawns never capture straight ahead!" }
+      ]
+    },
+    {
+      "kind": "challenge",
+      "fen": "4k3/8/8/3p4/4P3/8/8/4K3 w - - 0 1",
+      "prompt": "Capture the black pawn with your pawn.",
+      "hints": [
+        "Pawns capture diagonally — one square forward-left or forward-right.",
+        "Your e4 pawn can reach d5 with a diagonal capture."
+      ],
+      "highlights": ["d5"],
+      "solutions": [
+        {
+          "line": [
+            { "san": "exd5", "say": "That's it — one diagonal step forward. This is the ONLY way pawns capture." }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "rejections": [
+        { "san": "e5", "say": "You walked straight past it! Pawns capture diagonally, never straight ahead. The two pawns would just stare at each other forever." }
+      ],
+      "wrongSay": "Use your pawn — the capture is one diagonal step forward.",
+      "successSay": "Diagonal captures — the number one rule new players forget. Not you though."
+    },
+    {
+      "kind": "challenge",
+      "fen": "4k3/8/2p5/3p1p2/4P3/8/8/4K3 w - - 0 1",
+      "prompt": "Your pawn can capture two ways — but one pawn is defended. Take the free one!",
+      "hints": [
+        "Check each target: after you capture, can a black pawn recapture diagonally?",
+        "d5 is guarded by the c6 pawn. Who's guarding f5? Nobody."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "exf5", "say": "Correct! f5 was undefended — a pawn up, no strings attached." }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "rejections": [
+        { "san": "exd5", "say": "cxd5 recaptures — an even trade at best. The other capture won a pawn for free." }
+      ],
+      "wrongSay": "Your e4 pawn has two possible captures. Pick the pawn with no defender.",
+      "successSay": "Counting defenders before capturing — you're already thinking like a real player."
+    },
+    {
+      "kind": "challenge",
+      "fen": "k7/4P3/8/8/8/8/8/2K5 w - - 0 1",
+      "prompt": "Your pawn is one step from glory. Promote it!",
+      "hints": [
+        "A pawn that reaches the last rank transforms into any piece you choose — almost always a queen.",
+        "Push the pawn to e8 and pick your new queen."
+      ],
+      "highlights": ["e8"],
+      "goal": { "type": "promote" },
+      "solutions": [
+        {
+          "line": [
+            { "san": "e8=Q+", "say": "Promotion! Your humble pawn is now a queen — and she announces herself with check." }
+          ],
+          "assert": "promotion"
+        }
+      ],
+      "wrongSay": "Push the pawn forward — the eighth rank is where pawns become royalty.",
+      "successSay": "That transformation is why endgames revolve around pawns. Every pawn is a future queen."
+    },
+    {
+      "kind": "challenge",
+      "fen": "1k6/8/4P3/8/7p/8/8/1K6 w - - 0 1",
+      "prompt": "It's a race! Black's h-pawn is running too — promote first!",
+      "hints": [
+        "Count the moves: your pawn needs two steps, Black's needs three. Push!",
+        "e7 first, then e8 — you win the race by one tempo."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "e7", "say": "Sprint!" },
+            { "san": "h3" },
+            { "san": "e8=Q+", "say": "Queen — with check! You won the race, and your new queen will easily stop Black's pawn." }
+          ],
+          "assert": "promotion"
+        }
+      ],
+      "rejections": [
+        { "san": "Kc2", "say": "Your king can't catch the h-pawn AND your own pawn stands still. In pawn races, every single move counts — push!" }
+      ],
+      "wrongSay": "No time for detours — this is a footrace to the eighth rank.",
+      "successSay": "Pawn races are won by one tempo. Always count the steps before choosing to run."
+    }
+  ]
+}

@@ -1,0 +1,124 @@
+{
+  "id": "special-moves",
+  "title": "Special Moves",
+  "topic": "basics",
+  "level": 1,
+  "subtitle": "Castling, en passant, and pawn promotion.",
+  "goals": [
+    "Castle kingside and queenside",
+    "Capture en passant",
+    "Choose the right promotion piece"
+  ],
+  "estMinutes": 5,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1",
+      "say": "Chess has three special moves that break the normal rules. The first is castling: king and rook move TOGETHER — the king hops two squares toward a rook, and the rook jumps to the other side. It's the only move where two pieces move at once, and it's how your king finds shelter.",
+      "highlights": ["g1", "f1", "c1", "d1"],
+      "arrows": [
+        { "from": "e1", "to": "g1" },
+        { "from": "e1", "to": "c1" }
+      ]
+    },
+    {
+      "kind": "challenge",
+      "fen": "rnbqk2r/pppp1ppp/5n2/2b1p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 0 1",
+      "prompt": "The path is clear — castle kingside!",
+      "hints": [
+        "Castling needs empty squares between king and rook, and neither may have moved before.",
+        "Tap the king, then the g1 square — king to g1, rook to f1, all in one move."
+      ],
+      "highlights": ["g1"],
+      "solutions": [
+        {
+          "line": [
+            { "san": "O-O", "say": "Castled! Your king now sits safely behind a wall of pawns, and the rook joined the game — two birds, one move." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "Ke2", "say": "That walks the king into the open — and once the king moves, you lose the right to castle forever! Castling does the job better." }
+      ],
+      "wrongSay": "This is the moment to castle — king two squares toward the h1 rook.",
+      "successSay": "Rule of thumb: castle early, almost every game."
+    },
+    {
+      "kind": "challenge",
+      "fen": "r3k2r/pppqpppp/2n2n2/3p4/3P4/2N2N2/PPPQPPPP/R3K2R w KQkq - 0 1",
+      "prompt": "This time castle LONG — queenside!",
+      "hints": [
+        "Queenside castling: the king goes two squares toward the a1 rook.",
+        "King lands on c1, rook swings around to d1."
+      ],
+      "highlights": ["c1"],
+      "solutions": [
+        {
+          "line": [
+            { "san": "O-O-O", "say": "Long castle! The king tucks away on c1 and the rook lands on the strong central d-file immediately." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "O-O", "say": "That's kingside — perfectly legal, but this challenge is about the LONG version: king to c1, rook to d1." }
+      ],
+      "wrongSay": "Castle queenside: move the king two squares toward the a1 rook.",
+      "successSay": "Both castles mastered. Long castling often signals an aggressive, opposite-side attack game!"
+    },
+    {
+      "kind": "explain",
+      "fen": "4k3/5p2/8/4P3/8/8/8/4K3 b - - 0 1",
+      "say": "Special move number two: en passant — French for 'in passing'. Watch what happens when a pawn tries to sneak past yours with a double step.",
+      "autoMoves": [
+        { "san": "f5", "say": "Black's pawn jumps two squares, trying to slip past your e5 pawn..." },
+        { "san": "exf6", "say": "En passant! Your pawn captures it AS IF it had only moved one square. This is only allowed immediately — wait one move and the chance is gone forever." }
+      ]
+    },
+    {
+      "kind": "challenge",
+      "fen": "4k3/8/8/4Pp2/8/8/8/4K3 w - f6 0 2",
+      "prompt": "Black's f-pawn just double-stepped past you. Capture it en passant!",
+      "hints": [
+        "Your e5 pawn may capture the f5 pawn as if it had moved only one square.",
+        "Capture diagonally onto f6 — the f5 pawn disappears."
+      ],
+      "highlights": ["f6"],
+      "solutions": [
+        {
+          "line": [
+            { "san": "exf6", "say": "En passant! The passing pawn is removed even though you landed 'behind' it. One of the strangest and prettiest rules in chess." }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "rejections": [
+        { "san": "e6", "say": "You pushed past — and the en passant right vanishes the instant you play anything else. It's now or never!" }
+      ],
+      "wrongSay": "Capture diagonally onto f6 — en passant only works right away.",
+      "successSay": "En passant: rarely available, deeply satisfying, and now in your toolkit."
+    },
+    {
+      "kind": "challenge",
+      "fen": "8/k1P5/2K5/8/8/8/8/8 w - - 0 1",
+      "prompt": "Promotion time — but careful: a queen here is a DRAW! Find the winning promotion.",
+      "hints": [
+        "Try to picture the position after c8=Q: does the black king have any legal move? Is he in check? That combination is stalemate!",
+        "Promote to the piece that keeps control but leaves the king a square — the rook wins."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "c8=R", "say": "Underpromotion! The rook controls the back rank but leaves a6 free, so no stalemate — and rook versus king is an easy win. Sometimes LESS is more." }
+          ],
+          "assert": "promotion"
+        }
+      ],
+      "rejections": [
+        { "san": "c8=Q", "say": "STALEMATE! The new queen covers every square around the king — a6, b6, b8, a8 — but he's not in check. Draw. This is the classic case for underpromotion." },
+        { "san": "Kc5", "say": "No need to retreat — the pawn can promote right now. The only question is: which piece?" }
+      ],
+      "wrongSay": "Promote the pawn — but think about what each piece does to the cornered king.",
+      "successSay": "You just made a master-level decision: underpromoting to avoid stalemate. Beautiful."
+    }
+  ]
+}

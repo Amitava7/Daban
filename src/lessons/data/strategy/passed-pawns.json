@@ -1,0 +1,110 @@
+{
+  "id": "passed-pawns",
+  "title": "Passed Pawns",
+  "topic": "strategy",
+  "level": 4,
+  "subtitle": "A pawn no enemy pawn can stop must be pushed.",
+  "goals": [
+    "Recognize and push passed pawns",
+    "Blockade enemy passers",
+    "Rooks behind passers — and promotion tricks"
+  ],
+  "estMinutes": 6,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "6k1/5ppp/8/3P4/8/8/5PPP/6K1 w - - 0 1",
+      "say": "A PASSED pawn has no enemy pawn in front of it — on its own file or either neighbor. Nothing made of pawn can ever stop it, so every step forward is a step toward a new queen. Nimzowitsch said it best: 'The passed pawn is a criminal that must be kept under lock and key.'",
+      "highlights": ["d5", "d6", "d7", "d8"]
+    },
+    {
+      "kind": "challenge",
+      "fen": "6k1/5ppp/8/3P4/8/8/5PPP/6K1 w - - 0 1",
+      "prompt": "One of your pawns is passed. Find it — and push it!",
+      "hints": [
+        "Check each pawn: is there any black pawn ahead on its file or the neighboring files?",
+        "The d-pawn faces no black pawn on c, d or e — nothing can ever block its path. March!"
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "d6", "say": "Push! Black's pawns can only watch — every rank this pawn gains forces Black's PIECES into babysitting duty." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "g4", "say": "That pawn faces a lifetime of black pawns ahead. The PASSED pawn — the d-pawn — is the one that turns into a queen. Push your passers!" }
+      ],
+      "wrongSay": "Find the pawn with no enemy pawns on its file or the files beside it — then advance it.",
+      "successSay": "Passed pawns must be pushed — they gain value with every single step."
+    },
+    {
+      "kind": "challenge",
+      "fen": "2n3k1/5ppp/4P3/8/8/8/5PPP/4R1K1 b - - 0 1",
+      "prompt": "Now the OTHER side of the story: White's passer is two steps from queening. You're Black — lock it down!",
+      "hints": [
+        "A passer must be stopped by a PIECE planted directly in front of it: the blockade.",
+        "The knight is the perfect blockader — and yours can reach the square in front of the pawn."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Ne7", "say": "The blockade! The knight plugs the square in front of the pawn — it's stopped dead, and a knight loses none of its power standing guard. Nimzowitsch would applaud." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "Nb6", "say": "e7! The pawn sprints while your knight grazes on the wrong wing — now only desperate measures stop the queening." },
+        { "san": "Kf8", "say": "e7+! Backed by the rook, the pawn advances WITH CHECK and your king is chained to the blockade forever. Blockading is knight's work — kings have better things to do." }
+      ],
+      "wrongSay": "Plant a piece ON the square directly in front of the passer — the knight is built for this.",
+      "successSay": "Blockade with knights, not kings or queens: the blockader must be happy standing still."
+    },
+    {
+      "kind": "challenge",
+      "fen": "4r1k1/5ppp/8/P7/8/8/5PPP/3R2K1 w - - 0 1",
+      "prompt": "Your a-pawn dreams of a8. Give it the ideal escort — where does the rook belong?",
+      "hints": [
+        "Tarrasch's famous rule: rooks belong BEHIND passed pawns — yours or the enemy's.",
+        "From behind, the rook's power GROWS with every pawn step. From in front, it shrinks."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Ra1", "say": "Tarrasch's rule in action! The rook pushes from behind like a hand at the pawn's back — and every advance makes the rook's file LONGER, not shorter." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "a6", "say": "The pawn sprints ahead of its bodyguard — ...Ra8 parks in front, and now YOUR rook must babysit from the side while the pawn is frozen. Rook behind FIRST, push second." },
+        { "san": "Rd8", "say": "Rxd8 — you traded your only supporter. The lone a-pawn will be surrounded and eaten. Passers need escorts." }
+      ],
+      "wrongSay": "Think Tarrasch: which square lets the rook support the pawn for its WHOLE journey?",
+      "successSay": "Rook behind the passer: the single most quoted rule in endgame strategy — because it wins."
+    },
+    {
+      "kind": "challenge",
+      "fen": "2r3k1/2P2ppp/8/8/8/8/5PPP/3R2K1 w - - 0 1",
+      "prompt": "Your pawn stands one step from glory — but the c8 rook blockades the queening square. Break through NOW!",
+      "hints": [
+        "The blockader holds c8 — so hit it with something it must answer. Deflection!",
+        "Rook to d8! Whatever Black does, your pawn promotes — count the captures."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Rd8", "say": "Deflection! The blockading rook is attacked and has no good square..." },
+            { "san": "Rxd8" },
+            { "san": "cxd8=Q+", "say": "The pawn captures DIAGONALLY onto d8 and promotes with check! The blockade never stood a chance once the deflection landed." }
+          ],
+          "assert": "promotion"
+        }
+      ],
+      "rejections": [
+        { "san": "Rc1", "say": "Your own pawn blocks the c-file — the rook lift achieves nothing. The blockader must be deflected from the SIDE: Rd8!" }
+      ],
+      "wrongSay": "The c8 rook is the only thing between your pawn and a crown. Force it to move — or to capture where your pawn can follow.",
+      "successSay": "Blockades are broken by force: attack the blockader, deflect it, promote. A full passed-pawn masterclass."
+    }
+  ]
+}

@@ -1,0 +1,114 @@
+{
+  "id": "capture-free-pieces",
+  "title": "Capture Free Pieces",
+  "topic": "fundamentals",
+  "level": 2,
+  "subtitle": "Spot undefended pieces and take them for free.",
+  "goals": [
+    "Scan for hanging (undefended) pieces",
+    "Choose the most valuable free piece",
+    "Count attackers vs. defenders"
+  ],
+  "estMinutes": 4,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "2r3k1/5ppp/2n5/1b6/8/3Q1N2/5PPP/6K1 w - - 0 1",
+      "say": "Most games below master level are decided by one thing: free pieces. A piece with no defender is called 'hanging' — and your job every single move is to scan the board for them. Let's train that eye.",
+      "highlights": ["b5"]
+    },
+    {
+      "kind": "challenge",
+      "fen": "6k1/5ppp/8/n7/8/8/5PPP/R5K1 w - - 0 1",
+      "prompt": "Black left a piece completely undefended. Find it and take it!",
+      "hints": [
+        "Scan each black piece and ask: who protects it?",
+        "The knight on a5 is all alone — and your rook sees the a-file."
+      ],
+      "highlights": ["a5"],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Rxa5", "say": "Free knight! Nothing could recapture — three points, zero cost." }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "wrongSay": "There's a whole knight available for free. Scan the black pieces one by one.",
+      "successSay": "That scan — 'what's undefended?' — should run in your head every move of every game."
+    },
+    {
+      "kind": "challenge",
+      "fen": "2r3k1/5ppp/2n5/1b6/8/3Q1N2/5PPP/6K1 w - - 0 1",
+      "prompt": "One black piece is hanging. Capture it!",
+      "hints": [
+        "Check each piece's defenders: the c6 knight is guarded by the c8 rook. What about the bishop?",
+        "The b5 bishop has no defender — and your queen sees it along the diagonal."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Qxb5", "say": "Exactly! The rook guarded the knight, but nobody guarded the bishop. Free piece." }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "rejections": [
+        { "san": "Ne5", "say": "Nxe5! You placed your knight on a square the c6 knight defends — and missed a free bishop. Scan before you jump." }
+      ],
+      "wrongSay": "One black piece has zero defenders. Compare the knight and the bishop carefully.",
+      "successSay": "Defended vs. undefended — that one distinction wins more games than any opening."
+    },
+    {
+      "kind": "challenge",
+      "fen": "r5k1/5ppp/4n3/8/3N4/8/5PBP/6K1 w - - 0 1",
+      "prompt": "Two black pieces look loose — but only one is truly free. Grab the bigger prize!",
+      "hints": [
+        "The e6 knight looks tasty for your d4 knight... but check its bodyguards. Pawns count!",
+        "The f7 pawn defends e6. Meanwhile your g2 bishop stares down the LONG diagonal — all the way to a8."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Bxa8", "say": "A whole rook! The knight was protected by the f7 pawn, but the rook in the corner had nobody. Five points beats three anyway." }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "rejections": [
+        { "san": "Nxe6", "say": "fxe6! The f7 pawn was on guard duty. And even if the knight HAD been free — the undefended rook was worth more. Always take the biggest free piece." }
+      ],
+      "wrongSay": "Check defenders on both loose pieces — then take the one that's really free.",
+      "successSay": "Value check: pawn 1, knight/bishop 3, rook 5, queen 9. Always grab the biggest freebie."
+    },
+    {
+      "kind": "challenge",
+      "fen": "6k1/5ppp/3p4/4p3/8/5N2/PB3PPP/6K1 w - - 0 1",
+      "prompt": "The e5 pawn is attacked twice and defended once. Win it — the full sequence!",
+      "hints": [
+        "Count: your knight and bishop both hit e5; only the d6 pawn defends it. Two attackers vs. one defender — the capture works.",
+        "Take with either piece; when Black recaptures, take again. You come out a pawn ahead."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Nxe5", "say": "First blood — Black recaptures..." },
+            { "san": "dxe5" },
+            { "san": "Bxe5", "say": "...and you take again. Piece for piece, but you pocketed a pawn — because you had MORE attackers than they had defenders." }
+          ],
+          "assert": "capture"
+        },
+        {
+          "line": [
+            { "san": "Bxe5", "say": "First bite — Black recaptures..." },
+            { "san": "dxe5" },
+            { "san": "Nxe5", "say": "...and the knight finishes the job. Two attackers beat one defender — you win exactly one pawn." }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "wrongSay": "Count attackers and defenders on e5: 2 vs 1 means the capture succeeds. Start taking!",
+      "successSay": "Attackers minus defenders — that little bit of arithmetic is the engine behind every safe capture."
+    }
+  ]
+}

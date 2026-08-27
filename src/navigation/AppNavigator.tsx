@@ -11,6 +11,9 @@ import { RefutationScreen } from '../screens/RefutationScreen';
 import { ReviewScreen } from '../screens/ReviewScreen';
 import { OpeningsScreen } from '../screens/OpeningsScreen';
 import { OpeningDrillScreen } from '../screens/OpeningDrillScreen';
+import { LessonsScreen } from '../screens/LessonsScreen';
+import { LessonTopicScreen } from '../screens/LessonTopicScreen';
+import { LessonPlayerScreen } from '../screens/LessonPlayerScreen';
 import { EndgamesScreen } from '../screens/EndgamesScreen';
 import { EndgamePuzzleScreen } from '../screens/EndgamePuzzleScreen';
 import { ProgressScreen } from '../screens/ProgressScreen';
@@ -36,6 +39,9 @@ export function AppNavigator() {
         <Stack.Screen name="Review" component={ReviewScreen} />
         <Stack.Screen name="Openings" component={OpeningsScreen} />
         <Stack.Screen name="OpeningDrill" component={OpeningDrillScreen} />
+        <Stack.Screen name="Lessons" component={LessonsScreen} />
+        <Stack.Screen name="LessonTopic" component={LessonTopicScreen} />
+        <Stack.Screen name="LessonPlayer" component={LessonPlayerScreen} />
         <Stack.Screen name="Endgames" component={EndgamesScreen} />
         <Stack.Screen name="EndgamePuzzle" component={EndgamePuzzleScreen} />
         <Stack.Screen name="Progress" component={ProgressScreen} />

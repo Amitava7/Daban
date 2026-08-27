@@ -1,0 +1,162 @@
+{
+  "id": "greek-gift",
+  "title": "The Greek Gift",
+  "topic": "mating-patterns",
+  "level": 5,
+  "subtitle": "Bxh7+!! — the most famous sacrifice in chess, start to mate.",
+  "goals": [
+    "Check the preconditions before sacrificing",
+    "Play the Bxh7+ / Ng5+ / Qh5 machine",
+    "Convert the attack into forced mate"
+  ],
+  "estMinutes": 8,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "r1b2rk1/pp3ppp/2n1p3/q2pP3/3P4/3B1N2/PPP2PPP/R1BQ1RK1 w - - 0 1",
+      "say": "The 'Greek Gift' — a bishop arrives at h7 as a present, and inside it hides an army. Before you ever play Bxh7+, check the three preconditions: (1) a knight that reaches g5, (2) a queen that reaches h5, and (3) no black defender able to reach f6 or g5 in time. Here the e5 pawn locks f6, the c6 knight and a5 queen are miles away — every condition is met. Time to deliver the present.",
+      "highlights": [
+        "h7",
+        "g5",
+        "h5",
+        "e5"
+      ]
+    },
+    {
+      "kind": "challenge",
+      "fen": "r1b2rk1/pp3ppp/2n1p3/q2pP3/3P4/3B1N2/PPP2PPP/R1BQ1RK1 w - - 0 1",
+      "prompt": "Phase one: give the gift and bring up the cavalry. Five moves — bishop, knight, queen.",
+      "hints": [
+        "The bishop goes first — with check, so Black has no time to organize.",
+        "Bxh7+! Kxh7, then Ng5+ forces the king back, and Qh5 loads the mating battery."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Bxh7+",
+              "say": "The Greek Gift is delivered — declining with Kh8 loses the pawn for nothing, so the king takes..."
+            },
+            {
+              "san": "Kxh7"
+            },
+            {
+              "san": "Ng5+",
+              "say": "The knight arrives with tempo. Retreating to g8 is the main line — running out with Kg6 walks into a king hunt."
+            },
+            {
+              "san": "Kg8"
+            },
+            {
+              "san": "Qh5",
+              "say": "The battery is loaded: Qh7# is threatened, ...Nf6 is impossible (your e5 pawn owns that square), and ...Qxg5 fails to Bxg5. Black's position is already lost — phase two finishes it."
+            }
+          ]
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Ng5",
+          "say": "The knight before the bishop lets Black slam the door with ...h6! — the gift must come FIRST, with check: Bxh7+!"
+        },
+        {
+          "san": "Re1",
+          "say": "A quiet developing move — and Black plays ...h6 or ...f5, and the sacrifice window closes forever. When all three preconditions are met, strike: Bxh7+!"
+        }
+      ],
+      "wrongSay": "Bishop with check, knight with check, queen with threat — in exactly that order.",
+      "successSay": "Gift delivered, battery loaded. Remember why it worked: e5 locks f6, and no defender reaches g5."
+    },
+    {
+      "kind": "challenge",
+      "fen": "r1b1r1k1/pp3pp1/2n1p3/q2pP1NQ/3P4/8/PPP2PPP/R1B2RK1 w - - 4 4",
+      "prompt": "Black played ...Re8 to give the king air on f8. Phase two: crash through — mate in two!",
+      "hints": [
+        "The f7 pawn is pinned against the king's escape plan — and your queen attacks it with the knight's support.",
+        "Qxf7+! The king must go to the corner... and then look what the queen does to the loose e8 rook."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Qxf7+",
+              "say": "Through the front door — the knight guards the queen, so the king must retreat..."
+            },
+            {
+              "san": "Kh8"
+            },
+            {
+              "san": "Qxe8#",
+              "say": "Mate! The queen takes the rook and checks along the back rank while your knight covers h7 — the very hole the Greek Gift opened. The whole combination cost one bishop and won the game."
+            }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Qh7+",
+          "say": "Kf8! — and the king escapes through the door ...Re8 just opened. The precise order strikes at f7 first, using the g5 knight's protection."
+        }
+      ],
+      "wrongSay": "The g5 knight protects your queen on f7. Start there — with check.",
+      "successSay": "Bxh7+, Ng5+, Qh5, Qxf7+, Qxe8# — the full Greek Gift, gift-wrap to funeral."
+    },
+    {
+      "kind": "challenge",
+      "fen": "r1b2rk1/pp3ppp/2n1p3/q2pP3/3P4/3B1N2/PPP2PPP/R1BQ1RK1 w - - 0 1",
+      "prompt": "The graduation run: play the ENTIRE Greek Gift from the quiet position to checkmate. Nine moves.",
+      "hints": [
+        "Bishop check, knight check, queen threat — then through f7 to the back rank.",
+        "Bxh7+ Kxh7, Ng5+ Kg8, Qh5 (Black tries Re8), Qxf7+ Kh8, Qxe8#."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Bxh7+",
+              "say": "The gift..."
+            },
+            {
+              "san": "Kxh7"
+            },
+            {
+              "san": "Ng5+",
+              "say": "The cavalry..."
+            },
+            {
+              "san": "Kg8"
+            },
+            {
+              "san": "Qh5",
+              "say": "The siege engine. Black grabs air with the rook..."
+            },
+            {
+              "san": "Re8"
+            },
+            {
+              "san": "Qxf7+",
+              "say": "...but the breach is at f7, under the knight's cover..."
+            },
+            {
+              "san": "Kh8"
+            },
+            {
+              "san": "Qxe8#",
+              "say": "CHECKMATE — nine moves, entirely forced, from a position most players would call 'roughly equal'. That is the Greek Gift: not a gamble, a calculation. Check the three preconditions, then play it with total confidence."
+            }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Nd2",
+          "say": "A developing move?! You're sitting on a nine-move forced mate. When e5 locks f6 and your pieces aim kingside, ALWAYS check the sacrifice first: Bxh7+!"
+        }
+      ],
+      "wrongSay": "You've played both halves — now join them. It starts with the bishop's present.",
+      "successSay": "The complete Greek Gift, memorized move by move. At 1000-1400 level, castled kings fall to this constantly — you'll never see h7 the same way again."
+    }
+  ]
+}

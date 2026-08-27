@@ -1,0 +1,97 @@
+{
+  "id": "arabian-and-damianos",
+  "title": "Arabian & Damiano's Mates",
+  "topic": "mating-patterns",
+  "level": 4,
+  "subtitle": "Corner kills — including the famous double rook sacrifice.",
+  "goals": [
+    "Execute the h-file rook sacrifice",
+    "Convert the g6 pawn wedge into mate",
+    "Play Damiano's 500-year-old double sac"
+  ],
+  "estMinutes": 7,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "r4rk1/pp3p2/6P1/5N2/8/8/P1P2PP1/3Q2KR w - - 0 1",
+      "say": "Pedro Damiano published this attack in 1512 — and it still wins games every single day. The ingredients: a pawn wedged on g6, a rook on the open h-file, and a queen ready to swing. The recipe: sacrifice EVERYTHING that stands between your queen and h7.",
+      "highlights": ["g6", "h8", "h7"]
+    },
+    {
+      "kind": "challenge",
+      "fen": "r4rk1/pp3p2/6P1/5N2/8/8/P1P2PP1/3Q2KR w - - 0 1",
+      "prompt": "The h-file is open and the g6 wedge is in place. Start the demolition — the rook goes first!",
+      "hints": [
+        "The rook's job is to drag the king onto h8 so the queen arrives with check.",
+        "Rh8+! The king must take (your knight covers g7) — then the queen follows with tempo."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Rh8+", "say": "The decoy sac — and the king cannot decline: g7 is covered by your knight." },
+            { "san": "Kxh8" },
+            { "san": "Qh5+", "say": "The queen swings in with check — this is why the rook had to die: it BOUGHT this tempo." },
+            { "san": "Kg8" },
+            { "san": "Qh7#", "say": "Damiano's mate. The g6 pawn guards the queen, the f8 rook blocks the last exit. A rook down and completely winning — the sacrifice was arithmetic, not bravery." }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "rejections": [
+        { "san": "Qh5", "say": "The right idea one move too soon — Black slams the door with ...Rh8-trades or ...f5 counterplay. The rook sacrifice FIRST forces the king onto the fatal square with check. Order is everything." }
+      ],
+      "wrongSay": "Think forcing: which sacrifice drags the king onto the square where your queen checks?",
+      "successSay": "Sac to open, check to arrive, wedge to mate — the Damiano formula."
+    },
+    {
+      "kind": "challenge",
+      "fen": "r4rk1/pp3p2/6P1/5N2/8/8/P1P1QKP1/R6R w - - 0 1",
+      "prompt": "Now the FULL classic from 1512: this time the king can step back off h8 — so you'll need to sacrifice BOTH rooks!",
+      "hints": [
+        "After the first Rh8+ Kxh8, your second rook takes over the h-file with check — repeat the trick!",
+        "Rh8+, Rh1+, Rh8+ again — three sacrificial checks in a row, then the queen mops up via h5 and h7."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Rh8+", "say": "Rook number one dives in..." },
+            { "san": "Kxh8" },
+            { "san": "Rh1+", "say": "...and rook number two inherits the file — check!" },
+            { "san": "Kg8" },
+            { "san": "Rh8+", "say": "The SECOND full rook goes into the furnace. Material is a tool, not a treasure." },
+            { "san": "Kxh8" },
+            { "san": "Qh5+", "say": "Both rooks are gone — and the queen arrives exactly on time." },
+            { "san": "Kg8" },
+            { "san": "Qh7#", "say": "CHECKMATE — two whole rooks down. Damiano wrote this down in 1512; you just played all nine moves of it. The h-file was worth more than everything you gave for it." }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "rejections": [
+        { "san": "Qh5", "say": "Without the rook decoys, the king isn't ON h8 yet — Black defends with ...f5 or trades on h1. The sacrifices don't just open lines: they force the king to stand exactly where each check needs him." }
+      ],
+      "wrongSay": "Nine forced moves. Every white move is a check. Start with the nearest rook.",
+      "successSay": "A double rook sacrifice from the year 1512 — you now share a combination with five centuries of attackers."
+    },
+    {
+      "kind": "challenge",
+      "fen": "r6k/6pp/5N2/8/8/8/5PP1/6KR w - - 0 1",
+      "prompt": "Change of corner furniture: knight on f6, rook on the h-file. The ARABIAN mate — finish it.",
+      "hints": [
+        "The f6 knight is the hero: count which squares near the king it controls.",
+        "It guards g8 AND h7 — so your rook can land on h7 untouchably."
+      ],
+      "goal": { "type": "checkmate" },
+      "solutions": [
+        {
+          "line": [
+            { "san": "Rxh7#", "say": "The Arabian mate — found in Arabic chess manuscripts over a thousand years old, and still the standard finish of every h-file attack where a knight reaches f6. The oldest pattern in the book, still undefeated." }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "wrongSay": "The rook wants h7 — work out why the king can't simply take it.",
+      "successSay": "Knight f6 + rook on the 7th/h-file = Arabian. When your knight lands on f6 in a real game, this mate is what it's threatening."
+    }
+  ]
+}

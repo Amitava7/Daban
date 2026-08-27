@@ -1,0 +1,109 @@
+{
+  "id": "desperado-and-mad-rook",
+  "title": "Desperado & the Mad Rook",
+  "topic": "combinations",
+  "level": 5,
+  "subtitle": "Doomed pieces sell themselves — sometimes for half a point.",
+  "goals": [
+    "Cash in doomed pieces before they fall",
+    "Force stalemate with a rampaging rook",
+    "Turn dead-lost positions into draws"
+  ],
+  "estMinutes": 7,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "r2q1rk1/pp2pppp/2p5/3N4/6n1/7P/PPPQ1PP1/R5K1 w - - 0 1",
+      "say": "A DESPERADO is a piece that knows it's lost — and refuses to die for free. Attacked with no escape? Then grab the biggest thing in reach on the way out. And the ultimate desperado is the MAD ROOK: a rook that checks forever because capturing it would be stalemate. Two versions of the same idea: a doomed piece's value isn't zero — it's whatever it can take with it.",
+      "highlights": [
+        "d5",
+        "g4"
+      ]
+    },
+    {
+      "kind": "challenge",
+      "fen": "r2q1rk1/pp2pppp/2p5/3N4/6n1/7P/PPPQ1PP1/R5K1 w - - 0 1",
+      "prompt": "Mutual knight attacks: yours hangs to the c6 pawn, Black's hangs to your h3 pawn. Most players trade evenly. Squeeze out a profit!",
+      "hints": [
+        "Your knight is doomed no matter what — so its last act should be a capture. With check is even better.",
+        "Nxe7+! grabs a pawn and checks; only then do you take on g4. Net result: one extra pawn."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Nxe7+",
+              "say": "The desperado — a pawn and a check from a piece that was already dead..."
+            },
+            {
+              "san": "Kh8"
+            },
+            {
+              "san": "hxg4",
+              "say": "Now the recapture. Black regains the knight with ...Qxe7, but the arithmetic is done: knight for knight, plus e7 in your pocket. Doomed pieces buy groceries on the way to the gallows."
+            }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "rejections": [
+        {
+          "san": "hxg4",
+          "say": "cxd5 — even trade, no profit. Your d5 knight was doomed: before ANY doomed piece dies, ask what it can take with it. Nxe7+ was a free pawn."
+        },
+        {
+          "san": "Nf4",
+          "say": "The knight runs — and Black's g4 knight runs too: nothing gained for either side. When BOTH pieces hang, the side to move should cash a desperado, not retreat. Nxe7+ was a free pawn."
+        }
+      ],
+      "wrongSay": "The knight can't be saved profitably — so make it eat. Check its reach.",
+      "successSay": "Desperado arithmetic: doomed piece + in-between capture = profit. Never let a dead piece die hungry."
+    },
+    {
+      "kind": "challenge",
+      "fen": "k4r2/8/pQ6/P7/7P/8/1P6/6K1 b - - 0 1",
+      "prompt": "Now the immortal swindle. You're BLACK, dead lost — a queen down, king entombed. But look closely: your king has NO legal moves. Weaponize that!",
+      "hints": [
+        "If your rook vanished from the board, you'd have no legal moves at all — and no-moves-plus-no-check is STALEMATE, a draw.",
+        "So the rook goes berserk: check forever! Rf1+, Rf2+, Rf3+... capturing it is instant stalemate, and running never escapes the checks."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Rf1+",
+              "say": "The mad rook is loose! Kxf1 would be STALEMATE — your king has no moves and your a6 pawn is blocked. White must run..."
+            },
+            {
+              "san": "Kg2"
+            },
+            {
+              "san": "Rf2+",
+              "say": "...and the rook follows, still untouchable — Kxf2: stalemate again..."
+            },
+            {
+              "san": "Kg3"
+            },
+            {
+              "san": "Rf3+",
+              "say": "Check, forever. Take the rook: stalemate. Run: the checks never end — your rook covers every rank from its file. A full queen down, and the game is a DRAW. The mad rook is the greatest swindle in chess."
+            }
+          ],
+          "assert": "check"
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Rf6",
+          "say": "Qxf6! and the swindle dies with the rook — a QUIET offer can simply be accepted, because refusing stalemate only matters when refusing is impossible. The rook must arrive with CHECK: checks cannot be declined."
+        },
+        {
+          "san": "Rf7",
+          "say": "A rook that isn't checking is just a losing rook — White quietly improves the queen and converts the extra material. The magic only works as an endless series of CHECKS: start with Rf1+."
+        }
+      ],
+      "wrongSay": "Your immobile king is an asset: it makes every rook capture stalemate. Start checking and never stop.",
+      "successSay": "The mad rook: perpetual check powered by stalemate. Remember the precondition — your king must have zero moves — and you'll steal half-points from 'lost' positions forever."
+    }
+  ]
+}

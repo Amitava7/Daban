@@ -1,0 +1,96 @@
+{
+  "id": "marshalls-gold-coins",
+  "title": "The Gold Coins Game",
+  "topic": "masterpieces",
+  "level": 5,
+  "subtitle": "Marshall's Qg3!!, the most beautiful move ever played.",
+  "goals": [
+    "Calculate a triple-refutation queen offer",
+    "Use a knight as the silent enforcer",
+    "Recognize when 'en prise' means 'untouchable'"
+  ],
+  "estMinutes": 7,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "5rk1/pp4pp/4p3/2R3Q1/3n4/2q4r/P1P2PPP/5RK1 b - - 1 23",
+      "say": "Breslau, July 20, 1912. Frank Marshall, playing Black against Stefan Levitsky, reaches this position — both sides attacking, everything hanging, White's queen menacing g7. Legend says that after Black's next move, the spectators showered the board with gold coins. Before you find it, study the quiet hero: the knight on d4, one hop from e2, where it would fork g1 and any piece on g3...",
+      "highlights": [
+        "d4",
+        "e2",
+        "g3",
+        "h3"
+      ]
+    },
+    {
+      "kind": "challenge",
+      "fen": "5rk1/pp4pp/4p3/2R3Q1/3n4/2q4r/P1P2PPP/5RK1 b - - 1 23",
+      "prompt": "White threatens your g7 and your h3 rook hangs to gxh3. One Black move wins on the spot — the gold-coin move. Three white pieces can capture it, and all three captures lose instantly!",
+      "hints": [
+        "The square is g3 — inside White's own pawn camp, defended by two pawns and attackable by the queen. Now verify each capture: what does the d4 knight do after hxg3, after fxg3, and after Qxg3?",
+        "Qg3!! — hxg3 allows Ne2# (smothered by his own pawns), fxg3 allows Ne2+ and Rxf1#, and Qxg3 meets Ne2+ forking king and queen. And if White passes? Qxh2 is mate."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Qg3",
+              "say": "THE GOLD COIN MOVE. The queen walks into three captures — and refutes all three: hxg3 Ne2# (the h-pawn's departure seals his own king), fxg3 Ne2+ Kh1 Rxf1# (the f-pawn's departure opens the rook's file), and Qxg3 Ne2+ forking king and queen. Meanwhile Qxh2# is simply threatened. Levitsky resigned at once — reportedly under a shower of gold coins from the spectators. Every line runs through the quiet knight on d4: brilliance is geometry plus patience."
+            }
+          ]
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Ne2+",
+          "say": "The fork without the setup — Kh1! and there is no follow-up: the knight retreats empty-handed. Marshall's genius was the ORDER: queen to g3 FIRST, and only then is e2 unanswerable in every line."
+        },
+        {
+          "san": "Rxh2",
+          "say": "Kxh2! — a whole rook for a pawn, attack over. The immortal square is g3: the queen stands where every capture is self-destruction."
+        },
+        {
+          "san": "Qxc5",
+          "say": "You captured a rook — and White plays Qxg7#! Checkmate, game over, no gold coins. Always answer the mate threat first... preferably with a move that creates three bigger ones."
+        }
+      ],
+      "wrongSay": "The winning square is defended by two pawns and one queen — and safe from all three. Trust the d4 knight.",
+      "successSay": "Qg3!! — over a century later, still the textbook example of a move that cannot be captured by anything. You found it cold."
+    },
+    {
+      "kind": "challenge",
+      "fen": "5rk1/pp4pp/4p3/2R5/3n4/6Qr/P1P2PPP/5RK1 b - - 0 24",
+      "prompt": "Alternate history: suppose White had tried Qxg3. Prove the refutation — win the queen with the family fork!",
+      "hints": [
+        "The knight hop you've been saving all game: check on e2, and count what it attacks from there.",
+        "Ne2+! forks the g1 king and the g3 queen — after the king slides, take her."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Ne2+",
+              "say": "The silent partner finally speaks: check!"
+            },
+            {
+              "san": "Kh1"
+            },
+            {
+              "san": "Nxg3+",
+              "say": "And the queen falls — with ANOTHER check no less (discovered by your h3 rook... and the knight itself). Every branch of the gold-coin tree ends in ruin; this was the 'best' one, a queen down. Geometry, patience, and one immortal square."
+            }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Rxg3",
+          "say": "hxg3! — the h2 pawn recaptures your rook and the moment is gone. The KNIGHT collects with check: Ne2+ first, then the fork does the rest."
+        }
+      ],
+      "wrongSay": "King on g1, queen on g3 — a knight's dream. Which square forks them both?",
+      "successSay": "Ne2+ and Nxg3 — the fork that made Qg3!! untouchable. Now the whole combination is yours, in every branch."
+    }
+  ]
+}

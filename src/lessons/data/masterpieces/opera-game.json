@@ -1,0 +1,141 @@
+{
+  "id": "opera-game",
+  "title": "The Opera Game",
+  "topic": "masterpieces",
+  "level": 5,
+  "subtitle": "Morphy, Paris 1858 — development turned into art.",
+  "goals": [
+    "Punish greed with development sacrifices",
+    "Pile on a fatal pin",
+    "Play the most famous queen sacrifice in history"
+  ],
+  "estMinutes": 9,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "rn2kb1r/p3qppp/2p2n2/1p2p1B1/2B1P3/1QN5/PPP2PPP/R3K2R w KQkq - 0 10",
+      "say": "Paris Opera House, 1858. Paul Morphy sits watching 'Norma', playing casually against the Duke of Brunswick and Count Isouard. What follows becomes the most studied game in chess history — the perfect demonstration that DEVELOPMENT beats material. Every Black move so far grabbed or defended a pawn; every Morphy move brought a piece into the fight. Black just lashed out with ...b5, hitting two pieces. Watch what a fully developed army does about that.",
+      "highlights": [
+        "b5",
+        "c6",
+        "d1"
+      ]
+    },
+    {
+      "kind": "challenge",
+      "fen": "rn2kb1r/p3qppp/2p2n2/1p2p1B1/2B1P3/1QN5/PPP2PPP/R3K2R w KQkq - 0 10",
+      "prompt": "Black's ...b5 forks your bishop and knight — he expects a retreat. Morphy never retreated in this game. Find the piece sacrifice that rips the queenside open!",
+      "hints": [
+        "Retreating loses the initiative — count what Nxb5 buys: after cxb5 Bxb5+, Black's LAST developed squares get pinned shut.",
+        "Nxb5! — a whole knight to keep every black piece pinned to the king's rescue."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Nxb5",
+              "say": "The knight goes into the fire — declining is impossible (the c6 pawn hangs)..."
+            },
+            {
+              "san": "cxb5"
+            },
+            {
+              "san": "Bxb5+",
+              "say": "Check! The d7 knight must block, and now BOTH black knights are pinned wrecks — one to the king, one soon to the queen. Morphy has given a knight for one thing only: time. Every move from here arrives with a threat."
+            }
+          ],
+          "assert": "check"
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Bd3",
+          "say": "The retreat Black prayed for — ...b4 kicks the knight next and Black finally catches his breath. Morphy's rule: when ahead in development, OPEN LINES at any cost. Nxb5!"
+        },
+        {
+          "san": "Nd5",
+          "say": "Flashy — but Black holds with ...Qd6, and the b5 pawn survives to tell the tale. The thematic blow strips the king's cover directly: Nxb5!"
+        }
+      ],
+      "wrongSay": "A developed army must attack before the defender untangles. Which capture opens the road to Black's king?",
+      "successSay": "A knight for open lines — when you lead in development by four pieces, material is the cheapest thing on the board."
+    },
+    {
+      "kind": "challenge",
+      "fen": "3rkb1r/p2nqppp/5n2/1B2p1B1/4P3/1Q6/PPP2PPP/2KR3R w k - 3 13",
+      "prompt": "Both black knights are pinned and Black just found ...Rd8 to defend d7. Morphy's next move shocked the opera box: remove the guard — with a full ROOK!",
+      "hints": [
+        "The d7 knight is pinned and triple-attacked... but also triple-defended. Trade off the defenders at ANY price — your remaining pieces will outnumber what's left.",
+        "Rxd7! Rxd7, and then Rd1 renews the pin instantly — the second rook inherits the file, and Black's rook becomes the new pinned wreck."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Rxd7",
+              "say": "A whole rook for the pinned knight — because what matters is the FILE, not the material..."
+            },
+            {
+              "san": "Rxd7"
+            },
+            {
+              "san": "Rd1",
+              "say": "The point: the second rook takes over the pin as if nothing happened. Black's rook on d7 is now the pinned piece, the f6 knight is still pinned by the bishop, and every black unit is chained to a file Morphy owns. Two pieces down, completely winning."
+            }
+          ]
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Bxd7+",
+          "say": "Nxd7 — and the pins DISSOLVE: Black trades his way out and survives. The exchange sacrifice keeps every pin alive: Rxd7! Rxd7, then Rd1."
+        },
+        {
+          "san": "Bxf6",
+          "say": "Trading off the pinning bishop releases all the pressure — Black recaptures and finally untangles. The d-file is the artery: cut into it with Rxd7!"
+        }
+      ],
+      "wrongSay": "The pin on the d-file is worth more than any single piece. Feed the file.",
+      "successSay": "Rook for knight, pin for pin — Morphy plays the d-file like the orchestra downstairs plays Bellini."
+    },
+    {
+      "kind": "challenge",
+      "fen": "4kb1r/p2n1ppp/4q3/4p1B1/4P3/1Q6/PPP2PPP/2KR4 w k - 0 16",
+      "prompt": "The finale. Black clings to d7 with queen and knight. The opera is ending — finish the game with the most famous queen sacrifice ever played: mate in two!",
+      "hints": [
+        "The d7 knight is overloaded: it guards b8 AND blocks the d-file. One sacrifice deflects it from both jobs at once.",
+        "Qb8+!! — the knight MUST capture, abandoning the d-file... and your rook does the rest."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Qb8+",
+              "say": "THE queen sacrifice. Nxb8 is forced — and the knight, dragged to b8, no longer blocks the d-file..."
+            },
+            {
+              "san": "Nxb8"
+            },
+            {
+              "san": "Rd8#",
+              "say": "Checkmate — Rd8, guarded by the g5 bishop, while the f8 bishop and b8 knight entomb their own king. Morphy gave a knight, a rook and his QUEEN — and every sacrifice bought exactly one thing: time. Development is the money of chess; Morphy simply outspent two noblemen. Bravo."
+            }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Rxd7",
+          "say": "Qxd7! — the queen recaptures and Black wriggles on. You hold a forced mate instead: the knight guards b8 AND blocks the d-file, and one queen check makes it fail both jobs. Qb8+!!"
+        },
+        {
+          "san": "Qb7",
+          "say": "One square short of immortality! Black defends with ...Qc6 and the moment passes. The deflection must arrive with CHECK so the knight has no choice: Qb8+!!"
+        }
+      ],
+      "wrongSay": "The knight on d7 does two jobs. The queen sacrifice makes it fail both.",
+      "successSay": "Qb8+!! Nxb8 Rd8# — sixteen moves, played between arias in 1858, remembered forever. Now it's in your hands too."
+    }
+  ]
+}

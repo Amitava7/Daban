@@ -1,0 +1,134 @@
+{
+  "id": "torre-lasker-windmill",
+  "title": "The Windmill",
+  "topic": "masterpieces",
+  "level": 5,
+  "subtitle": "Torre vs Lasker, Moscow 1925 — thirteen moves of harvest.",
+  "goals": [
+    "Recognize the discovered-check engine",
+    "Sacrifice your queen for a windmill",
+    "Harvest an entire army with one rook"
+  ],
+  "estMinutes": 8,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "r3rnk1/pb3pp1/3pp2p/1q4BQ/1P1P4/4N1R1/P4PPP/4R1K1 w - - 4 25",
+      "say": "Moscow 1925: 20-year-old Carlos Torre faces former World Champion Emanuel Lasker. Black's queen on b5 eyes White's queen on h5 — the g5 bishop is all that separates them along the fifth rank. Torre sees what that really means: if the bishop steps to f6, his queen hangs... and he WANTS that, because a rook landing on g7 can then give DISCOVERED CHECK over and over, capturing something new on every swing. A perpetual-motion capture machine. Chess calls it the WINDMILL, and this game is why.",
+      "highlights": [
+        "f6",
+        "g7",
+        "g3"
+      ]
+    },
+    {
+      "kind": "challenge",
+      "fen": "r3rnk1/pb3pp1/3pp2p/1q4BQ/1P1P4/4N1R1/P4PPP/4R1K1 w - - 4 25",
+      "prompt": "The queens attack each other — everyone in the hall expected a trade. Torre played the move of his life instead. Offer your QUEEN!",
+      "hints": [
+        "What guards g7? Only the king. If your bishop lands on f6 first, Rxg7+ starts a discovered-check engine your queen's life happily pays for.",
+        "Bf6!! — if Black takes the queen, the windmill mills. If he doesn't, gxf6 wrecks his king anyway."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Bf6",
+              "say": "The queen hangs — Torre leaves her there. Lasker, a WORLD CHAMPION, took her, because declining loses too. Now the machine..."
+            },
+            {
+              "san": "Qxh5"
+            },
+            {
+              "san": "Rxg7+",
+              "say": "First check. The rook is untouchable — the f6 bishop guards it. The king shuffles, the rook swings, and each swing eats. Continue in the next challenge — the harvest deserves its own stage."
+            }
+          ],
+          "assert": "check"
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Qxh6",
+          "say": "gxh6! — and with the g7 pawn gone to h6, the f6 anchor square loses its meaning: no windmill, queen traded for pawns. The queen is BAIT here, not a weapon: Bf6!!"
+        },
+        {
+          "san": "Bxh6",
+          "say": "...Qxh5 and now the queen is simply gone for nothing — only from f6 does the bishop guard the g7 windmill axle. One square, one immortal move: Bf6!!"
+        }
+      ],
+      "wrongSay": "The move ignores both queens entirely. Which bishop square turns Rxg7+ into an engine?",
+      "successSay": "Bf6!! — a queen invested in a machine. Now run it."
+    },
+    {
+      "kind": "challenge",
+      "fen": "r3rnk1/pb3pp1/3ppB1p/7q/1P1P4/4N1R1/P4PPP/4R1K1 w - - 0 26",
+      "prompt": "Lasker took the queen. Now run the full windmill — THIRTEEN moves: swing, check, capture, repeat, and come out ahead. The rook does everything.",
+      "hints": [
+        "The cycle: Rxg7+ Kh8, then rook-takes-something-with-discovered-check, king returns, repeat. Order: g7, f7, back to g7, b7, back to g7... then finally capture the QUEEN on h5.",
+        "Rxg7+, Rxf7+, Rg7+, Rxb7+, Rg7+, Rg5+ (the exit!), and Rxh5 — count your loot at the end."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Rxg7+",
+              "say": "Blade one: the g7 pawn falls. The rook stands immune under the f6 bishop..."
+            },
+            {
+              "san": "Kh8"
+            },
+            {
+              "san": "Rxf7+",
+              "say": "The swing OUT is a discovered check from the f6 bishop — so the rook eats f7 for free..."
+            },
+            {
+              "san": "Kg8"
+            },
+            {
+              "san": "Rg7+",
+              "say": "Swing back — check again. The king is a metronome and every tick costs Black material..."
+            },
+            {
+              "san": "Kh8"
+            },
+            {
+              "san": "Rxb7+",
+              "say": "Blade three: the bishop on b7 falls to another discovered check..."
+            },
+            {
+              "san": "Kg8"
+            },
+            {
+              "san": "Rg7+",
+              "say": "Back once more. Torre could keep milling — but a great engineer knows when to stop the machine..."
+            },
+            {
+              "san": "Kh8"
+            },
+            {
+              "san": "Rg5+",
+              "say": "The exit swing — discovered check one final time, and the rook slides toward its true target..."
+            },
+            {
+              "san": "Kh7"
+            },
+            {
+              "san": "Rxh5",
+              "say": "HARVEST COMPLETE. The rook that started on g3 has eaten two pawns, a bishop and the QUEEN. Lasker fought on a few moves and resigned. Final ledger: Torre invested a queen and collected a queen, a bishop and three pawns. The windmill — once seen, never forgotten."
+            }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Rg5",
+          "say": "The exit before the harvest! You grabbed the queen line early — hxg5! and the rook dies: without the check-cycle Black gets to move. Every swing must CHECK: start with Rxg7+."
+        }
+      ],
+      "wrongSay": "Swing in with check, swing out with discovered check, eat on every swing. g7 first.",
+      "successSay": "A thirteen-move windmill against a former World Champion — you just re-enacted one of the greatest tactical sequences ever played."
+    }
+  ]
+}

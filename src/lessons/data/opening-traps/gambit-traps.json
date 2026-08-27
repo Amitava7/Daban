@@ -1,0 +1,135 @@
+{
+  "id": "gambit-traps",
+  "title": "Queen-Raid Gambits",
+  "topic": "opening-traps",
+  "level": 4,
+  "subtitle": "Blackburne–Shilling and Stafford: greed meets checkmate.",
+  "goals": [
+    "Spring the Blackburne–Shilling queen raid",
+    "Execute the Stafford Gambit's main trap",
+    "Learn the greed-detector: why Nxe5 loses"
+  ],
+  "estMinutes": 8,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "r1bqkbnr/pppp1ppp/8/4N3/2BnP3/8/PPPP1PPP/RNBQK2R b KQkq - 0 4",
+      "say": "Joseph Blackburne allegedly played this for shilling stakes in London pubs: 3...Nd4?! dangles the e5 pawn, and White just took it with 4.Nxe5??. Now the queen raid begins — and it ends with a picture-perfect smothered-style mate ON WHITE'S OWN BACK RANK. Seven forced moves. You're Black; make it cost more than a shilling.",
+      "highlights": [
+        "e5",
+        "g5",
+        "g2",
+        "f3"
+      ]
+    },
+    {
+      "kind": "challenge",
+      "fen": "r1bqkbnr/pppp1ppp/8/4N3/2BnP3/8/PPPP1PPP/RNBQK2R b KQkq - 0 4",
+      "prompt": "White grabbed the poisoned e5 pawn. Launch the queen raid — seven moves ending in mate!",
+      "hints": [
+        "Qg5! forks the loose e5 knight and the g2 pawn — White can't hold both, and grabbing f7 makes it worse.",
+        "After Nxf7 Qxg2, Rf1, the killer geometry: Qxe4+ hits king AND then your d4 knight lands on f3 — mate with three white pieces watching helplessly."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Qg5",
+              "say": "The double attack: the e5 knight hangs, g2 hangs behind it. White's 'best try' is the counter-raid on f7..."
+            },
+            {
+              "san": "Nxf7"
+            },
+            {
+              "san": "Qxg2",
+              "say": "Ignore the fork on your own queen and rook — the g2 capture threatens mate on e4/g1 lines already..."
+            },
+            {
+              "san": "Rf1"
+            },
+            {
+              "san": "Qxe4+",
+              "say": "Check — and the e4 queen now eyes the same light squares as your d4 knight. White's only block..."
+            },
+            {
+              "san": "Be2"
+            },
+            {
+              "san": "Nf3#",
+              "say": "MATE — the d4 knight's only good move of the game is the last move of the game. King boxed by his own bishop, rook and pawns; Blackburne collects his shilling. Note White's knight sits on f7 'winning' your rook: material means nothing to a mated king."
+            }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Ne6",
+          "say": "The knight slinks home and White keeps a clean extra pawn. ...Nd4 was never about safety — it was bait, and the hook is the queen raid: Qg5!"
+        },
+        {
+          "san": "Qh4",
+          "say": "The right spirit, wrong square — g3! blunts it and White keeps the pawn. From g5 the queen forks e5 AND g2: geometry is everything in a raid."
+        }
+      ],
+      "wrongSay": "Two loose White targets sit on one queen move's crosshairs: the e5 knight and the g2 pawn.",
+      "successSay": "The Blackburne–Shilling trap: seven moves, one shilling, checkmate. Greed on e5 has never recovered."
+    },
+    {
+      "kind": "challenge",
+      "fen": "r1bqk2r/ppp2ppp/2p2n2/2b3B1/4P3/3P4/PPP2PPP/RN1QKB1R b KQkq - 2 6",
+      "prompt": "The Stafford Gambit — internet-famous for exactly this position. White's 6.Bg5?? pins your knight... doesn't it? Play the punishment: five moves to mate!",
+      "hints": [
+        "The 'pin' is fake for the same reason as every fake pin: a big enough counter-blow. Your knight can jump — check what Bxd8 costs White.",
+        "Nxe4!! — and when White grabs the queen with Bxd8, the machine runs: Bxf2+, Ke2, Bg4#."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Nxe4",
+              "say": "The fake pin is called. If White plays dxe4, then ...Bxg5 regains everything with a better game — so White grabs the queen..."
+            },
+            {
+              "san": "Bxd8"
+            },
+            {
+              "san": "Bxf2+",
+              "say": "The counter-operation begins with check. Kxf2 loses to ...Nxg5+ picking everything up, so the king steps aside..."
+            },
+            {
+              "san": "Ke2"
+            },
+            {
+              "san": "Bg4#",
+              "say": "MATE ON MOVE EIGHT. Both bishops and the e4 knight weave the net: f2-bishop seals the dark squares, g4-bishop checks, the knight covers the rest. White 'won a queen' and lost the game — the Stafford's most famous line."
+            }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "rejections": [
+        {
+          "san": "h6",
+          "say": "Bxf6 Qxf6 and White is simply better — a pawn up, no attack. The Stafford lives on the fake-pin break: Nxe4!!"
+        },
+        {
+          "san": "Bxf2+",
+          "say": "Spirited — but one move early: Kxf2! and there's no follow-up, the bishop is just gone. The knight jump comes FIRST: Nxe4! opens the queen's defense of g5 and loads everything."
+        }
+      ],
+      "wrongSay": "Every Stafford player waits their whole life for this position. The knight is NOT really pinned.",
+      "successSay": "Nxe4!! Bxd8 Bxf2+ Ke2 Bg4# — the trap that made the Stafford famous. And the meta-lesson of this whole topic: pins against queens are suggestions, not laws."
+    },
+    {
+      "kind": "intro",
+      "fen": "r1bqkbnr/pppp1ppp/8/4p3/2BnP3/8/PPPP1PPP/RNBQK2R w KQkq - 4 4",
+      "say": "Defending against these raids is one habit: BEFORE grabbing any early pawn, ask what recaptures and what attacks follow. Against Blackburne–Shilling, simply castle or play c3 — the d4 knight retreats in shame. Against the Stafford, play d3 and h3 early and never touch g5 with the bishop. Free pawns in move-4 positions are almost always rented, not owned.",
+      "highlights": [
+        "e5",
+        "c3",
+        "d4"
+      ]
+    }
+  ]
+}

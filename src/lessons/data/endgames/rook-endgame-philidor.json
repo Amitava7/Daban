@@ -1,0 +1,87 @@
+{
+  "id": "rook-endgame-philidor",
+  "title": "The Philidor Defense",
+  "topic": "endgames",
+  "level": 6,
+  "subtitle": "The rook ending every defender must know.",
+  "goals": [
+    "Hold the third-rank fence",
+    "Switch to rear checks at the right moment",
+    "Choose the short side for your king"
+  ],
+  "estMinutes": 7,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "4k3/7R/8/4K3/4P3/8/r7/8 b - - 0 1",
+      "say": "The Philidor position — the defensive twin of the Lucena, published in 1777. You're a pawn down in a rook ending, but your king sits on the queening square. Defended correctly, this is a DEAD DRAW — and the method is so precise it feels like a magic spell. Learn it once, save half-points forever.",
+      "highlights": ["e8", "a6", "e4"]
+    },
+    {
+      "kind": "challenge",
+      "fen": "4k3/7R/8/4K3/4P3/8/r7/8 b - - 0 1",
+      "prompt": "You're BLACK, defending. Philidor's immortal rule: put your rook on the THIRD rank (your sixth) — the fence!",
+      "hints": [
+        "White wins only if his KING reaches the sixth rank. Deny every one of those squares at once.",
+        "Ra6! The rook patrols the sixth rank like an electric fence — the white king can never cross."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Ra6", "say": "The Philidor fence! White's king may never step to d6, e6 or f6 — and without the king, the pawn cannot advance safely. White can shuffle forever; you just sweep the rook along the sixth." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "Ra5+", "say": "You checked him FORWARD — Kd6! and suddenly mate threats loom around your king. Checks come LATER; first build the fence on the sixth: Ra6." },
+        { "san": "Kd8", "say": "Passive shuffling lets Kd6 in with menace. The DRAW lives on the sixth rank — Ra6, the fence Philidor taught in 1777." }
+      ],
+      "wrongSay": "Deny the white king the entire sixth rank with one rook move.",
+      "successSay": "Fence on the sixth: White's king is locked out and the position cannot be lost."
+    },
+    {
+      "kind": "challenge",
+      "fen": "4k3/7R/r3PK2/8/8/8/8/8 b - - 0 1",
+      "prompt": "White got impatient and pushed the pawn to the sixth. Philidor's second command: NOW the rook dives — checks from behind, forever!",
+      "hints": [
+        "The pawn on e6 is a wall now — White's own king can never hide from checks BEHIND it. The fence has done its job.",
+        "Send the rook to the first rank: Ra1! The checks from the rear can never be escaped."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Ra1", "say": "The dive! Now Rf1+, Re1+, endless — the white king has no shelter anywhere: his own pawn blocks the only hiding square. This exact two-step (fence, then dive the moment the pawn advances) is the whole Philidor draw." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "Rxe6+", "say": "Kxe6!! You traded your entire rook for one pawn — now White's rook mates your bare king at leisure. The pawn wasn't the enemy; the KING crossing was. Dive behind: Ra1." },
+        { "san": "Ra8", "say": "Too passive — White's king walks in and the mating nets appear. The moment the pawn touched the sixth rank, your rook's job changed: infinite checks from BEHIND. Ra1!" }
+      ],
+      "wrongSay": "The advanced pawn now blocks its own king's shelter. Get the rook maximum distance behind for endless checks.",
+      "successSay": "Fence until the pawn advances, then dive and check forever. Philidor's recipe — unbeatable for 250 years."
+    },
+    {
+      "kind": "challenge",
+      "fen": "R3k3/8/8/4K3/4P3/8/1r6/8 b - - 0 1",
+      "prompt": "White's rook checks you off the queening square. Grandmaster precision: which way does your king step?",
+      "hints": [
+        "Rule: the defending king goes to the SHORT side of the pawn (fewer files), so your rook keeps the LONG side for checking distance.",
+        "For an e-pawn the short side is the kingside — Kf7! — leaving the whole queenside as your rook's runway."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Kf7", "say": "Short side! Your king huddles in the small corner while your rook owns the long a-file runway — Ra2, Ra5+, endless sideways checks with room to spare. King short, rook long: the mantra of every rook-ending defender." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "Kd7", "say": "The LONG side — now your own king stands in your rook's checking lanes, and White's king finds shelter on the wide wing. Defensive geometry says: king to the SHORT side (f7), rook to the long." },
+        { "san": "Ke7", "say": "Staying in the pawn's path lets White's king muscle forward with tempo. Step aside — to the SHORT side: Kf7 keeps your rook's checking distance intact." }
+      ],
+      "wrongSay": "Count the files on each side of the e-pawn: three on one side, four on the other. Your king takes the SMALL side.",
+      "successSay": "Fence, dive, short side — the complete defensive toolkit for rook endings. You now hold draws that club players lose every day."
+    }
+  ]
+}

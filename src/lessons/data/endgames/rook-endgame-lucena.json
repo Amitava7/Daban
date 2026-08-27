@@ -1,0 +1,96 @@
+{
+  "id": "rook-endgame-lucena",
+  "title": "The Lucena Position",
+  "topic": "endgames",
+  "level": 6,
+  "subtitle": "Build a bridge — the most famous winning technique.",
+  "goals": [
+    "Recognize the Lucena setup",
+    "Build the bridge with the rook lift",
+    "Convert the full winning sequence"
+  ],
+  "estMinutes": 7,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "4K3/4P1k1/8/8/8/8/r7/5R2 w - - 0 1",
+      "say": "The Lucena position — printed in chess books since 1497 and still the single most important rook endgame. Your pawn stands on the seventh with your king in front of it; the enemy king is cut off by your rook; the enemy rook waits to check you forever. Every rook ending you ever win 'up a pawn' funnels toward this exact picture — so the winning method is mandatory knowledge.",
+      "highlights": ["e8", "e7", "f1"]
+    },
+    {
+      "kind": "challenge",
+      "fen": "4K3/4P1k1/8/8/8/8/r7/5R2 w - - 0 1",
+      "prompt": "Your king can't step out — endless checks await. Prepare his escape route: play the famous rook lift!",
+      "hints": [
+        "If the king emerges now, the enemy rook checks him back to e8 forever. He needs a shelter waiting for him.",
+        "Rf4! The rook will later swing to e4, blocking the checks — chess calls it 'building a bridge'."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Rf4", "say": "THE BRIDGE! The rook takes the fourth rank — soon the king will walk out, absorb a few checks, and duck behind this rook like a wall. Remember this lift: it wins every Lucena." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "Kd7", "say": "Rd2+! Ke6, Re2+! Kd6, Rd2+... the checks never end, because the king has no shelter — he must crawl back to e8. Build the bridge FIRST: Rf4." },
+        { "san": "Rf5", "say": "One rank too far! The king's walk will need e5 for himself. The classic bridge goes to the FOURTH rank — Rf4 — so Re4 blocks the checks at exactly the right moment." }
+      ],
+      "wrongSay": "The king needs cover before he steps out. The rook lift to the fourth rank prepares it.",
+      "successSay": "Rf4 — four hundred years of endgame theory in one rook move."
+    },
+    {
+      "kind": "challenge",
+      "fen": "4K3/4P1k1/8/8/5R2/8/8/r7 w - - 0 1",
+      "prompt": "Bridge ready (Black marked time with Ra1). Now walk the king out and PROVE the technique — the full sequence to the end!",
+      "hints": [
+        "Step the king out toward the rook's rank: he'll zigzag d7, e6, d6, e5, taking the checks as they come.",
+        "When the final check flies, the rook drops to e4 — the bridge closes and the checks are over forever."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Kd7", "say": "Out into the storm — the checks begin!" },
+            { "san": "Rd1+" },
+            { "san": "Ke6", "say": "Zigzagging down, always toward the bridge..." },
+            { "san": "Re1+" },
+            { "san": "Kd6", "say": "The king weaves — each check pushes him closer to shelter." },
+            { "san": "Rd1+" },
+            { "san": "Ke5", "say": "One step from the wall — the rook has one check left..." },
+            { "san": "Re1+" },
+            { "san": "Re4", "say": "THE BRIDGE CLOSES! The rook blocks the final check, the king shelters behind it, and e8=Q cannot be prevented. That is the Lucena — the position every rook endgame dreams of becoming." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "Rf7+", "say": "A spite check — after Kg6 attacks your rook you've achieved nothing and the pawn still can't promote. The plan is the king walk: Kd7, ride the checks, and close the bridge on e4." }
+      ],
+      "wrongSay": "March the king out — d7 first — and zigzag toward the waiting rook. The bridge does the rest.",
+      "successSay": "You just played a sequence studied continuously for five centuries. This IS rook endgame technique."
+    },
+    {
+      "kind": "challenge",
+      "fen": "8/4P1k1/8/4K3/4r3/8/8/8 w - - 0 1",
+      "prompt": "Desperate, Black threw his rook onto the bridge. Finish cleanly!",
+      "hints": [
+        "The rook capture is free — and then nothing on the board stops the pawn.",
+        "Take, and promote. Count Black's king: two moves too slow."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Kxe4", "say": "The desperado rook is pocketed..." },
+            { "san": "Kf6" },
+            { "san": "e8=Q", "say": "...and the pawn crowns just as the black king arrives one move late. Lucena complete: bridge, walk, block, QUEEN." }
+          ],
+          "assert": "promotion"
+        }
+      ],
+      "rejections": [
+        { "san": "Kd5", "say": "Retreating leaves the rook alive to harass you all over again. It hangs with no defender in sight — take it, and the pawn queens unopposed." }
+      ],
+      "wrongSay": "A whole rook is en prise with check resolved — take it, then promote.",
+      "successSay": "From cut-off king to new queen: you now own the most important winning method in rook endgames."
+    }
+  ]
+}

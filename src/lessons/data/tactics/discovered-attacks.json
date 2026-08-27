@@ -1,0 +1,126 @@
+{
+  "id": "discovered-attacks",
+  "title": "Discovered Attacks",
+  "topic": "tactics",
+  "level": 4,
+  "subtitle": "Move one piece, unleash another.",
+  "goals": [
+    "Unmask hidden attackers with tempo",
+    "Use discovered and double checks",
+    "Make the moving piece work too"
+  ],
+  "estMinutes": 6,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "3qk3/p4ppp/8/4N3/8/8/5PPP/4R1K1 w - - 0 1",
+      "say": "A discovered attack is chess's version of a trapdoor: one piece steps aside and a hidden attacker behind it strikes. The magic — the piece that MOVES can create a second threat at the same time. Two threats, one move, and your opponent can only answer one.",
+      "highlights": ["e5", "e1", "e8"]
+    },
+    {
+      "kind": "challenge",
+      "fen": "3qk3/p4ppp/8/4N3/8/8/5PPP/4R1K1 w - - 0 1",
+      "prompt": "Your knight masks the rook's check. Move it somewhere VICIOUS — discovered check plus a queen attack!",
+      "hints": [
+        "Any knight move uncovers Re1's check — so pick the jump that creates a second threat.",
+        "From c6 the knight attacks d8. Check from the rook, queen attacked by the knight — Black can't handle both."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Nc6", "say": "Discovered check! The rook checks while the knight leaps onto the queen — Black must answer the CHECK first..." },
+            { "san": "Kd7" },
+            { "san": "Nxd8", "say": "...so the queen is simply taken. The discovered check bought you a free capture." }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "rejections": [
+        { "san": "Nf3", "say": "Discovered check, yes — but the knight retreated to do nothing. The whole art is making the MOVING piece threaten something too. Try attacking the queen." }
+      ],
+      "wrongSay": "Every knight move gives discovered check — but only one ALSO attacks the queen.",
+      "successSay": "Discovered check + second threat = your opponent answers the check while you take the prize."
+    },
+    {
+      "kind": "challenge",
+      "fen": "r5k1/5ppp/8/3N4/8/8/5PBP/6K1 w - - 0 1",
+      "prompt": "The knight blocks your bishop's long diagonal to a8. Unleash it — with check!",
+      "hints": [
+        "When the knight moves, the g2 bishop suddenly sees the corner rook. Make the knight move COUNT.",
+        "A knight check on e7 forces the king to respond while the bishop's attack hangs over a8."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Ne7+", "say": "Check from the knight — AND the long diagonal opens onto the rook..." },
+            { "san": "Kf8" },
+            { "san": "Bxa8", "say": "The rook is gone. Even when Black rounds up your knight, you've won the exchange — rook for knight." }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "rejections": [
+        { "san": "Nb6", "say": "The knight attacks the rook AND the bishop sees it — but Black just moves the rook, saving everything. The knight CHECK froze Black completely; that's the difference." }
+      ],
+      "wrongSay": "Open the bishop's diagonal with a knight move that gives CHECK — no time for Black to save the rook.",
+      "successSay": "Discoveries with check are 'free moves' — your opponent is busy while you collect."
+    },
+    {
+      "kind": "challenge",
+      "fen": "r3k3/p4ppp/8/8/4B3/8/5PPP/4R1K1 w - - 0 1",
+      "prompt": "DOUBLE CHECK — the rarest, most forcing move in chess. Both pieces check at once; blocking is impossible!",
+      "hints": [
+        "Move the bishop so IT checks the king while the rook behind checks too. Against double check, only a king move is legal — no blocks, no captures.",
+        "Bishop to c6: two checks, one move, and the a8 rook is on the bishop's new diagonal."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Bc6+", "say": "DOUBLE CHECK! Rook and bishop check together — Black cannot block two lines and cannot capture two pieces. The king must run..." },
+            { "san": "Kf8" },
+            { "san": "Bxa8", "say": "...and the bishop, still sitting on its checking diagonal, scoops the rook. Total domination." }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "rejections": [
+        { "san": "Bb7", "say": "It attacks the rook and discovers check — good! But Bc6+ was DOUBLE check: king forced to move, rook collected next. When both pieces can check, always prefer it." }
+      ],
+      "wrongSay": "Find the bishop move that checks e8 BY ITSELF while the rook checks behind it.",
+      "successSay": "Double check answers itself: the king must move, whatever else is happening on the board."
+    },
+    {
+      "kind": "challenge",
+      "fen": "4k3/5ppp/8/q3N3/8/8/5PPP/4R1K1 w - - 0 1",
+      "prompt": "Every knight move discovers check — but the queen on a5 demands a special one. Find the discovery that wins her!",
+      "hints": [
+        "The knight should attack the queen WHILE the rook checks. Which jumps hit a5?",
+        "c4 and c6 both touch the queen. Either way, when Black blocks the check with the queen, take her!"
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Nc4", "say": "Discovered check plus attack on the queen!" },
+            { "san": "Qe5" },
+            { "san": "Rxe5+", "say": "The queen's only try was blocking the check — straight into your rook. Queen won." }
+          ],
+          "assert": "capture"
+        },
+        {
+          "line": [
+            { "san": "Nc6", "say": "Discovered check while the knight lunges at the queen!" },
+            { "san": "Qe5" },
+            { "san": "Rxe5+", "say": "Blocking was forced — and fatal. The queen falls with check." }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "rejections": [
+        { "san": "Nd3", "say": "Discovered check — but the knight attacks nothing, so Black simply plays Kd8 and the queen is untouched. Make the knight hit her directly: Nc4 or Nc6, and she's lost whatever Black does." },
+        { "san": "Nxf7", "say": "Greedy — a pawn and a discovered check, but the knight hangs on f7 and the queen escapes the danger. The clean discoveries attack the QUEEN so every reply loses her." }
+      ],
+      "wrongSay": "The discovery must do double duty: rook checks, knight attacks the queen. Two squares do it.",
+      "successSay": "That's mastery: not just finding a discovery, but choosing the one that wins the most."
+    }
+  ]
+}

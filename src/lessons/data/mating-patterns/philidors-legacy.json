@@ -1,0 +1,159 @@
+{
+  "id": "philidors-legacy",
+  "title": "Philidor's Legacy",
+  "topic": "mating-patterns",
+  "level": 5,
+  "subtitle": "The immortal smothered mate: double check, queen sac, Nf7#.",
+  "goals": [
+    "Drive the king into the corner with checks",
+    "Use double check — the unanswerable weapon",
+    "Sacrifice the queen for the smothered finish"
+  ],
+  "estMinutes": 8,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "r4rk1/pp4pp/8/q5N1/8/8/PP2QPPP/6K1 w - - 0 1",
+      "say": "Described by Philidor in 1749 (and known even before him), this is the most famous combination in chess: queen and knight drive the enemy king into the corner, the queen sacrifices herself to seal the last exit with Black's OWN rook, and the knight — the one piece that attacks over walls — mates a king smothered by his own army. Note Black even threatens ...Qxg5: every move of the machine is a check, so the threat never lands.",
+      "highlights": [
+        "g5",
+        "f7",
+        "h6",
+        "g8"
+      ]
+    },
+    {
+      "kind": "challenge",
+      "fen": "r4r1k/pp4pp/7N/q7/2Q5/8/PP3PPP/6K1 w - - 0 1",
+      "prompt": "Warm up at the finish line: the king is cornered and boxed in. Queen sac, then mate — two moves!",
+      "hints": [
+        "The g8 square is the king's only air. Give your queen there — Black's rook MUST take, sealing the corner shut.",
+        "Qg8+!! Rxg8, and now the knight strikes the square only knights can reach."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Qg8+",
+              "say": "The immortal sacrifice — and Rxg8 is forced: the king cannot capture, because your h6 knight guards g8."
+            },
+            {
+              "san": "Rxg8"
+            },
+            {
+              "san": "Nf7#",
+              "say": "Smothered mate. The king suffocates behind his own rook and pawns while the knight checks from f7 — the one attack no wall can block."
+            }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Nf7+",
+          "say": "Check — but the king slips out through g8! The queen must SEAL that square first, by dying on it: Qg8+!! forces the rook to become its own king's tombstone."
+        }
+      ],
+      "wrongSay": "The king needs g8. Give your queen on that exact square — the recapture builds the tomb.",
+      "successSay": "Qg8+!! Rxg8, Nf7# — the two-move finish. Now earn it from further out."
+    },
+    {
+      "kind": "challenge",
+      "fen": "r4rk1/pp4pp/8/q5N1/8/8/PP2QPPP/6K1 w - - 0 1",
+      "prompt": "The complete Philidor's Legacy: nine forced moves from a quiet-looking position. Begin with the check on the long diagonal!",
+      "hints": [
+        "Qc4+ seizes the a2–g8 diagonal with check. The king must step to the corner — and f7 belongs to your knight next.",
+        "Then the knight machine: Nf7+, Nh6+ DOUBLE CHECK, back to Kh8 — and the queen gives herself on g8."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Qc4+",
+              "say": "Check on the a2–g8 diagonal. The king must step into the corner..."
+            },
+            {
+              "san": "Kh8"
+            },
+            {
+              "san": "Nf7+",
+              "say": "The knight fork-checks from f7 — the king returns to g8, hoping for peace..."
+            },
+            {
+              "san": "Kg8"
+            },
+            {
+              "san": "Nh6+",
+              "say": "DOUBLE CHECK — knight from h6, queen down the diagonal. Both at once: no block, no capture can answer two attackers. Only a king move..."
+            },
+            {
+              "san": "Kh8"
+            },
+            {
+              "san": "Qg8+",
+              "say": "...and now the immortal queen sacrifice. Guarded by your knight, she cannot be taken by the king — the rook must do it..."
+            },
+            {
+              "san": "Rxg8"
+            },
+            {
+              "san": "Nf7#",
+              "say": "PHILIDOR'S LEGACY. The rook Black was forced to place on g8 smothers his own king; the knight mates through the wall. 1749 called — you played it perfectly."
+            }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Nf7",
+          "say": "Without the queen check first, the king isn't in the corner — Black just plays ...Rxf7 or walks away. Every move of this machine is a check; start with Qc4+."
+        }
+      ],
+      "wrongSay": "Nine moves, every white move a check or a mate. The first check comes down the a2–g8 diagonal.",
+      "successSay": "King hunt, double check, queen sac, smothered mate — the full Legacy. This is the combination every chess player wants to play once in their life. You're ready for your chance."
+    },
+    {
+      "kind": "challenge",
+      "fen": "r4rk1/pp4pp/8/q5N1/8/8/PP2QPPP/6K1 w - - 0 1",
+      "prompt": "Prove you know the machine's soul: replay the hunt up to the DOUBLE check — the move greedier players get wrong.",
+      "hints": [
+        "From f7 the knight could grab material — but the double check is worth more than any rook.",
+        "Nh6+ — the ONLY move that checks with both pieces at once."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Qc4+",
+              "say": "The hunt begins again..."
+            },
+            {
+              "san": "Kh8"
+            },
+            {
+              "san": "Nf7+",
+              "say": "Fork-check — and here stands the moment of temptation..."
+            },
+            {
+              "san": "Kg8"
+            },
+            {
+              "san": "Nh6+",
+              "say": "Double check! Greed would have grabbed the a8 rook and let the king escape. The double check keeps him chained to the corner — mate follows in two."
+            }
+          ],
+          "assert": "check"
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Nf7",
+          "say": "No check — and ...Rxf7 simply eats the knight. Philidor's machine runs on checks: the queen fires down the diagonal first."
+        }
+      ],
+      "wrongSay": "Re-run the machine: diagonal check, knight check, DOUBLE check.",
+      "successSay": "The discipline of the double check — material means nothing while the machine runs. Lesson complete."
+    }
+  ]
+}

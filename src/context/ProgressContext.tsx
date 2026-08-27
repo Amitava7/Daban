@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import {
   Storage, Progress, GameRecord, Settings, OpeningMastery, EndgameCompleted,
+  LessonProgress, LessonRecord,
   calculateEloChange, computeAccuracy,
 } from '../services/StorageService';
 
@@ -9,6 +10,7 @@ interface ProgressState {
   settings: Settings;
   openingMastery: OpeningMastery;
   endgameCompleted: EndgameCompleted;
+  lessonProgress: LessonProgress;
   isLoaded: boolean;
 }
 
@@ -17,6 +19,8 @@ interface ProgressActions {
   updateSettings: (partial: Partial<Settings>) => Promise<void>;
   recordOpeningMove: (openingId: string, correct: boolean) => Promise<void>;
   completeEndgame: (puzzleId: string) => Promise<void>;
+  completeLesson: (lessonId: string, scorePct: number, stars: 0 | 1 | 2 | 3) => Promise<void>;
+  recordLessonStep: (lessonId: string, stepIndex: number) => Promise<void>;
   weeklyEloChange: () => number;
   weeklyAccuracy: () => number;
   totalGames: () => number;
@@ -34,6 +38,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
   });
   const [openingMastery, setOpeningMastery] = useState<OpeningMastery>({});
   const [endgameCompleted, setEndgameCompleted] = useState<EndgameCompleted>({});
+  const [lessonProgress, setLessonProgress] = useState<LessonProgress>({});
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
@@ -42,11 +47,13 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       Storage.getSettings(),
       Storage.getOpeningMastery(),
       Storage.getEndgameProgress(),
-    ]).then(([prog, sett, opening, endgame]) => {
+      Storage.getLessonProgress(),
+    ]).then(([prog, sett, opening, endgame, lessons]) => {
       setProgress(prog);
       setSettings(sett);
       setOpeningMastery(opening);
       setEndgameCompleted(endgame);
+      setLessonProgress(lessons);
       setIsLoaded(true);
     });
   }, []);
@@ -93,6 +100,40 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     await Storage.saveEndgameProgress(updated);
   }, [endgameCompleted]);
 
+  const completeLesson = useCallback(async (
+    lessonId: string,
+    scorePct: number,
+    stars: 0 | 1 | 2 | 3,
+  ) => {
+    const prev: LessonRecord = lessonProgress[lessonId]
+      ?? { completed: false, bestScorePct: 0, stars: 0, lastStepIndex: 0 };
+    // Replaying a lesson can only improve the record on file.
+    const updated: LessonProgress = {
+      ...lessonProgress,
+      [lessonId]: {
+        completed: true,
+        bestScorePct: Math.max(prev.bestScorePct, scorePct),
+        stars: (Math.max(prev.stars, stars) as 0 | 1 | 2 | 3),
+        lastStepIndex: 0,
+        completedAt: new Date().toISOString(),
+      },
+    };
+    setLessonProgress(updated);
+    await Storage.saveLessonProgress(updated);
+  }, [lessonProgress]);
+
+  const recordLessonStep = useCallback(async (lessonId: string, stepIndex: number) => {
+    const prev: LessonRecord = lessonProgress[lessonId]
+      ?? { completed: false, bestScorePct: 0, stars: 0, lastStepIndex: 0 };
+    if (prev.completed || stepIndex <= prev.lastStepIndex) return;
+    const updated: LessonProgress = {
+      ...lessonProgress,
+      [lessonId]: { ...prev, lastStepIndex: stepIndex },
+    };
+    setLessonProgress(updated);
+    await Storage.saveLessonProgress(updated);
+  }, [lessonProgress]);
+
   const weeklyEloChange = useCallback(() => {
     const weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
     return progress.games
@@ -118,8 +159,9 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <Ctx.Provider value={{
-      progress, settings, openingMastery, endgameCompleted, isLoaded,
+      progress, settings, openingMastery, endgameCompleted, lessonProgress, isLoaded,
       recordGame, updateSettings, recordOpeningMove, completeEndgame,
+      completeLesson, recordLessonStep,
       weeklyEloChange, weeklyAccuracy, totalGames, avgBlundersPerGame,
     }}>
       {children}

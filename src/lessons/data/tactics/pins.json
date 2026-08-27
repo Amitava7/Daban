@@ -1,0 +1,116 @@
+{
+  "id": "pins",
+  "title": "Pins",
+  "topic": "tactics",
+  "level": 3,
+  "subtitle": "Freeze a piece against something more valuable behind it.",
+  "goals": [
+    "Create absolute and relative pins",
+    "Attack pinned pieces to win them",
+    "Beware the fake pin!"
+  ],
+  "estMinutes": 6,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "r1bqk1nr/ppp2ppp/2n5/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 0 1",
+      "say": "A pin freezes an enemy piece against something more valuable behind it on the same line. If the piece behind is the KING, the pin is 'absolute' — the pinned piece literally cannot move. Pinned pieces are paralyzed pieces: attack them, ignore them, walk right past them.",
+      "highlights": ["b5", "c6", "e8"]
+    },
+    {
+      "kind": "challenge",
+      "fen": "r1bqk1nr/ppp2ppp/2n5/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 0 1",
+      "prompt": "Black's d-pawn is gone — the diagonal to the king lies open. Pin the c6 knight!",
+      "hints": [
+        "Find the diagonal running from your bishop's reach through c6 to e8.",
+        "A bishop on b5 lines up: bishop, knight... king. Absolute pin."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Bb5", "say": "Absolute pin! With d7 empty, the knight stands directly between your bishop and the king — it cannot legally move at all. A frozen piece." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "Bc4", "say": "Strong development toward f7 — but it pins nothing. The task: freeze that c6 knight against its king." },
+        { "san": "Be2", "say": "Modest and pin-free. Look one diagonal further — through c6, all the way to e8." }
+      ],
+      "wrongSay": "Line up bishop → knight → king on one diagonal.",
+      "successSay": "Absolute pins turn pieces into statues. Now let's learn to punish statues."
+    },
+    {
+      "kind": "challenge",
+      "fen": "r1bqk1nr/ppp2ppp/2n5/1B2p3/3PP3/5N2/PPP2PPP/RNBQK2R w KQkq - 0 1",
+      "prompt": "The c6 knight is pinned — so ATTACK it! Pinned pieces can't run away.",
+      "hints": [
+        "The golden rule: pile attackers onto a pinned piece. What's the cheapest attacker you have?",
+        "Push the d-pawn one square — the frozen knight can only watch it come."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "d5", "say": "The pawn marches straight at the paralyzed knight — it cannot flee!" },
+            { "san": "Bd7" },
+            { "san": "dxc6", "say": "Black broke the pin a move too late — the knight never escaped. A whole piece for a pawn." }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "rejections": [
+        { "san": "Bxc6", "say": "bxc6 — you traded your beautiful pinning bishop for the knight. Even trade, pin gone. Attacking the pinned piece with a PAWN wins it outright." }
+      ],
+      "wrongSay": "The knight is frozen — attack it with something it can't answer. Your cheapest unit is ideal.",
+      "successSay": "Pin, then pile on — cheapest attacker first. That two-step recipe wins pieces for pawns."
+    },
+    {
+      "kind": "challenge",
+      "fen": "r1bqk1nr/ppp2ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 0 1",
+      "prompt": "The c6 knight 'defends' e5... or does it? Win a pawn!",
+      "hints": [
+        "A pinned piece is a fake defender — it can't actually recapture.",
+        "Take the e5 pawn and dare the knight to do something about it."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Nxe5", "say": "Free pawn! Nxe5 by Black is illegal — the knight is absolutely pinned to the king. Its 'defense' of e5 was pure theater." }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "rejections": [
+        { "san": "Bxc6", "say": "It wins the e5 pawn eventually too — but why surrender the bishop pair? Nxe5 pockets the pawn immediately and KEEPS the pin working." }
+      ],
+      "wrongSay": "Count e5's defenders again — does a pinned knight really count?",
+      "successSay": "Pinned pieces defend nothing. Recount every 'defended' pawn once a pin appears."
+    },
+    {
+      "kind": "challenge",
+      "fen": "rn1qkbnr/ppp2p1p/3p2p1/4p3/2B1P1b1/2N2N2/PPPP1PPP/R1BQK2R w KQkq - 0 5",
+      "prompt": "Black's bishop 'pins' your e5 knight to the queen. Prove the pin is FAKE — the legendary sacrifice!",
+      "hints": [
+        "The pin against a QUEEN is only relative — the knight CAN move, if the consequences favor you. What happens after Nxe5 Bxd1?",
+        "Calculate: Nxe5, Bxd1, Bxf7+, Ke7 — and now a quiet knight hop delivers mate. The queen was never really lost, and Black's king is."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Nxe5", "say": "The knight breaks the 'pin' — offering the queen!" },
+            { "san": "Bxd1" },
+            { "san": "Bxf7+", "say": "The point begins: check!" },
+            { "san": "Ke7" },
+            { "san": "Nd5#", "say": "LEGALL'S MATE! Three minor pieces weave a net the queen could never have escaped. The pin was fake because mate outweighs a queen." }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "rejections": [
+        { "san": "h3", "say": "A polite question to the bishop — but you're sitting on one of the most famous combinations in chess history. The 'pin' is fake: Nxe5! and if Bxd1, mate follows in two." },
+        { "san": "Be2", "say": "Breaking the pin voluntarily — safe, but you had Legall's immortal Nxe5! sacrifice. Relative pins are promises, not prisons." }
+      ],
+      "wrongSay": "The knight is pinned to your QUEEN, not your king. When does a queen sacrifice pay off? Calculate Nxe5!",
+      "successSay": "Legall's Mate (Paris, ~1750) — the eternal reminder that relative pins can be broken when checkmate is on the table."
+    }
+  ]
+}

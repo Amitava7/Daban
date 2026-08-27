@@ -15,6 +15,7 @@ import { fenToPieces } from '../utils/fenUtils';
 import { Storage } from '../services/StorageService';
 import { OPENINGS } from '../engine/OpeningBook';
 import { CATEGORY_META, getAllPuzzles } from '../engine/EndgameGenerator';
+import { nextLesson, totalStats } from '../lessons/progress';
 import { eloToLevel } from '../engine/rating';
 
 type Nav = NativeStackNavigationProp<RootStackParamList, 'Home'>;
@@ -44,7 +45,7 @@ export function HomeScreen() {
   const { colors } = useTheme();
   const nav = useNavigation<Nav>();
   const { fen, status, playerColor, level } = useGame();
-  const { progress, openingMastery, endgameCompleted, weeklyEloChange } = useProgress();
+  const { progress, openingMastery, endgameCompleted, lessonProgress, weeklyEloChange } = useProgress();
 
   const hasActiveGame = status === 'playing' || status === 'engine_thinking' || status === 'player_blundered' || status === 'timed_out';
   const liveFen = hasActiveGame ? fen : INITIAL_FEN;
@@ -79,6 +80,10 @@ export function HomeScreen() {
 
   // Next endgame puzzle
   const nextEndgame = getAllPuzzles().find(p => !endgameCompleted[p.id]);
+
+  // Next lesson in the guided curriculum
+  const upNextLesson = nextLesson(lessonProgress);
+  const lessonStats = totalStats(lessonProgress);
 
   const today = new Date();
   const dayName = today.toLocaleDateString('en-US', { weekday: 'long' });
@@ -146,6 +151,15 @@ export function HomeScreen() {
             title="New game"
             meta={`Coach matches you · Level ${eloToLevel(progress.elo)} · ≈ ${progress.elo} ELO`}
             onPress={() => nav.navigate('ColorPicker')}
+          />
+          <NavRow
+            glyph="🎓"
+            title="Lessons"
+            meta={upNextLesson
+              ? `${upNextLesson.title} · ${lessonStats.completed}/${lessonStats.total} complete`
+              : 'All lessons complete — replay for stars'}
+            tone="brand"
+            onPress={() => nav.navigate('Lessons')}
           />
           <NavRow
             glyph="♝"

@@ -1,0 +1,113 @@
+{
+  "id": "the-knight",
+  "title": "The Knight",
+  "topic": "basics",
+  "level": 1,
+  "subtitle": "The L-shaped jumper that ignores walls.",
+  "goals": [
+    "Master the L-shaped knight move",
+    "Use the knight's jumping power",
+    "Discover the smothered mate"
+  ],
+  "estMinutes": 4,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "4k3/8/8/8/3N4/8/8/4K3 w - - 0 1",
+      "say": "The knight is the trickiest piece in chess. It moves in an 'L': two squares one way, then one square sideways. From d4 it can reach these eight squares — and nothing can block its path, because it jumps!",
+      "highlights": ["b5", "c6", "e6", "f5", "f3", "e2", "c2", "b3"]
+    },
+    {
+      "kind": "explain",
+      "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+      "say": "Watch — even on a crowded board, knights hop right over everyone.",
+      "autoMoves": [
+        { "san": "Nf3", "say": "The knight leaps over its own pawns — no other piece can do that on move one." },
+        { "san": "Nf6" },
+        { "san": "Ne5", "say": "And onward to a strong central square. Knights love the center: more squares to jump to." }
+      ]
+    },
+    {
+      "kind": "challenge",
+      "fen": "7k/8/4p3/8/3N4/8/8/K7 w - - 0 1",
+      "prompt": "Capture the black pawn with your knight.",
+      "hints": [
+        "Count the L: two squares up, one square over.",
+        "From d4, the knight reaches e6 in one jump."
+      ],
+      "highlights": ["e6"],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Nxe6", "say": "That's the L-shape! Two up, one right — pawn captured." }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "wrongSay": "Remember the L: two squares in one direction, then one square sideways.",
+      "successSay": "The L-shape will feel natural very soon. Keep jumping!"
+    },
+    {
+      "kind": "challenge",
+      "fen": "7k/8/2p5/4p3/3N4/5p2/8/K7 w - - 0 1",
+      "prompt": "A knight's tour! Capture all three pawns, one jump at a time.",
+      "hints": [
+        "Not every pawn is reachable right away — pick the one an L-move actually hits.",
+        "From d4 you can capture on c6 or f3 first. From either, the e5 pawn comes next."
+      ],
+      "sequenceGoal": {
+        "type": "capture-all",
+        "count": 3,
+        "say": "Hop! Now line up the next L."
+      },
+      "hintArrows": [{ "from": "d4", "to": "c6" }],
+      "wrongSay": "That's not a legal knight capture. Trace the L carefully: 2 + 1.",
+      "successSay": "A real knight's tour! You're starting to see the L-shapes without counting."
+    },
+    {
+      "kind": "challenge",
+      "fen": "6k1/5p2/2p1p3/8/3N4/8/8/K7 w - - 0 1",
+      "prompt": "Your knight can capture two different pawns — but one is protected. Take the free one!",
+      "hints": [
+        "Look at the f7 pawn — what is it defending?",
+        "e6 is guarded by f7. The c6 pawn has no protection at all."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Nxc6", "say": "Correct — c6 was free. The e6 pawn was bait: f7 would have recaptured." }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "rejections": [
+        { "san": "Nxe6", "say": "fxe6! The f7 pawn was guarding e6. A knight is worth about three pawns — don't trade it for one." }
+      ],
+      "wrongSay": "There's a capture available on two squares — figure out which pawn nobody defends.",
+      "successSay": "Sharp eyes. Knights and pawns trade at three-to-one — never forget the exchange rate."
+    },
+    {
+      "kind": "challenge",
+      "fen": "6rk/6pp/8/6N1/8/8/8/6K1 w - - 0 1",
+      "prompt": "The legendary smothered mate — checkmate in one move!",
+      "hints": [
+        "The black king is completely walled in by his own rook and pawns. Only a jumping piece can finish him.",
+        "Which L-jump lands the knight next to the king with check?"
+      ],
+      "goal": { "type": "checkmate" },
+      "solutions": [
+        {
+          "line": [
+            { "san": "Nf7#", "say": "Smothered mate! The king's own pieces block every escape — only a knight, attacking over the wall, could deliver this." }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "rejections": [
+        { "san": "Ne6", "say": "No check — and the king just breathes on. Find the square where the knight attacks h8 directly." }
+      ],
+      "wrongSay": "Not mate. The knight must land where its L attacks h8 itself.",
+      "successSay": "The smothered mate — one of the most beautiful patterns in chess, and it's all yours now."
+    }
+  ]
+}

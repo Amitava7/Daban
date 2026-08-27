@@ -1,0 +1,174 @@
+{
+  "id": "spot-the-mate",
+  "title": "Spot the Mate",
+  "topic": "mating-patterns",
+  "level": 4,
+  "subtitle": "Six hidden mates-in-one from real attacking patterns.",
+  "goals": [
+    "Recognize six classic mating pictures instantly",
+    "See mates your opponent doesn't",
+    "Build the pattern library every attack draws on"
+  ],
+  "estMinutes": 6,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "r6k/6pp/5N2/8/8/8/5PP1/6KR w - - 0 1",
+      "say": "Strong players don't calculate mates — they RECOGNIZE them. This speed round shows six classic mating pictures, each one move away. No hints needed if the pattern is in your head; that's the goal. Ready?",
+      "highlights": [
+        "h7",
+        "f6"
+      ]
+    },
+    {
+      "kind": "challenge",
+      "fen": "r6k/6pp/5N2/8/8/8/5PP1/6KR w - - 0 1",
+      "prompt": "Mate in one — the ARABIAN mate. Knight and rook, corner king.",
+      "hints": [
+        "The f6 knight already covers g8 — and it can protect a rook that comes very close.",
+        "Capture on h7: the rook is untouchable under the knight's guard."
+      ],
+      "goal": {
+        "type": "checkmate"
+      },
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Rxh7#",
+              "say": "The Arabian mate — the oldest recorded mating pattern, from medieval shatranj manuscripts. Knight guards rook, rook guards everything else."
+            }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "wrongSay": "The knight on f6 guards both g8 AND h7. Which rook move uses that?",
+      "successSay": "Knight on f6 (or f3, c6, c3) + rook to the corner file: burn the shape in."
+    },
+    {
+      "kind": "challenge",
+      "fen": "5rk1/5p1p/6P1/8/8/7Q/5PP1/6K1 w - - 0 1",
+      "prompt": "Mate in one — the pawn wedge on g6 is the whole story.",
+      "hints": [
+        "The g6 pawn controls h7 — so a queen landing there is protected.",
+        "Take the h7 pawn. The king has nowhere left."
+      ],
+      "goal": {
+        "type": "checkmate"
+      },
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Qxh7#",
+              "say": "Damiano's picture: a humble pawn on g6 turns h7 into a supported mating square. Whole attacking systems exist just to plant that pawn."
+            }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "wrongSay": "Which square does your g6 pawn defend? Put the queen there.",
+      "successSay": "Pawn on g6 = queen mates on h7. One of the most common winning patterns in club chess."
+    },
+    {
+      "kind": "challenge",
+      "fen": "r4rk1/pp3pp1/7p/8/8/5N2/PPQ2PPP/1B4K1 w - - 0 1",
+      "prompt": "Mate in one — the queen-and-bishop battery fires down the long diagonal.",
+      "hints": [
+        "Your queen and bishop both aim at h7 along b1–h7. Count the defenders of h7: zero.",
+        "The queen lands on h7 with the bishop backing her up."
+      ],
+      "goal": {
+        "type": "checkmate"
+      },
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Qh7#",
+              "say": "The battery mate: queen touches the king, bishop guards the queen from across the board. The ...h6 pawn push never saves anyone from this."
+            }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "wrongSay": "Queen and bishop share the b1–h7 diagonal. Where do they strike together?",
+      "successSay": "Batteries mate at a distance — the defender never sees the far-away bishop doing the real work."
+    },
+    {
+      "kind": "challenge",
+      "fen": "3r2k1/5ppp/8/8/3R4/5Q2/5PPP/6K1 w - - 0 1",
+      "prompt": "Mate in one — but the back rank looks defended...",
+      "hints": [
+        "The d8 rook guards the back rank — but who guards the ROOK?",
+        "Capture on d8 and count the recaptures: there are none. The pawn wall on f7–h7 does the rest."
+      ],
+      "goal": {
+        "type": "checkmate"
+      },
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Rxd8#",
+              "say": "The 'defended' back rank had one guard and you attacked it once — with mate. The f7/g7/h7 wall did the rest. Guards that are merely equal in number always lose the back rank."
+            }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "wrongSay": "The back-rank guard hangs. Take it — and count why the recapture never comes.",
+      "successSay": "A guarded back rank falls when the guard itself is attacked. Always count one level deeper."
+    },
+    {
+      "kind": "challenge",
+      "fen": "2rkr3/8/8/8/8/8/5PPP/3Q2K1 w - - 0 1",
+      "prompt": "Mate in one — the king's own rooks are his pallbearers.",
+      "hints": [
+        "The rooks on c8 and e8 block their own king's escape — the 'epaulettes' on his shoulders.",
+        "Strike straight down the file, one knight's-breath away from the king."
+      ],
+      "goal": {
+        "type": "checkmate"
+      },
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Qd6#",
+              "say": "The epaulette mate! The queen covers c7, d7 and e7 from d6, and the king's own rooks seal the back rank. Crowded kings die in their own furniture."
+            }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "wrongSay": "The king can't use c8 or e8 — his own rooks live there. Cover everything else with one queen move.",
+      "successSay": "When pieces crowd their king, every check gets deadlier. The epaulette is the family photo of that idea."
+    },
+    {
+      "kind": "challenge",
+      "fen": "4r1k1/pp3p1p/6p1/5N2/6Q1/8/PP3PPP/4R1K1 w - - 0 1",
+      "prompt": "Last one — mate in one, knight and rook conspiring.",
+      "hints": [
+        "Your f5 knight covers g7 and h6 — the dark escape squares.",
+        "The e8 rook is the only back-rank guard, and your rook attacks it."
+      ],
+      "goal": {
+        "type": "checkmate"
+      },
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Rxe8#",
+              "say": "Back rank plus knight net: g7 was covered by the f5 knight, so capturing the guard ended everything at once. Two patterns stacked — that's how real mates happen."
+            }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "wrongSay": "Combine two ideas: the knight seals the dark squares, the rook deals with the guard.",
+      "successSay": "Six patterns, six kills. When these pictures live in your head, you'll find them in YOUR games — often when your opponent thought they were defended."
+    }
+  ]
+}

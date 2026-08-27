@@ -1,0 +1,107 @@
+{
+  "id": "open-files-and-rooks",
+  "title": "Open Files & Rooks",
+  "topic": "strategy",
+  "level": 4,
+  "subtitle": "Rooks belong on open files — and then on the 7th rank.",
+  "goals": [
+    "Seize open files before your opponent",
+    "Double rooks for an unstoppable invasion",
+    "Feast on the seventh rank — carefully"
+  ],
+  "estMinutes": 6,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "r5k1/ppp2ppp/8/4p3/4P3/8/PPP2PPP/R5K1 w - - 0 1",
+      "say": "Rooks are your least mobile pieces at the start and your most powerful in the endgame — IF you give them what they crave: open files. A file with no pawns on it is a highway into the enemy position. Strategy rule one: put rooks on open files before your opponent does.",
+      "highlights": ["d1", "d8"]
+    },
+    {
+      "kind": "challenge",
+      "fen": "r5k1/ppp2ppp/8/4p3/4P3/8/PPP2PPP/R5K1 w - - 0 1",
+      "prompt": "Exactly one file on this board has no pawns at all. Claim it!",
+      "hints": [
+        "Scan each file for pawns — yours AND theirs. Only one is completely clear.",
+        "The d-file: not a single pawn from either side. Your rook belongs there."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Rd1", "say": "The open file is yours! From d1 the rook sees all the way into Black's camp — and Black's rook is a move too late to contest it." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "Rb1", "say": "The b-file is closed — your own b2 pawn stares back at you. Rooks on closed files are spectators." },
+        { "san": "Re1", "say": "Half the e-file is dead: your own e4 pawn blocks it. The fully OPEN file was one step further." }
+      ],
+      "wrongSay": "Find the file with zero pawns and put your rook on it.",
+      "successSay": "Whoever controls the only open file usually controls the endgame."
+    },
+    {
+      "kind": "challenge",
+      "fen": "r5k1/ppp2ppp/8/4p3/4P3/3R4/PPP2PPP/R5K1 w - - 0 1",
+      "prompt": "One rook holds the d-file. Double up — make the invasion unstoppable!",
+      "hints": [
+        "A single rook on a file can be challenged and traded. Two rooks OWN it.",
+        "Bring the a1 rook to d1, behind its partner."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Rad1", "say": "Doubled! Now if Black ever contests the file, you trade once and STILL control it. The d7 and d8 invasion squares cannot be held forever against two rooks." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "Rd7", "say": "The lone raider — but ...Rd8 challenges, and after the trade your invasion is gone. Double FIRST; then when you land on d7, no one can ask you to leave." }
+      ],
+      "wrongSay": "The file is won by weight of numbers — get the second rook behind the first.",
+      "successSay": "File control, then doubling, then invasion — the rook's three-act play."
+    },
+    {
+      "kind": "challenge",
+      "fen": "1r4k1/pp3ppp/2p5/4p3/4P3/8/PPP2PPP/3R2K1 w - - 0 1",
+      "prompt": "The d-file is yours alone. Cash it in — invade the rank where all the pawns live!",
+      "hints": [
+        "The seventh rank is the classic invasion target: enemy pawns on both sides, the king cut off behind.",
+        "Rd7 — safe, dominant, attacking in two directions at once."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Rd7", "say": "The seventh rank! From d7 the rook eyes b7 and f7 simultaneously and imprisons the king on the back rank. This is what open files are FOR." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "Rd8+", "say": "Rxd8 — you invaded one rank too far and traded your treasure away. The SEVENTH rank was the feast; the eighth was a trap." }
+      ],
+      "wrongSay": "Use the open file as a road — the destination is the enemy's seventh rank.",
+      "successSay": "A rook on the seventh is worth about an extra pawn by itself. Masters call it 'the pig' — it eats everything."
+    },
+    {
+      "kind": "challenge",
+      "fen": "2r3k1/1p1R1ppp/8/8/8/8/5PPP/6K1 w - - 0 1",
+      "prompt": "Your rook is feasting on the seventh. Two pawns look edible — one bites back. Choose!",
+      "hints": [
+        "Before grabbing on the seventh, check each pawn's defender.",
+        "The f7 pawn has a royal bodyguard. The b7 pawn is home alone."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Rxb7", "say": "Clean! The b7 pawn had no defender — and your rook STAYS on the glorious seventh rank while material ticks in your favor." }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "rejections": [
+        { "san": "Rxf7", "say": "Kxf7! The king was guarding his own doorstep. Even on the seventh rank, count the defenders before you dine." }
+      ],
+      "wrongSay": "One pawn on the seventh is genuinely free — the other is king-guarded.",
+      "successSay": "Open file → doubled → seventh rank → material. That's the complete rook strategy pipeline."
+    }
+  ]
+}

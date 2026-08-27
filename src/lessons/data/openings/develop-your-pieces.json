@@ -1,0 +1,134 @@
+{
+  "id": "develop-your-pieces",
+  "title": "Develop Your Pieces",
+  "topic": "openings",
+  "level": 3,
+  "subtitle": "Get knights and bishops out fast, toward the center.",
+  "goals": [
+    "Develop with threats",
+    "Knights before bishops",
+    "Don't move the same piece twice"
+  ],
+  "estMinutes": 6,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
+      "say": "Take control of the game by developing your pieces rapidly to squares where they control the center. Every move in the opening should bring a new piece into play — the army that mobilizes first gets to attack first.",
+      "highlights": ["f3", "c3", "c4", "b5"]
+    },
+    {
+      "kind": "challenge",
+      "fen": "rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
+      "prompt": "Develop a knight toward the center — with a threat!",
+      "hints": [
+        "The best developing moves do two jobs: bring a piece out AND create a threat.",
+        "Which knight jump attacks Black's e5 pawn?"
+      ],
+      "highlights": ["f3"],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Nf3", "say": "Great choice! This is by far the most popular move by top players in this position — it develops AND attacks the e5 pawn." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "Nc3", "say": "A healthy developing move — but Nf3 does strictly more: it develops AND attacks e5, forcing Black to respond." },
+        { "san": "Qh5", "say": "The queen ventures out far too early — Black will develop pieces while chasing her, gaining time for free." },
+        { "san": "Nh3", "say": "A knight on the rim is dim! From h3 it touches no central squares. Knights belong on f3 and c3." }
+      ],
+      "wrongSay": "Develop a KNIGHT — to the square where it eyes the center and attacks e5.",
+      "successSay": "Develop with threats and your opponent spends their moves reacting to you."
+    },
+    {
+      "kind": "challenge",
+      "fen": "rnbqkbnr/pppp1ppp/8/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2",
+      "prompt": "White attacks your e5 pawn. How can Black develop a knight to defend the pawn?",
+      "hints": [
+        "Defend AND develop in the same move — that's the efficient way.",
+        "Which knight jump guards e5?"
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Nc6", "say": "Perfect — the knight defends e5 and takes its best square, all in one move. Problem solved for free." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "Nf6", "say": "That's the Petrov — a real opening that counter-attacks e4 instead of defending. But the task here: defend e5 WITH A KNIGHT. Nc6 does it." },
+        { "san": "d6", "say": "It defends the pawn, but with a pawn move that blocks your dark-squared bishop — and the question asked for a knight. Develop while defending!" },
+        { "san": "Qe7", "say": "The queen defends e5 but blocks her own bishop and stands awkwardly. Save the queen for later — knights first." }
+      ],
+      "wrongSay": "e5 needs a defender — and one of your knights can do it while developing.",
+      "successSay": "One move, two jobs. That efficiency is the whole art of the opening."
+    },
+    {
+      "kind": "challenge",
+      "fen": "r1bqkbnr/pppp1ppp/2n5/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3",
+      "prompt": "Develop your bishop to attack a black knight.",
+      "hints": [
+        "Which black knight can a bishop reach — and what is that knight doing?",
+        "The c6 knight defends e5. Pressure IT and you pressure the pawn behind it."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Bb5", "say": "The Ruy Lopez! The bishop pressures the c6 knight — the defender of e5 — so your attack on the pawn grows indirectly. Development with venom." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "Bc4", "say": "The Italian Game — excellent development toward f7. But the task was to attack a KNIGHT: Bb5 hits the defender of e5." },
+        { "san": "Be2", "say": "Developed... barely. On e2 the bishop stares at its own pawns. Bishops want active diagonals with targets." }
+      ],
+      "wrongSay": "One bishop move attacks a black knight directly. Look at the queenside diagonal.",
+      "successSay": "Attacking the defender — pressure doesn't always have to be direct."
+    },
+    {
+      "kind": "challenge",
+      "fen": "r1bqk2r/pppp1ppp/2n2n2/2b1p3/2B1P3/2N2N2/PPPP1PPP/R1BQK2R w KQkq - 6 5",
+      "prompt": "How should you free your queenside bishop to develop?",
+      "hints": [
+        "The c1 bishop is walled in by its own d2 pawn. A pawn move opens the door — but which one is safe?",
+        "Count the defenders of d4 before charging two squares. One modest step does the job."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "d3", "say": "Exactly right — the humble d3 opens the c1 bishop's diagonal, supports e4, and hangs nothing. Quiet moves win games too." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "d4", "say": "Black wins a pawn! After exd4, e5, the c5-bishop and c6-knight all gang up on d4 — if Nxd4 Nxd4 Qxd4, then Bxd4 wins your queen. Try to find a safer pawn move to free your queenside bishop." },
+        { "san": "b3", "say": "The fianchetto dream — but on b2 the bishop would bite on the well-defended e5 pawn. d3 frees the bishop toward g5 AND supports your center." }
+      ],
+      "wrongSay": "Free the c1 bishop with a pawn move — the one that doesn't drop material.",
+      "successSay": "Before every pawn push, count the attackers on the square it crosses. d4 was a trap; d3 was the move."
+    },
+    {
+      "kind": "challenge",
+      "fen": "r1bqk2r/ppp2ppp/2np1n2/2b1p3/2B1P3/2NP1N2/PPP2PPP/R1BQK2R w KQkq - 0 6",
+      "prompt": "Develop your bishop and attack their knight!",
+      "hints": [
+        "Only one of your bishops still sits at home — and it just got its diagonal opened.",
+        "Send it to the square where it pins the f6 knight against the queen."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Bg5", "say": "Development with a PIN — the f6 knight now can't move without losing the queen behind it. Your last minor piece joined the game with maximum effect." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "Be3", "say": "It develops, but attacks no knight — and invites Bxe3, helping Black trade. The aggressive square is on the kingside." },
+        { "san": "Bb5", "say": "That bishop is already developed — moving it again attacks c6, but wastes time. Develop the NEW piece: the c1 bishop can attack a knight too." }
+      ],
+      "wrongSay": "The c1 bishop is finally free — find the square where it develops AND hits a knight.",
+      "successSay": "All minor pieces out, a pin on the board, castling next — that's a textbook opening."
+    }
+  ]
+}

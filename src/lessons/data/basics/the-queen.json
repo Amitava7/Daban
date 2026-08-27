@@ -1,0 +1,111 @@
+{
+  "id": "the-queen",
+  "title": "The Queen",
+  "topic": "basics",
+  "level": 1,
+  "subtitle": "Rook plus bishop in one — your strongest piece.",
+  "goals": [
+    "Move the queen along ranks, files and diagonals",
+    "Capture safely — the queen is too valuable to lose",
+    "Deliver a queen checkmate"
+  ],
+  "estMinutes": 3,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "4k3/8/8/8/3Q4/8/8/4K3 w - - 0 1",
+      "say": "Meet the queen — a rook and a bishop rolled into one. Straight lines AND diagonals, any distance. From the center she controls 27 squares!",
+      "highlights": ["d8", "h4", "h8", "a1"],
+      "arrows": [
+        { "from": "d4", "to": "d8" },
+        { "from": "d4", "to": "h8" },
+        { "from": "d4", "to": "a4" }
+      ]
+    },
+    {
+      "kind": "explain",
+      "fen": "4k3/8/8/8/3Q4/8/8/4K3 w - - 0 1",
+      "say": "Watch her work — rook move, then bishop move.",
+      "autoMoves": [
+        { "san": "Qg4", "say": "Sideways like a rook..." },
+        { "san": "Kd8" },
+        { "san": "Qa4", "say": "...and back across like lightning. Powerful — but remember: lose the queen and you usually lose the game." }
+      ]
+    },
+    {
+      "kind": "challenge",
+      "fen": "k7/8/8/8/3Q4/8/8/7K w - - 0 1",
+      "prompt": "Move your queen to the h8 corner — one move, whole board.",
+      "hints": [
+        "h8 shares a diagonal with d4.",
+        "Slide up the dark diagonal: d4, e5, f6, g7... all the way home."
+      ],
+      "highlights": ["h8"],
+      "goal": { "type": "reach", "squares": ["h8"], "piece": "Q" },
+      "wrongSay": "Not h8. The corner is one diagonal slide away from d4.",
+      "successSay": "Across the whole board in one move — and she even announces check from there. That's queen power."
+    },
+    {
+      "kind": "challenge",
+      "fen": "k7/8/1p4p1/8/3Q4/8/6p1/7K w - - 0 1",
+      "prompt": "Capture all three black pawns with your queen.",
+      "hints": [
+        "The queen combines rook lines and bishop diagonals — every pawn is reachable if you pick the right order.",
+        "Start with the pawn on your diagonal, then use ranks and files."
+      ],
+      "sequenceGoal": {
+        "type": "capture-all",
+        "count": 3,
+        "say": "Munch! Now find the line to the next one."
+      },
+      "hintArrows": [{ "from": "d4", "to": "b6" }],
+      "wrongSay": "No pawn on that square. Check every rank, file and diagonal from where your queen stands.",
+      "successSay": "Three pawns, three moves. Nothing hides from a centralized queen."
+    },
+    {
+      "kind": "challenge",
+      "fen": "k7/8/2p5/3p4/6p1/8/8/K2Q4 w - - 0 1",
+      "prompt": "One pawn is free, one is poisoned. Capture the safe one!",
+      "hints": [
+        "A queen for a pawn is the worst trade in chess. Check who defends each pawn.",
+        "The d5 pawn is guarded by the pawn on c6. The g4 pawn stands alone."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Qxg4", "say": "Correct! The g4 pawn had no bodyguard — a clean snack for the queen." }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "rejections": [
+        { "san": "Qxd5", "say": "cxd5! You just traded the most powerful piece on the board for a single pawn. Always check a pawn's bodyguards." }
+      ],
+      "wrongSay": "One of those pawns can be taken for free. Count defenders before the queen commits.",
+      "successSay": "That care is exactly how you keep a queen alive all game."
+    },
+    {
+      "kind": "challenge",
+      "fen": "6k1/5ppp/8/8/8/8/5PPP/3Q2K1 w - - 0 1",
+      "prompt": "Checkmate in one move!",
+      "hints": [
+        "The black king is boxed in by his own pawns. Which rank is fatally weak?",
+        "Send the queen to the back rank — no defender can stop her."
+      ],
+      "goal": { "type": "checkmate" },
+      "solutions": [
+        {
+          "line": [
+            { "san": "Qd8#", "say": "Checkmate! The back rank was undefended, and the king's own pawns became his prison." }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "rejections": [
+        { "san": "Qd5", "say": "A fine central square — but no mate. The kill shot is on the back rank, where the king can't escape his pawn wall." }
+      ],
+      "wrongSay": "Not mate. Look at the king's row — can he ever leave it?",
+      "successSay": "The back-rank mate with a queen — you'll see this pattern in real games constantly."
+    }
+  ]
+}

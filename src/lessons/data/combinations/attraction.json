@@ -1,0 +1,70 @@
+{
+  "id": "attraction",
+  "title": "Attraction",
+  "topic": "combinations",
+  "level": 5,
+  "subtitle": "Drag the king onto the fork square — then collect.",
+  "goals": [
+    "Sacrifice to relocate the enemy king",
+    "Combine attraction with knight forks",
+    "Chain two tactics into one combination"
+  ],
+  "estMinutes": 7,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "r1b3k1/pp1p1ppp/2q5/8/2B5/5N2/PP3PPP/3Q2K1 w - - 0 1",
+      "say": "A fork only works when both targets stand on forkable squares — so what if they don't? ATTRACTION: sacrifice a piece to DRAG a target onto the right square. The most common version in all of chess: Bxf7+ pulls the king onto f7, where a knight check will fork him with whatever else is loose. Look at Black's queen on c6 — it's loose, and f7 is one knight-check away from it.",
+      "highlights": ["f7", "e5", "c6"]
+    },
+    {
+      "kind": "challenge",
+      "fen": "r1b3k1/pp1p1ppp/2q5/8/2B5/5N2/PP3PPP/3Q2K1 w - - 0 1",
+      "prompt": "Black's queen sits loose on c6. Drag the king onto the forking square and win her!",
+      "hints": [
+        "From e5, your knight would check a king on f7 AND attack c6. So put the king on f7 — by force.",
+        "Bxf7+! The king must deal with it — then Ne5+ forks king and queen."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Bxf7+", "say": "The attraction sacrifice — the bishop dies to relocate the king onto the fork square..." },
+            { "san": "Kxf7" },
+            { "san": "Ne5+", "say": "And there it is: check from e5, and the same knight attacks the c6 queen. The king must step away..." },
+            { "san": "Ke8" },
+            { "san": "Nxc6", "say": "The queen falls. Even after ...bxc6 recaptures the knight, count it: bishop and knight for queen and pawn — a winning trade everywhere on earth. Attraction turned a 'safe' queen into a fork victim." }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "rejections": [
+        { "san": "Ne5", "say": "The fork square without the fork — Black's queen simply steps aside, and your knight achieved nothing. The KING must stand on f7 first: Bxf7+ drags him there by force." },
+        { "san": "Nd4", "say": "It attacks the queen, she moves, life goes on. Attraction thinking asks a better question: which SACRIFICE puts a royal target on my knight's forking square?" }
+      ],
+      "wrongSay": "The knight fork exists only if the king stands on f7. What forces him there?",
+      "successSay": "Sacrifice to relocate, then fork — two cheap tactics chained into one queen-winning combination."
+    },
+    {
+      "kind": "challenge",
+      "fen": "5rk1/pp4pp/4p3/2R3Q1/3n4/2q4r/P1P2PPP/5RK1 b - - 1 23",
+      "prompt": "Now the most famous attraction move ever played. Levitsky–Marshall, Breslau 1912 — Black to move. Legend says the spectators showered the board with gold coins afterward. Find Marshall's move!",
+      "hints": [
+        "Marshall put his queen on the ONE square where all three captures lose instantly: two pawn captures open mating nets, and the queen capture walks into a royal fork.",
+        "Qg3!! — into the heart of White's pawns. Check each capture: hxg3 allows ...Ne2#, fxg3 allows ...Ne2+ and ...Rxf1#, and Qxg3 meets ...Ne2+ forking king and queen."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Qg3", "say": "THE gold-coin move. The queen attacks h2, stands en prise three ways — and every capture loses: hxg3 Ne2# (smothered by his own pawns), fxg3 Ne2+ then Rxf1#, and Qxg3 Ne2+! forking king and queen. White resigned on the spot. The d4 knight was the silent partner: every line runs through its e2 fork." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "Ne2+", "say": "The fork without the setup — Kh1! and the knight must retreat with nothing to show. Marshall's genius was the ORDER: the queen goes to g3 first, and only then does e2 become unanswerable." },
+        { "san": "Rxh2", "say": "Kxh2 — a rook for a pawn. The immortal move puts the QUEEN on g3, where taking her in any of three ways loses on the spot." }
+      ],
+      "wrongSay": "The move is a queen move — onto a square defended three times. Trust the knight on d4.",
+      "successSay": "Qg3!! — many call it the most beautiful move ever played. You found it from the same chair Marshall did."
+    }
+  ]
+}
