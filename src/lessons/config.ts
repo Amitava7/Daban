@@ -296,6 +296,18 @@ export const LESSONS: LessonMeta[] = [
   { id: 'immortal-studies', topic: 'masterpieces', level: 6, estMinutes: 9,
     title: 'Immortal Studies',
     subtitle: 'Réti’s two-hare king walk and the Saavedra underpromotion.' },
+  { id: 'immortal-game', topic: 'masterpieces', level: 5, estMinutes: 8,
+    title: 'The Immortal Game',
+    subtitle: 'Anderssen–Kieseritzky, London 1851 — two rooks and a queen, all given away.' },
+  { id: 'evergreen-game', topic: 'masterpieces', level: 6, estMinutes: 9,
+    title: 'The Evergreen Game',
+    subtitle: 'Anderssen–Dufresne, Berlin 1852 — a quiet rook move, then a queen sacrifice.' },
+  { id: 'rubinstein-immortal', topic: 'masterpieces', level: 6, estMinutes: 8,
+    title: "Rubinstein's Immortal",
+    subtitle: 'Rotlewi–Rubinstein, Łódź 1907 — every piece sacrificed at once.' },
+  { id: 'kasparov-topalov', topic: 'masterpieces', level: 6, estMinutes: 9,
+    title: "Kasparov's Immortal",
+    subtitle: 'Kasparov–Topalov, Wijk aan Zee 1999 — a rook sacrifice and a king hunt across the board.' },
 ];
 
 export function getLessonMeta(id: string): LessonMeta | undefined {

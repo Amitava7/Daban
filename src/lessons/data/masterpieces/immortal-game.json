@@ -1,0 +1,117 @@
+{
+  "id": "immortal-game",
+  "title": "The Immortal Game",
+  "topic": "masterpieces",
+  "level": 5,
+  "subtitle": "Anderssen–Kieseritzky, London 1851 — two rooks and a queen, all given away.",
+  "goals": [
+    "Value development and initiative above material",
+    "Play a double rook offer",
+    "Finish with three minor pieces against a full army"
+  ],
+  "estMinutes": 8,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "rnb1k1nr/p2p1ppp/8/1pbN1N1P/4PBP1/3P1Q2/PqP5/R4KR1 w kq - 0 18",
+      "say": "London, 1851 — a casual game between rounds that became the most famous game ever played. Anderssen has sacrificed a bishop, both rooks are hanging, and Black's queen is munching the queenside. Kieseritzky has grabbed everything on offer. Now count the pieces: White is about to be a queen and two rooks down, and he is completely winning — because every one of Black's pieces is still asleep at home.",
+      "highlights": [
+        "a1",
+        "g1",
+        "b2",
+        "d5"
+      ]
+    },
+    {
+      "kind": "challenge",
+      "fen": "rnb1k1nr/p2p1ppp/8/1pbN1N1P/4PBP1/3P1Q2/PqP5/R4KR1 w kq - 0 18",
+      "prompt": "Both rooks hang and your queenside is gone. Play Anderssen's move — offer the second rook!",
+      "hints": [
+        "Do not defend. Every tempo spent saving material lets Black develop and consolidate — the only currency here is TIME.",
+        "Bd6!! Ignore the rooks entirely: the bishop cuts the black king off from safety and prepares the mating net."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Bd6",
+              "say": "The immortal decision. The bishop is offered too, and it seals e7 — the square Black's king needs. Kieseritzky takes the rook on g1..."
+            },
+            {
+              "san": "Bxg1"
+            },
+            {
+              "san": "e5",
+              "say": "And still no defending! The pawn opens the f3 queen's diagonal toward the black king. Anderssen is now down a queen and two rooks and everything he owns is aimed at e8."
+            },
+            {
+              "san": "Qxa1+"
+            },
+            {
+              "san": "Ke2",
+              "say": "The king simply steps aside — because Black's captures have all been on the wrong side of the board. Three minor pieces now finish a game against a queen, two rooks and a bishop."
+            }
+          ]
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Rd1",
+          "say": "Saving the rook lets Black play ...Bb6 and ...Nc6 and consolidate an extra rook — the attack evaporates. The whole point of the Immortal Game: initiative expires, material doesn't. Spend the material."
+        },
+        {
+          "san": "Nc7+",
+          "say": "A cheap check that achieves nothing after ...Kd8 — and worse, it removes a key attacker. Every move must build the mating net: Bd6 takes e7 away."
+        }
+      ],
+      "wrongSay": "Stop counting material. Which move takes the e7 escape square away from Black's king?",
+      "successSay": "Anderssen gave a bishop, two rooks and a queen — and every sacrifice bought a tempo."
+    },
+    {
+      "kind": "challenge",
+      "fen": "r1b1k1nr/p2p1ppp/n2B4/1p1NPN1P/6P1/3P1Q2/P1P1K3/q5b1 w kq - 2 21",
+      "prompt": "The finish. You are a queen and two rooks down — mate in three!",
+      "hints": [
+        "Every remaining white piece touches the black king's box. Start with the check that drags him to the only square you can cover.",
+        "Nxg7+ Kd8, then the queen offers herself: Qf6+!! Nxf6 and the bishop mates on e7."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Nxg7+",
+              "say": "Check — the king must go to d8, into the net the d6 bishop built three moves ago..."
+            },
+            {
+              "san": "Kd8"
+            },
+            {
+              "san": "Qf6+",
+              "say": "THE queen sacrifice. It must be taken — and the capture drags Black's last defender away from e7..."
+            },
+            {
+              "san": "Nxf6"
+            },
+            {
+              "san": "Be7#",
+              "say": "CHECKMATE. Anderssen finishes with bishop, knight and knight — three minor pieces — while Black still owns a queen, two rooks and a bishop, nearly all of them on their starting squares. The most famous illustration in chess of a single idea: development and initiative are worth more than wood."
+            }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Nf6+",
+          "say": "A check that lets the king slip to d8 while your attackers scatter — and Black's queen still guards the key squares. The correct order takes g7 FIRST, then offers the queen on f6."
+        },
+        {
+          "san": "Nc7+",
+          "say": "Kd8! and the knight is simply lost with the attack. Every move of this finish must be forcing AND build the net: Nxg7+ is the only one that does both."
+        }
+      ],
+      "wrongSay": "Three white pieces, three moves, one mate. Begin with a check that forces the king to d8.",
+      "successSay": "'The Immortal Game' — now played by you, sacrifices and all."
+    }
+  ]
+}

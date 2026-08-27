@@ -81,6 +81,10 @@ const REGISTRY: Record<string, () => Lesson> = {
   'marshalls-gold-coins': () => require('./data/masterpieces/marshalls-gold-coins.json'),
   'game-of-the-century': () => require('./data/masterpieces/game-of-the-century.json'),
   'immortal-studies': () => require('./data/masterpieces/immortal-studies.json'),
+  'immortal-game': () => require('./data/masterpieces/immortal-game.json'),
+  'evergreen-game': () => require('./data/masterpieces/evergreen-game.json'),
+  'rubinstein-immortal': () => require('./data/masterpieces/rubinstein-immortal.json'),
+  'kasparov-topalov': () => require('./data/masterpieces/kasparov-topalov.json'),
 };
 
 export function getLessonById(id: string): Lesson | undefined {

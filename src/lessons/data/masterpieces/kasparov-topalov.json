@@ -1,0 +1,98 @@
+{
+  "id": "kasparov-topalov",
+  "title": "Kasparov's Immortal",
+  "topic": "masterpieces",
+  "level": 6,
+  "subtitle": "Kasparov–Topalov, Wijk aan Zee 1999 — a rook sacrifice and a king hunt across the board.",
+  "goals": [
+    "Sacrifice to open lines toward a sheltered king",
+    "Drive a king from a7 to a4 by force",
+    "Calculate a nine-move forcing sequence"
+  ],
+  "estMinutes": 9,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "b2r3r/k4p1p/p2q1np1/NppP4/3p1Q2/P4PPB/1PP4P/1K1RR3 w - - 1 24",
+      "say": "Wijk aan Zee, 1999 — widely voted the greatest game of modern chess. Topalov's king sits on a7 behind a wall of pawns and looks perfectly safe; Kasparov's knight on a5 is even attacked. What Kasparov saw was that the black king could be dragged out of that shelter all the way to a4 — and that the moves to do it were all forced. It begins by giving up a rook for a pawn.",
+      "highlights": [
+        "d4",
+        "a7",
+        "e1",
+        "a5"
+      ]
+    },
+    {
+      "kind": "challenge",
+      "fen": "b2r3r/k4p1p/p2q1np1/NppP4/3p1Q2/P4PPB/1PP4P/1K1RR3 w - - 1 24",
+      "prompt": "The black king looks untouchable on a7. Play Kasparov's rook sacrifice — and hunt him down!",
+      "hints": [
+        "The d4 pawn is the only thing shielding the a7 king's diagonal and the e-file. Remove it at any cost.",
+        "Rxd4!! cxd4 Re7+ Kb6 Qxd4+ Kxa5 b4+ Ka4 Qc3 — the king is dragged from a7 to a4 by force."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Rxd4",
+              "say": "A whole rook for a pawn — because that pawn was the roof over Black's king. The capture is forced..."
+            },
+            {
+              "san": "cxd4"
+            },
+            {
+              "san": "Re7+",
+              "say": "The other rook invades with check. The king must step out of his shelter..."
+            },
+            {
+              "san": "Kb6"
+            },
+            {
+              "san": "Qxd4+",
+              "say": "Now the queen joins with tempo, and the king is pulled further into the open — straight toward White's own knight..."
+            },
+            {
+              "san": "Kxa5"
+            },
+            {
+              "san": "b4+",
+              "say": "A pawn, of all things, drives the king onward. Every single move has been check or forced capture..."
+            },
+            {
+              "san": "Ka4"
+            },
+            {
+              "san": "Qc3",
+              "say": "The king stands on a4, six squares from home, with mate threats everywhere. Kasparov calculated this entire journey before playing Rxd4 — and the game finished with a second queen hunt twenty moves later. When a king can be pulled into the open, no amount of material is too much to pay."
+            }
+          ]
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Nb3",
+          "say": "Saving the knight lets Black play ...c4 and consolidate — the moment passes and the a7 king stays behind his wall forever. Kasparov's insight was that the KING, not the knight, was the target."
+        },
+        {
+          "san": "Re7+",
+          "say": "The right idea in the wrong order: with the d4 pawn still on the board the king's shelter holds and Black consolidates. Demolish d4 with the rook sacrifice FIRST, so that rook and queen both arrive with check."
+        },
+        {
+          "san": "Qxd4+",
+          "say": "Tempting, but ...Qxd4 or ...c4 and there is no attack — the queen alone cannot hunt a king. The rook must smash d4 so that BOTH rook and queen arrive with check."
+        }
+      ],
+      "wrongSay": "One pawn shields the black king from everything. What is it worth to remove it?",
+      "successSay": "A rook for a pawn, and a king marched from a7 to a4 — the greatest game of the modern era."
+    },
+    {
+      "kind": "intro",
+      "fen": "8/Q6p/6p1/5p2/5P2/2p3P1/3r3P/2K1k3 b - - 3 44",
+      "say": "The finish, twenty moves later: Topalov's king ended up on e1 — on White's back rank — and resigned in this position. Two lessons to keep. First: a king that can be forced into the open is worth more than any material you pay to open it. Second, and more practical: Kasparov calculated the whole nine-move sequence before committing. Sacrifices are not courage; they are arithmetic done further than your opponent's.",
+      "highlights": [
+        "e1",
+        "a7"
+      ]
+    }
+  ]
+}
