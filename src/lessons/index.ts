@@ -45,6 +45,11 @@ const REGISTRY: Record<string, () => Lesson> = {
   'queen-vs-pawn': () => require('./data/endgames/queen-vs-pawn.json'),
   'rook-endgame-lucena': () => require('./data/endgames/rook-endgame-lucena.json'),
   'rook-endgame-philidor': () => require('./data/endgames/rook-endgame-philidor.json'),
+  'zugzwang': () => require('./data/endgames/zugzwang.json'),
+  'pawn-breakthrough': () => require('./data/endgames/pawn-breakthrough.json'),
+  'rook-vs-pawn': () => require('./data/endgames/rook-vs-pawn.json'),
+  'bishop-vs-knight': () => require('./data/endgames/bishop-vs-knight.json'),
+  'opposite-coloured-bishops': () => require('./data/endgames/opposite-coloured-bishops.json'),
   // Mating Patterns
   'spot-the-mate': () => require('./data/mating-patterns/spot-the-mate.json'),
   'arabian-and-damianos': () => require('./data/mating-patterns/arabian-and-damianos.json'),

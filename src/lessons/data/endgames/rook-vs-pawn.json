@@ -1,0 +1,85 @@
+{
+  "id": "rook-vs-pawn",
+  "title": "Rook vs. Pawn",
+  "topic": "endgames",
+  "level": 5,
+  "subtitle": "One rook, one runner, and a race you must calculate exactly.",
+  "goals": [
+    "Stop a runner by getting behind or in front of it",
+    "Use the rook to cut the enemy king off",
+    "Know when the king must join the chase"
+  ],
+  "estMinutes": 6,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "8/8/8/8/8/2k5/2p5/K3R3 w - - 0 1",
+      "say": "A rook is worth five pawns — unless the pawn is one step from queening, in which case it is worth exactly nothing. Rook versus advanced pawn is decided by precise geometry: get the rook IN FRONT of the pawn, or pin it against its own king, and bring your king only if the rook cannot do the job alone.",
+      "highlights": ["c2", "c1"]
+    },
+    {
+      "kind": "challenge",
+      "fen": "8/8/8/8/8/2k5/2p5/K3R3 w - - 0 1",
+      "prompt": "The pawn is one square from promoting and its king defends it. Stop it — permanently!",
+      "hints": [
+        "You can't take the pawn (the king guards it) and checking chases nothing. Get the rook onto the queening square's file, in front of the pawn.",
+        "Rc1! The pawn is pinned against its own king and can never advance."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Rc1", "say": "The pawn is frozen: it is pinned to its own king and cannot move, and it can never be defended enough to advance. White simply brings the king over and collects it. The rook in FRONT of a passer is worth more than the rook behind it — the opposite of the rule for your own pawns." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "Re2", "say": "Attacking the pawn from the side achieves nothing: it's defended by the king, and ...Kc3-b2 escorts it home. Get in front of it — Rc1 pins it to the king." },
+        { "san": "Re3+", "say": "A check that chases the king closer to his pawn. Checks feel active but solve nothing here; the pawn is the problem, so block it." }
+      ],
+      "wrongSay": "The pawn's file is the only thing that matters. Put your rook on it, in front of the pawn.",
+      "successSay": "Rook in front of the enemy passer, rook behind your own — one rule, two directions."
+    },
+    {
+      "kind": "challenge",
+      "fen": "8/8/8/3k4/8/2p5/8/K3R3 w - - 0 1",
+      "prompt": "This time the king is further away from his pawn. Stop the runner again!",
+      "hints": [
+        "Same idea, and now it's even stronger: the pawn has no defender at all.",
+        "Rc1 blocks it and simply wins it next."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Rc1", "say": "The rook blocks the pawn, which is now defenceless. White wins it at leisure. When you can choose, blocking the pawn beats chasing the king every time." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "Ka2", "say": "The king is far too slow — count it: ...c2 and the pawn queens or costs you the rook. The ROOK stops pawns; the king only helps afterwards." }
+      ],
+      "wrongSay": "Block the pawn's path with the rook.",
+      "successSay": "Blocking is not passive here — it wins the pawn outright."
+    },
+    {
+      "kind": "challenge",
+      "fen": "8/8/8/8/2k5/2p5/8/K3R3 w - - 0 1",
+      "prompt": "The pawn and king are one rank further advanced. Same method — is it still enough?",
+      "hints": [
+        "Ask the same question: can the rook get in front of the pawn safely?",
+        "Rc1 again — the pin holds, and the pawn cannot be defended enough to break it."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Rc1", "say": "Once more the pin freezes everything. Notice the pattern: as long as your rook reaches the pawn's file in front of it, the pawn is stopped no matter how far advanced. That is why rook endings with an outside passer are so often drawn — and why you must ALWAYS check whether the rook can get in front." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "Rd1", "say": "One file off! Now ...c2 and the pawn promotes or wins your rook. Precision matters: the rook must land on the pawn's OWN file." }
+      ],
+      "wrongSay": "The rook belongs on the c-file, in front of the pawn.",
+      "successSay": "Three positions, one method — get in front, pin, collect."
+    }
+  ]
+}

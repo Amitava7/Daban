@@ -1,0 +1,107 @@
+{
+  "id": "bishop-vs-knight",
+  "title": "Bishop vs. Knight",
+  "topic": "endgames",
+  "level": 5,
+  "subtitle": "Which minor piece is better depends entirely on the pawns.",
+  "goals": [
+    "Judge open vs closed positions correctly",
+    "Dominate a knight by taking its squares",
+    "Choose the right piece to trade"
+  ],
+  "estMinutes": 6,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "6k1/5ppp/8/1b6/8/8/5PPP/4N1K1 b - - 0 1",
+      "say": "Bishop and knight are both worth three points — and that is where the usefulness of the number ends. The bishop is faster and works on both wings at once, but only ever sees half the board. The knight is slow and short-ranged, but reaches every square and jumps over everything. The pawns decide which one you want: OPEN position, pawns on both wings → bishop. CLOSED position, fixed pawn chains → knight.",
+      "highlights": ["b5", "e1"]
+    },
+    {
+      "kind": "challenge",
+      "fen": "6k1/5ppp/8/1b6/8/8/5PPP/4N1K1 b - - 0 1",
+      "prompt": "Open board, pawns on one wing, both minor pieces loose. You're Black — put your bishop where it rules.",
+      "hints": [
+        "The bishop's strength is range. Which square lets it eye the enemy camp while staying safe?",
+        "Bd3 grips the board from a distance — the knight on e1 has no comparable square."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Bd3", "say": "The bishop takes a long diagonal and freezes White's knight, which needs several moves to reach anything useful. In open positions the bishop's reach is decisive: it defends and attacks on both wings simultaneously, which a knight can never do." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "Ba6", "say": "Passive — the bishop points at nothing and the knight gets time to reroute via d3 or c2. A bishop is only better than a knight while it has open diagonals that MATTER." }
+      ],
+      "wrongSay": "Give the bishop a long, active diagonal that also restrains the knight.",
+      "successSay": "Open lines, distant squares — the bishop's whole case in one move."
+    },
+    {
+      "kind": "challenge",
+      "fen": "6k1/pp3ppp/8/2p5/2P5/1P6/P4PPP/4N1K1 w - - 0 1",
+      "prompt": "Now the pawns are fixed and the position is closed. Play for the knight — start its journey to a strong square!",
+      "hints": [
+        "Knights need routes, not lines. Plan two moves ahead: which square does the knight want, and how does it get there?",
+        "Nd3 heads for e5 or b4 — squares no enemy pawn can challenge."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Nd3", "say": "The knight begins its route. In closed positions the bishop bumps into pawns while the knight hops between outposts — and a knight on a protected central square is worth more than any bishop staring at a pawn chain." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "Nc2", "say": "It's a route too, but a slower one: from d3 the knight eyes both b4 and e5 immediately. When manoeuvring a knight, count the squares it will attack on ARRIVAL, not the ones it leaves." },
+        { "san": "g4", "say": "A pawn move that weakens your king and helps nothing. In closed positions, improve the knight first — pawn moves are commitments you cannot take back." }
+      ],
+      "wrongSay": "Closed position: route the knight toward a central outpost.",
+      "successSay": "Knights are re-routed, bishops are unleashed. Match the piece to the pawn structure."
+    },
+    {
+      "kind": "challenge",
+      "fen": "6k1/5ppp/8/3b4/8/4N3/5PPP/6K1 b - - 0 1",
+      "prompt": "The most underrated endgame skill: DOMINATE the knight. Take its squares away!",
+      "hints": [
+        "Count the knight's available squares from e3, then find the bishop move that removes the best of them.",
+        "Bc4 takes away d3 and covers the light squares the knight needs — it becomes a spectator."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Bc4", "say": "Domination. The knight's useful squares vanish and it must shuffle backwards. This is how bishops beat knights in practice — not by capturing them, but by making them useless. Whenever you have bishop against knight, ask: which square does the knight NEED, and can I cover it?" }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "Bxg2", "say": "Kxg2 — you traded your good bishop for a pawn and now face a knight in a simplified position. Domination is worth more than a pawn here: keep the bishop and strangle the knight." }
+      ],
+      "wrongSay": "Don't chase the knight — cover the squares it wants to reach.",
+      "successSay": "A dominated knight is a piece down. Take its squares, not its life."
+    },
+    {
+      "kind": "challenge",
+      "fen": "6k1/5ppp/4b3/8/8/2N5/5PPP/6K1 w - - 0 1",
+      "prompt": "Final judgment call: where does your knight belong against that bishop?",
+      "hints": [
+        "The enemy bishop is light-squared. A knight is safest — and strongest — on a square that bishop can never attack.",
+        "Nd5 is a dark square: the bishop can never challenge it, and from there the knight hits both wings."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Nd5", "say": "Perfect: a central, dark square — permanently immune to a light-squared bishop. That is the whole knight-versus-bishop technique in one move: put the knight where the bishop's colour cannot follow, and it can never be challenged." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "Ne4", "say": "Also central — but e4 is a light square and the bishop eyes it. When the enemy bishop is light-squared, park the knight on DARK squares where it can never be attacked." },
+        { "san": "Na4", "say": "The rim again: from a4 the knight controls almost nothing. Centralize on a square of the opposite colour to the enemy bishop." }
+      ],
+      "wrongSay": "The enemy bishop is light-squared. Which colour square should your knight occupy?",
+      "successSay": "Match your knight's square to the colour the enemy bishop cannot touch — the most practical rule in minor-piece endings."
+    }
+  ]
+}

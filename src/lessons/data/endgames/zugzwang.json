@@ -1,0 +1,144 @@
+{
+  "id": "zugzwang",
+  "title": "Zugzwang",
+  "topic": "endgames",
+  "level": 5,
+  "subtitle": "The obligation to move, turned into a weapon.",
+  "goals": [
+    "Recognize mutual zugzwang (the trébuchet)",
+    "Hand the move to your opponent",
+    "Win positions where every enemy move loses"
+  ],
+  "estMinutes": 6,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "8/8/8/2k5/2p5/2K5/8/8 w - - 0 1",
+      "say": "In most of chess, having the move is an advantage. In the endgame it is often a curse. This position is the TRÉBUCHET — the purest mutual zugzwang on the board. Neither king can approach the pawn, neither can improve. Whoever must move, loses. Study it for ten seconds: it is the atom from which most pawn endings are built.",
+      "highlights": [
+        "c3",
+        "c4",
+        "c5"
+      ]
+    },
+    {
+      "kind": "explain",
+      "fen": "8/8/8/2k5/2p5/2K5/8/8 w - - 0 1",
+      "say": "Watch what happens when White is forced to move.",
+      "autoMoves": [
+        {
+          "san": "Kd2",
+          "say": "The king must step back — every square he has abandons the pawn..."
+        },
+        {
+          "san": "Kd4",
+          "say": "...and Black escorts it home. White to move loses this position; Black to move loses it too. That is mutual zugzwang."
+        }
+      ]
+    },
+    {
+      "kind": "challenge",
+      "fen": "8/8/3k4/8/2p5/2K5/8/8 w - - 0 1",
+      "prompt": "Black was the one in zugzwang and had to step aside. Collect the reward!",
+      "hints": [
+        "The pawn's only defender just walked away.",
+        "Take it — Kxc4."
+      ],
+      "goal": {
+        "type": "capture-on",
+        "squares": [
+          "c4"
+        ]
+      },
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Kxc4",
+              "say": "The pawn falls. Identical position to the diagram before, opposite result — the only difference was whose turn it was. In pawn endings, the move itself is a piece."
+            }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Kd4",
+          "say": "You stepped past the pawn and left it alive — ...Kc6 defends again and the trébuchet resets with YOU on move next time. When zugzwang hands you material, take it immediately."
+        }
+      ],
+      "wrongSay": "Black's king abandoned the pawn. Capture it.",
+      "successSay": "The trébuchet: whoever moves, loses. Now you know which side of it to be on."
+    },
+    {
+      "kind": "challenge",
+      "fen": "6k1/6p1/6K1/7Q/8/8/8/8 w - - 0 1",
+      "prompt": "Zugzwang wins games outright, not just pawns. Mate in two — without giving check!",
+      "hints": [
+        "Checking gives the king somewhere to go. Instead, cover his squares and force him to move himself into the net.",
+        "Qh4! Now Kf8 allows Qd8#, and any pawn move loses instantly too."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Qh4",
+              "say": "A pure waiting move. Black is not in check — he simply has no move that survives..."
+            },
+            {
+              "san": "Kf8"
+            },
+            {
+              "san": "Qd8#",
+              "say": "Checkmate delivered by the opponent's own obligation to move. When a king is boxed in, stop checking and start waiting."
+            }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Qd5+",
+          "say": "Check — and the king gains freedom on h6 or f8. Every check against a boxed-in king is a favour to him. Take his squares away and hand him the move instead."
+        }
+      ],
+      "wrongSay": "Don't check. Find the quiet queen move that leaves Black no survivable reply.",
+      "successSay": "Zugzwang is the only tactic where your opponent does all the work."
+    },
+    {
+      "kind": "challenge",
+      "fen": "8/8/1k6/1p6/1P6/1K6/8/8 w - - 0 1",
+      "prompt": "Blocked pawns, kings face to face. This is a draw — but only if you keep the opposition. Hold it!",
+      "hints": [
+        "If you step aside, Black's king walks around your pawn and wins it. Stay in front and mirror him.",
+        "Kc3 keeps the king close to both key squares; the classic drawing method is to mirror Black's moves."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Kc3",
+              "say": "Correct — the king stays in touch with c4 and b3, mirroring Black. Neither side can make progress: every black attempt to outflank is met by a matching step. A draw held by understanding zugzwang rather than by luck."
+            }
+          ]
+        },
+        {
+          "line": [
+            {
+              "san": "Ka3",
+              "say": "The other mirror — the king shadows Black on the a-file side. As long as you match his king, the blocked pawns never fall."
+            }
+          ]
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Kc2",
+          "say": "One step too far back! Now ...Kc6-d5 outflanks you: the black king reaches c4 or a4 and wins the b4 pawn. In blocked pawn endings, distance from the key squares is everything."
+        }
+      ],
+      "wrongSay": "Stay close and mirror. Which king move keeps you touching the squares Black wants?",
+      "successSay": "Zugzwang cuts both ways — recognizing it saves as many games as it wins."
+    }
+  ]
+}
