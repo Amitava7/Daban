@@ -1,0 +1,148 @@
+{
+  "id": "englund-gambit-trap",
+  "title": "The Englund Gambit Trap",
+  "topic": "opening-traps",
+  "level": 4,
+  "subtitle": "Mate on c1 in nine moves.",
+  "goals": [
+    "Use a queen check to fork two targets on the fourth rank",
+    "Spot when a defender is pinned to a mate square",
+    "Deliver mate on the square the queen started from"
+  ],
+  "estMinutes": 7,
+  "steps": [
+    {
+      "kind": "explain",
+      "fen": "r1b1kbnr/ppppqppp/2n5/4P3/8/5N2/PPP1PPPP/RNBQKB1R w KQkq - 3 4",
+      "say": "The Englund Gambit: Black threw the e-pawn at 1.d4 and is now attacking it three ways — knight, queen and, soon, a bishop. It is not a sound gambit. It is, however, a superb trap, because the natural defending move is the losing one. You're Black. Watch White defend the pawn the obvious way.",
+      "autoMoves": [
+        {
+          "san": "Bf4",
+          "say": "4.Bf4? — developing with tempo, protecting e5, everything an opening book asks for. And it puts a bishop on the fourth rank."
+        }
+      ],
+      "highlights": [
+        "e5",
+        "f4"
+      ]
+    },
+    {
+      "kind": "challenge",
+      "fen": "r1b1kbnr/ppppqppp/2n5/4P3/5B2/5N2/PPP1PPPP/RN1QKB1R b KQkq - 4 4",
+      "prompt": "White's bishop just landed on the fourth rank. Find the check that wins a pawn — and more.",
+      "hints": [
+        "Your queen can reach the fourth rank with check. Once there, what else is standing on that rank?",
+        "Qb4+ gives check on the a5-e1 diagonal and attacks the f4 bishop straight down the rank — and b2 is hanging too.",
+        "Qb4+ Bd2 Qxb2 — the b-pawn falls and White's queenside is in ruins."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Qb4+",
+              "say": "Check, and the f4 bishop is attacked along the fourth rank. White must deal with the check first..."
+            },
+            {
+              "san": "Bd2"
+            },
+            {
+              "san": "Qxb2",
+              "say": "The b-pawn is gone, the a1 rook is attacked, and White's queenside can't be untangled in one move. Note what White's blocking bishop has done: it now stands on d2, in front of its own queen."
+            }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Qxe5",
+          "say": "Never. The pawn is defended by knight AND bishop: after Nxe5 Nxe5 Bxe5 you've given a queen for a knight and a pawn. Win it back with a CHECK instead — look at the fourth rank."
+        },
+        {
+          "san": "g5",
+          "say": "Chasing the bishop lets White simply play Bg3 and keep the extra pawn, while your kingside is now full of holes. The check on b4 wins the pawn back by force."
+        },
+        {
+          "san": "d6",
+          "say": "Solid, and far too slow — after exd6 Bxd6 White is fine and you've gambited a pawn for nothing. The trap is a check, and it's available right now."
+        },
+        {
+          "san": "Nb4",
+          "say": "The right square, the wrong piece. A knight on b4 hits c2 but can be met by Na3 or c3. It's the QUEEN that reaches b4 with check, hitting f4 and b2 at once."
+        }
+      ],
+      "wrongSay": "You're a pawn down and White's bishop just stepped onto the fourth rank. Is there a check that attacks it?",
+      "successSay": "Pawn recovered with interest — and White's blocking piece is now standing somewhere very awkward."
+    },
+    {
+      "kind": "explain",
+      "fen": "r1b1kbnr/pppp1ppp/2n5/4P3/8/5N2/PqPBPPPP/RN1QKB1R w KQkq - 0 6",
+      "say": "White must save the a1 rook, and the natural way is to defend it with the bishop.",
+      "autoMoves": [
+        {
+          "san": "Bc3",
+          "say": "6.Bc3 — the rook is defended, the bishop is active, and White is about to trap your queen with Bd4 or Nd2. Except that the bishop on c3 now has two jobs at once."
+        }
+      ],
+      "highlights": [
+        "c3",
+        "a1"
+      ]
+    },
+    {
+      "kind": "challenge",
+      "fen": "r1b1kbnr/pppp1ppp/2n5/4P3/8/2B2N2/PqP1PPPP/RN1QKB1R b KQkq - 1 6",
+      "prompt": "White's bishop defends the rook and traps your queen. Mate in three!",
+      "hints": [
+        "Look at the c1 square. It is empty, and the only pieces that guard it are the d1 queen and the b1 knight.",
+        "Pin the c3 bishop to something — your bishop can reach b4. Then the knight on b1 can never move, and c1 is guarded only by the queen.",
+        "Bb4! Qd2 Bxc3 Qxc3, and now Qc1 is mate: the knight is pinned, and the king has no square."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Bb4",
+              "say": "Pinning the c3 bishop against... nothing yet. But it does stop the b1 knight from ever developing, and it offers a trade White is happy to accept."
+            },
+            {
+              "san": "Qd2"
+            },
+            {
+              "san": "Bxc3",
+              "say": "Forcing. White has to recapture with the queen — the knight recapture loses to the same idea."
+            },
+            {
+              "san": "Qxc3"
+            },
+            {
+              "san": "Qc1#",
+              "say": "Mate on the square your queen's counterpart started from. Look at why nothing can take: the king on e1 isn't adjacent to c1, a knight on b1 doesn't attack c1 at all, and the a1 rook — which would defend c1 along the back rank — is blocked by its own knight on b1. White's undeveloped queenside is what kills White. Nine moves, from a dubious gambit to mate."
+            }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Qxc3+",
+          "say": "You saw the target square, but grabbed with the wrong piece: the c3 bishop is defended by the b1 knight, so Nxc3 just wins your queen. Bring the BISHOP to b4 first and make White recapture on c3."
+        },
+        {
+          "san": "Qb6",
+          "say": "Retreating admits the trap failed. Your queen is not actually in danger yet, and c1 is the weak square — play Bb4 and force White's pieces onto squares that block their own king."
+        },
+        {
+          "san": "Qxa1",
+          "say": "The rook is poisoned — after Bxa1 you've traded your queen for a rook and White's bishop dominates the long diagonal. The mating net is worth far more than an exchange."
+        },
+        {
+          "san": "d6",
+          "say": "A useful developing move in almost any other position. Here it lets White play Nd2 or Bd4 and your queen genuinely is trapped. Force matters: Bb4 first."
+        }
+      ],
+      "wrongSay": "White's king is on e1 with no escape squares. Which square next to it is barely defended — and how do you get your queen there safely?",
+      "successSay": "The Englund trap: unsound as an opening, unbeatable as an ambush. Every move Black played was a check, a capture or a pin."
+    }
+  ]
+}

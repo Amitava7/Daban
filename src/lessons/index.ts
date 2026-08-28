@@ -75,6 +75,11 @@ const REGISTRY: Record<string, () => Lesson> = {
   'elephant-trap': () => require('./data/opening-traps/elephant-trap.json'),
   'gambit-traps': () => require('./data/opening-traps/gambit-traps.json'),
   'kieninger-and-noahs-ark': () => require('./data/opening-traps/kieninger-and-noahs-ark.json'),
+  'fried-liver-attack': () => require('./data/opening-traps/fried-liver-attack.json'),
+  'englund-gambit-trap': () => require('./data/opening-traps/englund-gambit-trap.json'),
+  'opening-mate-traps': () => require('./data/opening-traps/opening-mate-traps.json'),
+  'fishing-pole': () => require('./data/opening-traps/fishing-pole.json'),
+  'halosar-trap': () => require('./data/opening-traps/halosar-trap.json'),
   // Master Games
   'opera-game': () => require('./data/masterpieces/opera-game.json'),
   'torre-lasker-windmill': () => require('./data/masterpieces/torre-lasker-windmill.json'),

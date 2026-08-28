@@ -1,0 +1,105 @@
+{
+  "id": "fried-liver-attack",
+  "title": "The Fried Liver",
+  "topic": "opening-traps",
+  "level": 5,
+  "subtitle": "Drag the king to e6 on move seven.",
+  "goals": [
+    "Play the Nxf7 sacrifice and the follow-up correctly",
+    "Know the defence that refutes it (5...Na5!)",
+    "Fight back with the Traxler counter-attack"
+  ],
+  "estMinutes": 9,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "r1bqkb1r/ppp2ppp/2n5/3np1N1/2B5/8/PPPP1PPP/RNBQK2R w KQkq - 0 6",
+      "say": "The Two Knights Defence, and Black has just recaptured with 5...Nxd5?! — natural, central, and losing. The knight on d5 is defended only by the queen, and both your knight and your bishop are pointing at f7, the one square defended by nothing but the king itself. This is the Fried Liver: you're White, and the black king is about to take a walk it will not survive.",
+      "highlights": ["f7", "d5", "c4", "g5"]
+    },
+    {
+      "kind": "challenge",
+      "fen": "r1bqkb1r/ppp2ppp/2n5/3np1N1/2B5/8/PPPP1PPP/RNBQK2R w KQkq - 0 6",
+      "prompt": "Two pieces aim at f7 and the d5 knight is loose. Break through — and drag the king to e6.",
+      "hints": [
+        "f7 is defended once, by the king. You attack it twice.",
+        "After the king recaptures on f7, the d5 knight is hanging AND the king is exposed. Find the check that attacks both.",
+        "Nxf7! Kxf7, then Qf3+ hits the king and the pinned d5 knight; after Ke6 bring the last piece out with Nc3."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Nxf7", "say": "The knight goes for nothing but the king's shelter. Black is more or less obliged to take..." },
+            { "san": "Kxf7" },
+            { "san": "Qf3+", "say": "Check — and the queen simultaneously lines up on the d5 knight. Blocking with a piece on e6 loses it, so the king must step up." },
+            { "san": "Ke6" },
+            { "san": "Nc3", "say": "The quiet killer. No check at all: you simply add a third attacker to d5, and Black cannot hold the knight AND keep the king alive. A king on e6 on move seven is not a king, it's a target." }
+          ],
+          "assert": null
+        }
+      ],
+      "rejections": [
+        { "san": "Bxd5", "say": "You win the knight back, and after Qxd5 Black is perfectly fine — the king is safe on e8 and the extra centre pawn is gone. The point isn't the knight, it's f7. Sacrifice on it." },
+        { "san": "Nxh7", "say": "A pawn, a rook trapped in the corner and no attack at all — after Rxh7 you've lost a knight for a pawn. The knight belongs on f7, where the king has to answer it." },
+        { "san": "d4", "say": "Opening lines is thematic but slow. Black gets ...Be7 and ...O-O in, f7 stops being weak, and the whole attack evaporates. Strike immediately." },
+        { "san": "O-O", "say": "Castling hands Black the tempo needed to castle too — and the moment the king reaches g8, the f7 weakness is defended by the rook. This is a now-or-never sacrifice." }
+      ],
+      "wrongSay": "Count the attackers and defenders of f7. Two against one — and the defender is the king.",
+      "successSay": "The Fried Liver. Black is a piece up and still lost, because the king cannot castle, cannot hide, and cannot hold d5."
+    },
+    {
+      "kind": "explain",
+      "fen": "r1bqkb1r/ppp2ppp/2n2n2/3Pp1N1/2B5/8/PPPP1PPP/RNBQK2R b KQkq - 0 5",
+      "say": "So how does Black avoid all this? Not by recapturing. The refutation is 5...Na5!, hitting the c4 bishop and simply leaving the d5 pawn alone. Black gives back the pawn but keeps the king safe — watch the whole sequence.",
+      "autoMoves": [
+        { "san": "Na5", "say": "Attacking the bishop instead of grabbing the pawn." },
+        { "san": "Bb5+" },
+        { "san": "c6", "say": "Blocking the check and undermining the d5 pawn at once." },
+        { "san": "dxc6" },
+        { "san": "bxc6", "say": "Now the pawn is gone, but so is the bishop's stare at f7." },
+        { "san": "Be2" },
+        { "san": "h6", "say": "And the g5 knight — the whole attack's other half — is asked to leave." },
+        { "san": "Nf3" },
+        { "san": "e4", "say": "Black gains space with tempo." },
+        { "san": "Ne5" },
+        { "san": "Bd6", "say": "Black is a pawn down but has the bishop pair, the centre and a safe king. This is the price of declining to be fried: one pawn, cheerfully paid." }
+      ],
+      "highlights": ["a5", "c4"]
+    },
+    {
+      "kind": "intro",
+      "fen": "r1bqk2r/pppp1Npp/2n2n2/2b1p3/2B1P3/8/PPPP1PPP/RNBQK2R b KQkq - 0 5",
+      "say": "There's a wilder answer. Instead of defending d5 at all, Black plays 4...Bc5!? — the Traxler — and invites White to take on f7 anyway. White has done exactly that. Your rook is attacked, your king is next, and you are Black. Do not save the rook.",
+      "highlights": ["f7", "c5", "f2"]
+    },
+    {
+      "kind": "challenge",
+      "fen": "r1bqk2r/pppp1Npp/2n2n2/2b1p3/2B1P3/8/PPPP1PPP/RNBQK2R b KQkq - 0 5",
+      "prompt": "White's knight forks your queen and rook. Ignore it — counter-attack White's king instead!",
+      "hints": [
+        "White's king is still on e1 and f2 is defended only by the king. Your c5 bishop is already looking at it.",
+        "Bxf2+! If Kxf2, your f6 knight comes with check and wins the e4 pawn — and then the queen joins on h4.",
+        "Bxf2+ Kxf2 Nxe4+ Kg1 Qh4 — three black pieces at White's naked king."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Bxf2+", "say": "The rook can wait. This bishop drags the king off e1..." },
+            { "san": "Kxf2" },
+            { "san": "Nxe4+", "say": "Check, and a pawn recovered. The knight jumps in with tempo because the king has nowhere comfortable." },
+            { "san": "Kg1" },
+            { "san": "Qh4", "say": "Threatening mate on f2 and hitting the loose f7 knight. White is a rook up on paper and completely paralysed — this is why the Traxler has been analysed for a century without a verdict." }
+          ],
+          "assert": null
+        }
+      ],
+      "rejections": [
+        { "san": "Nxe4", "say": "The right knight, the wrong moment — without the check on f2 first, White has Nxd8 and simply wins your queen. The bishop check comes FIRST; it drags the king out and buys the tempo." },
+        { "san": "Rg8", "say": "Saving the rook is exactly what White wants: after Nxd8 you've lost the queen for a knight. In the Traxler the material count is irrelevant — the king hunt is the whole point." },
+        { "san": "Qe7", "say": "Defending passively lets White consolidate with Nxh8 and emerge a clean exchange up. Attack: White's king is the piece with no defenders." }
+      ],
+      "wrongSay": "Your queen and rook are both attacked, so saving one loses the other. Stop counting material and look at f2.",
+      "successSay": "The Traxler: the only opening line where being a rook down on move eight is considered good news."
+    }
+  ]
+}

@@ -1,0 +1,90 @@
+{
+  "id": "fishing-pole",
+  "title": "The Fishing Pole",
+  "topic": "opening-traps",
+  "level": 4,
+  "subtitle": "Dangle a knight. Open the h-file. Mate on h2.",
+  "goals": [
+    "Sacrifice a knight to rip open the h-file",
+    "Use a rook on an open file to support a queen mate",
+    "Understand why the bait must not be retreated"
+  ],
+  "estMinutes": 7,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "r1bqkb1r/pppp1ppp/2n5/1B2p3/4P1n1/5N1P/PPPP1PP1/RNBQ1RK1 b kq - 0 5",
+      "say": "A Ruy Lopez, and you're Black. Your knight sits on g4 doing nothing in particular, and White has just played 5.h3 to chase it away. Every book says retreat. Instead you're going to leave the knight hanging and push the h-pawn — this is Brian Wall's Fishing Pole, and the knight is the bait.",
+      "highlights": ["g4", "h3", "h8"]
+    },
+    {
+      "kind": "challenge",
+      "fen": "r1bqkb1r/pppp1ppp/2n5/1B2p3/4P1n1/5N1P/PPPP1PP1/RNBQ1RK1 b kq - 0 5",
+      "prompt": "Your knight on g4 is attacked. Don't move it — support it with a pawn and set the hook.",
+      "hints": [
+        "Look at your rook on h8. What is standing between it and White's king?",
+        "h5! The knight is still hanging, but if White ever takes it the h-file opens straight onto the castled king.",
+        "h5 hxg4 hxg4 — you've given a knight and opened the h-file for your rook."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "h5", "say": "The pole is cast. The knight is defended by nothing and White is invited to take it." },
+            { "san": "hxg4" },
+            { "san": "hxg4", "say": "Recapturing with the h-pawn — this is the move that matters. The h-file is now completely open from your rook on h8 to White's king on g1, and you have a pawn on g4 taking the f3 square away from White's knight." }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "rejections": [
+        { "san": "Nf6", "say": "The sensible retreat, and a perfectly playable game. But it's also exactly what 5.h3 asked for — White gained a tempo for free. The Fishing Pole says: leave it there and open the h-file." },
+        { "san": "Nh6", "say": "Retreating to the rim is worse than retreating to f6: the knight is passive and White is comfortably better. The bait only works if it stays on g4." },
+        { "san": "Nxf2", "say": "The sacrifice on the wrong square — Rxf2 and you've given a knight for a pawn with no attack at all. The h-file is the target, and the h-pawn is what opens it." },
+        { "san": "Qf6", "say": "Defending the knight with the queen keeps material level but wastes the whole idea. You WANT White to take on g4 — the recapture is what opens the file." }
+      ],
+      "wrongSay": "You are not trying to save the knight. What does the h8 rook want, and which pawn move gets it there?",
+      "successSay": "A knight for an open file. Now the pieces have to arrive before White consolidates."
+    },
+    {
+      "kind": "intro",
+      "fen": "r1bqkb1r/pppp1pp1/2n5/1B2p3/4P1p1/8/PPPP1PP1/RNBQNRK1 b kq - 1 7",
+      "say": "White has retreated the attacked knight to e1 — it had nowhere better, because your g4 pawn covers f3. Count the material: you are a full knight down. Count the attackers: White's king has an open file pointing at it, no knight defending, and a queen sitting on d1 doing nothing about it.",
+      "highlights": ["e1", "g4"],
+      "arrows": [{ "from": "h8", "to": "h1" }]
+    },
+    {
+      "kind": "challenge",
+      "fen": "r1bqkb1r/pppp1pp1/2n5/1B2p3/4P1p1/8/PPPP1PP1/RNBQNRK1 b kq - 1 7",
+      "prompt": "The h-file is open and you're a knight down. Bring the queen — and mate in two.",
+      "hints": [
+        "Your rook already controls the whole h-file. It needs one friend.",
+        "Qh4! Now h2 is attacked twice — by the queen and, through it, by the rook on h8. White has no way to cover it.",
+        "Qh4, and after any developing move, Qh2 is mate — the rook behind the queen defends her."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Qh4", "say": "Queen and rook stacked on the open h-file. The threat is Qh2 mate, and White cannot defend h2: no knight can reach f3 or g4, and nothing covers h2 from the side." },
+            { "san": "Bc4" },
+            { "san": "Qh2#", "say": "Mate, with the queen sitting right next to the king. The king cannot take her — the rook on h8 defends h2 down the file YOUR pawn sacrifice opened. That knight on move five bought exactly this." }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "rejections": [
+        { "san": "Qg5", "say": "Active, but on the wrong file. The h-file is the one you paid a knight to open — put the queen on it, in front of the rook." },
+        { "san": "Rh4", "say": "The rook wants to stay BEHIND the queen, not in front of her. On h4 it can be met by g3, and h2 is attacked only once. Bring the queen to h4 instead." },
+        { "san": "g3", "say": "Pushing the pawn releases the bind on f3 and lets White's knight back into the game. Everything depends on speed here — bring the queen." },
+        { "san": "d6", "say": "A useful move in a normal position. You are a knight down: every move must be a threat, or the attack is just a lost piece." }
+      ],
+      "wrongSay": "Your rook on h8 already attacks h2 through the open file. Which piece joins it — and on which square?",
+      "successSay": "The Fishing Pole: a hanging knight, an open file, and a mate on h2 that White's own capture created."
+    },
+    {
+      "kind": "intro",
+      "fen": "r1bqkb1r/pppp1pp1/2n5/1B2p2p/4P1n1/5N1P/PPPP1PP1/RNBQ1RK1 w kq - 0 6",
+      "say": "Facing this as White? Simply don't bite. After 5...h5 the knight on g4 really is hanging, but taking it is optional — 6.d3 or 6.Nc3 leaves Black a tempo down with a loose knight and an airy kingside. That's the whole discipline of meeting a trap: a free piece offered by someone who saw it coming is not free.",
+      "highlights": ["g4", "h5"]
+    }
+  ]
+}

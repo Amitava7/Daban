@@ -1,0 +1,85 @@
+{
+  "id": "opening-mate-traps",
+  "title": "Mate in the Opening",
+  "topic": "opening-traps",
+  "level": 4,
+  "subtitle": "Games that end before development does.",
+  "goals": [
+    "Set a quiet trap that threatens mate",
+    "Recognise a smothered knight mate on d6",
+    "Win a queen by attacking it with a knight it cannot take"
+  ],
+  "estMinutes": 7,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "r1bqkbnr/pp1npppp/2p5/8/3PN3/8/PPP2PPP/R1BQKBNR w KQkq - 1 5",
+      "say": "Caro-Kann, and Black has just played 4...Nd7 — a completely normal move, played by world champions. But it does one small thing: it takes the d7 square away from the black king and blocks the c8 bishop. You're White. Do not develop. Set the trap.",
+      "highlights": ["d7", "e4", "d6"]
+    },
+    {
+      "kind": "challenge",
+      "fen": "r1bqkbnr/pp1npppp/2p5/8/3PN3/8/PPP2PPP/R1BQKBNR w KQkq - 1 5",
+      "prompt": "Find the quiet queen move that sets a mating trap — then punish Black's natural reply.",
+      "hints": [
+        "Your knight would love to jump to d6. Right now that's just a free knight — but what if the black king couldn't run and the e-file were loaded?",
+        "Put your queen on e2, behind the knight. Now if the e-file opens, Nd6 comes with a discovered attack that is also mate.",
+        "Qe2! and Black's most natural developing move, Ngf6, allows Nd6 mate."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Qe2", "say": "A modest-looking move. The queen lines up on e2 behind the e4 knight — the trap is now armed and completely invisible." },
+            { "san": "Ngf6" },
+            { "san": "Nd6#", "say": "Smothered mate in six moves. The knight on d6 checks the king; e7 is covered by your queen the instant the knight steps off the e-file; d7 and f6 are occupied by Black's OWN knights; and d8 and f8 by Black's own queen and bishop. Black was mated by their own development." }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "rejections": [
+        { "san": "Nf3", "say": "A good, sound developing move — and the trap is gone forever. Sometimes the best practical move is the one that asks your opponent a question. Look for a queen move that stacks up on the e-file." },
+        { "san": "Bd3", "say": "Natural development, and after Ngf6 Black is completely fine. The mating idea needs the QUEEN behind the e4 knight — find the square." },
+        { "san": "Nd6+", "say": "Too early! Right now the king simply takes it: after Bxd6 or Kd7 you've thrown away a knight for nothing. The knight only mates once the e-file is covered from behind." },
+        { "san": "Ng5", "say": "Attacking f7 achieves nothing here — Black has ...Ndf6 or ...e6 and your knight retreats. The idea is d6, and the preparation is a queen on e2." }
+      ],
+      "wrongSay": "The black king has no escape squares at all: d7, d8, f8 are blocked by its own men. Which of your knights' squares would be mate if it were supported?",
+      "successSay": "Six moves. Every black move was reasonable, and one was fatal — that's what a good trap looks like."
+    },
+    {
+      "kind": "intro",
+      "fen": "rnbqkb1r/pppp1ppp/8/4P3/6n1/7P/PPPNPPP1/R1BQKBNR b KQkq - 0 4",
+      "say": "Paris, 1924. Gibaud, a French champion, against the amateur Lazard — reputedly the shortest loss ever suffered by a master. White has just played 4.h3, kicking your knight on g4. It looks like the knight must retreat or take on e5. You're Black, and you're going to move it forward instead.",
+      "highlights": ["g4", "h3", "e3"]
+    },
+    {
+      "kind": "challenge",
+      "fen": "rnbqkb1r/pppp1ppp/8/4P3/6n1/7P/PPPNPPP1/R1BQKBNR b KQkq - 0 4",
+      "prompt": "Your knight is attacked by the h-pawn. Move it somewhere it can still be taken — and mate in three.",
+      "hints": [
+        "Don't retreat and don't recapture. Find the square where the knight attacks White's queen.",
+        "Ne3! The knight is en prise to the f2 pawn — but if fxe3 the f-file opens onto White's king and the h4-e1 diagonal opens with it.",
+        "Ne3 fxe3 Qh4+ g3 Qxg3 is mate."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Ne3", "say": "Attacking the queen from a square defended by nothing. White can decline — but declining means losing the queen." },
+            { "san": "fxe3" },
+            { "san": "Qh4+", "say": "There it is. Taking the knight tore open the diagonal to e1, and the only way to block is with the g-pawn." },
+            { "san": "g3" },
+            { "san": "Qxg3#", "say": "Mate in six moves. The queen on g3 is protected by nothing — but the f2 pawn that would take it has just marched to e3, and the h-pawn that would take it has just marched to h3. White was mated by two pawn moves they chose themselves." }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "rejections": [
+        { "san": "Nxe5", "say": "Regaining the pawn and reaching a normal, playable game — which is exactly what White wanted. Look for a knight move that ATTACKS something and, if captured, opens a line to White's king." },
+        { "san": "Nxf2", "say": "The classic sacrifice square, and here it fails: Kxf2 and your attack is over, a piece down. It's the OTHER knight jump — one square further, onto e3, where it hits the queen." },
+        { "san": "Qh4", "say": "The right square for the queen but the wrong move order: with the f2 pawn still on f2, White just plays g3 and your queen is chased away for nothing. The knight must go to e3 first, to lure that pawn away." },
+        { "san": "Nh6", "say": "Retreating loses the pawn and the initiative. The whole point of playing ...e5 was to create these tactical chances — grab them while the White king is still in the middle." }
+      ],
+      "wrongSay": "Retreating and recapturing both give White a normal game. Which knight move attacks White's queen — and what happens to White's king if the f2 pawn is forced to capture?",
+      "successSay": "Gibaud-Lazard, six moves. Both mates in this lesson came from the same idea: the opponent's own pieces and pawns doing the work."
+    }
+  ]
+}

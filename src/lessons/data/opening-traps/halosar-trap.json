@@ -1,0 +1,98 @@
+{
+  "id": "halosar-trap",
+  "title": "The Halosar Trap",
+  "topic": "opening-traps",
+  "level": 4,
+  "subtitle": "Let them win the queen. Mate them on move nine.",
+  "goals": [
+    "Give up two pawns for development and open files",
+    "Castle long to bring a rook to the d-file with tempo",
+    "Allow a queen capture that walks into mate"
+  ],
+  "estMinutes": 7,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "rnbqkb1r/ppp1pppp/5n2/8/3P4/2N2p2/PPP3PP/R1BQKBNR w KQkq - 0 5",
+      "say": "The Blackmar-Diemer Gambit. You've thrown the e-pawn and then the f-pawn at Black, and both were taken. You're a pawn down with a wrecked pawn structure — and you're about to be a queen down as well. Everything here is deliberate. You're White.",
+      "highlights": ["f3", "d4"]
+    },
+    {
+      "kind": "explain",
+      "fen": "rnbqkb1r/ppp1pppp/5n2/8/3P4/2N2p2/PPP3PP/R1BQKBNR w KQkq - 0 5",
+      "say": "First, recapture. The whole point of the gambit is the open f-file and a lead in development — take with the queen, not the pawn.",
+      "autoMoves": [
+        { "san": "Qxf3", "say": "5.Qxf3 — the queen eyes b7 and f7, and the f-file is open." },
+        { "san": "Qxd4", "say": "And Black takes a second pawn, hitting your undefended e1 king down the file. Greedy, natural, and the beginning of the end." }
+      ],
+      "highlights": ["f3", "d4"]
+    },
+    {
+      "kind": "challenge",
+      "fen": "rnb1kb1r/ppp1pppp/5n2/8/3q4/2N2Q2/PPP3PP/R1B1KBNR w KQkq - 0 6",
+      "prompt": "You are two pawns down and the black queen sits on d4. Develop with tempo and get your king to safety — in two moves.",
+      "hints": [
+        "Attack the queen with a piece that develops at the same time. Which minor piece can hit d4?",
+        "Be3! The queen must move, and it has very few good squares. Then castle — but which side?",
+        "Be3 Qb4, and now O-O-O puts your rook on the d-file, staring at the black queen's diagonal and the d8 square."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Be3", "say": "Developing with an attack. The queen has to leave d4, and b4 is where it usually goes — pinning your c3 knight." },
+            { "san": "Qb4" },
+            { "san": "O-O-O", "say": "Castling INTO the pin. Your king is safe on c1 behind three pawns, and the h1 rook has been replaced by a rook on d1 pointing straight down the d-file. Two pawns for a rook on d1, a queen on f3, and every piece in the game — that is the gambit's whole argument." }
+          ],
+          "assert": null
+        }
+      ],
+      "rejections": [
+        { "san": "Be2", "say": "Passive. The bishop on e2 attacks nothing, and Black gets a free move to consolidate two extra pawns. Develop with a THREAT — the queen on d4 is a target." },
+        { "san": "Qxb7", "say": "Grabbing back a pawn while your king sits in the middle of an open board. After Qxb7 Bxb7 the queens are off and your gambit compensation has evaporated. Development, not material." },
+        { "san": "Nb5", "say": "The right idea two moves too early — the queen just steps away and your knight is on the rim. Kick it with the bishop first." },
+        { "san": "Bd2", "say": "It defends, but it blocks your own d-file and doesn't touch the black queen. The bishop wants e3, where it hits d4 with tempo." }
+      ],
+      "wrongSay": "You need every move to come with a threat. Which developing move attacks the black queen?",
+      "successSay": "Two pawns down, fully developed, king safe, rook on the open d-file. Now Black has to find good moves — and the natural one loses."
+    },
+    {
+      "kind": "explain",
+      "fen": "rnb1kb1r/ppp1pppp/5n2/8/1q6/2N1BQ2/PPP3PP/R3KBNR w KQkq - 2 7",
+      "say": "Here is the position before you castle. Watch what Black does next: a completely natural developing move that pins your queen to nothing and adds an attacker.",
+      "autoMoves": [
+        { "san": "O-O-O", "say": "7.O-O-O! — the rook lands on d1." },
+        { "san": "Bg4", "say": "7...Bg4? — Black develops with tempo, hitting your queen. Every instinct says this is a good move. It loses by force." }
+      ],
+      "highlights": ["d1", "g4"],
+      "arrows": [{ "from": "d1", "to": "d8" }]
+    },
+    {
+      "kind": "challenge",
+      "fen": "rn2kb1r/ppp1pppp/5n2/8/1q4b1/2N1BQ2/PPP3PP/2KR1BNR w kq - 4 8",
+      "prompt": "Your queen is attacked by the g4 bishop. Ignore it — mate in two!",
+      "hints": [
+        "Don't move the queen. Look for a knight move that attacks c7 and forks the king and the a8 rook.",
+        "Nb5! Now if Black takes your queen, count what a knight on c7 does to a king on e8 — and remember your rook already controls d8 and d7.",
+        "Nb5 Bxf3 Nxc7 is mate."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Nb5", "say": "The queen is left hanging on purpose. The knight heads for c7, and the rook on d1 has already done the important work." },
+            { "san": "Bxf3" },
+            { "san": "Nxc7#", "say": "Mate — with Black a whole queen up. The knight checks from c7. The king cannot take it, nothing else attacks c7, and every escape square is gone: d8 and d7 are covered by your rook on the open d-file, e7 and f7 are blocked by Black's own pawns. Nine moves for two pawns and a queen." }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "rejections": [
+        { "san": "Qxg4", "say": "Saving the queen by taking the bishop looks obvious, but after Nxg4 you've traded queens and you're simply two pawns down in an endgame. The queen is bait — leave it there and play Nb5." },
+        { "san": "Qf4", "say": "Retreating keeps material level-ish and throws away a forced mate. Your rook on d1 has already sealed d7 and d8: find the knight jump that reaches c7." },
+        { "san": "Qxb7", "say": "A pawn and a rook — and after Bxd1 you have lost a rook and the initiative. There is a mate here; look for the knight route to c7." },
+        { "san": "Nd5", "say": "Right knight, wrong square. From d5 the knight hits the f6 knight and c7, but Black defends with Nxd5 or Qxb2. The square that checks the king and cannot be defended is c7 — go via b5." }
+      ],
+      "wrongSay": "Your queen is attacked, but that is not the most important thing on the board. What does your rook on d1 already control, and which square would a knight check from?",
+      "successSay": "The Halosar Trap. Every piece White developed had a job, and Black's only mistake was to take what was offered."
+    }
+  ]
+}
