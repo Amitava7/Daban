@@ -1,0 +1,148 @@
+{
+  "id": "zukertort-blackburne",
+  "title": "The Quiet Queen Move",
+  "topic": "mating-patterns",
+  "level": 6,
+  "subtitle": "Zukertort, London 1883 — a queen offer on an empty square.",
+  "goals": [
+    "Find a quiet queen move in the middle of a forcing attack",
+    "Sacrifice a rook and both bishops to open the king",
+    "See why a passed pawn on h7 is worth more than a rook"
+  ],
+  "estMinutes": 9,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "2r3k1/pb2q2p/1p2p1P1/8/3Pp3/1P2R3/PBrQ2PP/5RK1 w - - 1 26",
+      "say": "London, 1883. Johannes Zukertort against Joseph Blackburne, in what was for decades called the finest game ever played. Black looks fine — a rook has infiltrated to c2 and there are no obvious threats against the black king. But White's g6 pawn is one square from h7, the b2 bishop owns the long diagonal, and every white piece is aimed at the kingside.",
+      "highlights": [
+        "g6",
+        "b2",
+        "e3",
+        "g8"
+      ],
+      "arrows": [
+        {
+          "from": "b2",
+          "to": "g7"
+        }
+      ]
+    },
+    {
+      "kind": "explain",
+      "fen": "2r3k1/pb2q2p/1p2p1P1/8/3Pp3/1P2R3/PBrQ2PP/5RK1 w - - 1 26",
+      "say": "First, the pawn goes to h7 — not to promote, but to live there as a permanent wedge that takes h7 away from the black king forever.",
+      "autoMoves": [
+        {
+          "san": "gxh7+",
+          "say": "26.gxh7+ — a check, and now the pawn sits on h7 for the rest of the game. The black king can never use that square, and it can never take the pawn while it is defended."
+        },
+        {
+          "san": "Kh8"
+        },
+        {
+          "san": "d5+",
+          "say": "27.d5+! A discovered check from the b2 bishop along the long diagonal, opening the position with tempo."
+        },
+        {
+          "san": "e5",
+          "say": "Black blocks — the only way to answer the discovered check."
+        }
+      ],
+      "highlights": [
+        "h7",
+        "d5",
+        "b2"
+      ]
+    },
+    {
+      "kind": "challenge",
+      "fen": "2r4k/pb2q2P/1p6/3Pp3/4p3/1P2R3/PBrQ2PP/5RK1 w - - 0 28",
+      "prompt": "You've been checking every move. Now stop — find the quiet queen move that makes everything work.",
+      "hints": [
+        "There is no good check here. Look for a move that creates a threat Black cannot meet, and that puts your queen where it will be useful in three moves' time.",
+        "Qb4! The queen steps onto the b4-f8 diagonal, aiming at the e7 queen and the f8 square, and it is completely out of reach of Black's pieces.",
+        "Qb4 R8c5, and now the storm breaks: Rf8+!"
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Qb4",
+              "say": "The famous quiet move. No check, no capture — the queen simply steps onto the long diagonal to f8 and waits. Black must deal with the threat to the e7 queen."
+            },
+            {
+              "san": "R8c5"
+            },
+            {
+              "san": "Rf8+",
+              "say": "Now it starts. The rook is offered on f8, and Black's king must take the h7 pawn instead — because Kxf8 loses immediately to the discovered attack of the queen on b4 down the b4-f8 diagonal."
+            },
+            {
+              "san": "Kxh7"
+            },
+            {
+              "san": "Qxe4+",
+              "say": "The queen swings across with check, and everything is loose."
+            },
+            {
+              "san": "Kg7"
+            },
+            {
+              "san": "Bxe5+",
+              "say": "Bishop sacrifice number one, with check, ripping open the long diagonal."
+            },
+            {
+              "san": "Kxf8"
+            },
+            {
+              "san": "Bg7+",
+              "say": "Bishop sacrifice number two — offered on g7 right next to the king. Black must take or step away, and either way the e7 queen falls next move."
+            },
+            {
+              "san": "Kg8"
+            },
+            {
+              "san": "Qxe7",
+              "say": "And Black resigned. Count the offers: a rook on f8, a bishop on e5, a bishop on g7 — and the whole thing rested on a queen move to b4 that attacked nothing at all when it was played."
+            }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Rf8+",
+          "say": "One move too early. Without the queen on b4 covering the f8 diagonal, Black simply plays Kxh7 and then Kxf8 with an extra rook and no problems. The quiet queen move comes first — it is what makes the rook untouchable."
+        },
+        {
+          "san": "Qa5",
+          "say": "The queen finds a safe square but the wrong diagonal: from a5 it does not cover f8, so Rf8+ can simply be met by Kxf8. The square that matters is b4, because it looks straight at f8."
+        },
+        {
+          "san": "Qd4",
+          "say": "Centralising and hitting the long diagonal — but the b2 bishop already does that, and the queen on d4 blocks its own bishop. Step onto the b4-f8 diagonal instead, where nothing of yours is in the way."
+        },
+        {
+          "san": "Rxe4",
+          "say": "Winning a pawn and losing the game: the attack needs every piece where it is, and after ...Rxb2 Black is the one attacking. Find the quiet move."
+        },
+        {
+          "san": "Rc1",
+          "say": "Trading off Black's active rook is the defensive instinct, and it throws away a forced win. You are the one attacking here — the black king on h8 has no shelter and a white pawn on h7."
+        }
+      ],
+      "wrongSay": "Every check here fails. Ask instead: where does the queen most want to be three moves from now, once a rook lands on f8?",
+      "successSay": "Zukertort-Blackburne, 1883. The move everybody remembers is Qb4 — the one that did not check, did not capture, and won the game."
+    },
+    {
+      "kind": "intro",
+      "fen": "6k1/pb2Q1B1/1p6/2rP4/8/1P2R3/P1r3PP/6K1 b - - 0 33",
+      "say": "Why it works is worth more than the moves. Zukertort's combination is built on two long-term assets he created earlier: the pawn wedged on h7, which permanently removes a flight square, and the bishop on the long diagonal, which every sacrifice opens further. The brilliant quiet move only exists because those two things were already true. Build the assets, and the fireworks find you.",
+      "highlights": [
+        "g7",
+        "d5"
+      ]
+    }
+  ]
+}

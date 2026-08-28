@@ -1,0 +1,218 @@
+{
+  "id": "steinitz-von-bardeleben",
+  "title": "The Immortal Rook",
+  "topic": "masterpieces",
+  "level": 6,
+  "subtitle": "Steinitz, Hastings 1895 — a rook that could not be taken.",
+  "goals": [
+    "Leave a rook en prise on four consecutive squares",
+    "See why every capture loses to a back-rank or knight fork",
+    "Follow a ten-move forced mate to the end"
+  ],
+  "estMinutes": 10,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "r3k2r/pp1qn1pp/5p2/3p4/8/5N2/PP2QPPP/2R1R1K1 w kq - 0 18",
+      "say": "Hastings, 1895. Wilhelm Steinitz — the first world champion — against Curt von Bardeleben. Black's position looks defensible: an extra pawn on d5, no immediate threats. But the black king is stuck on e8, the h8 rook is out of play, and both white rooks already own the open central files. Steinitz spent the next four moves fixing Black in place.",
+      "highlights": [
+        "e8",
+        "c1",
+        "e1",
+        "h8"
+      ]
+    },
+    {
+      "kind": "explain",
+      "fen": "r3k2r/pp1qn1pp/5p2/3p4/8/5N2/PP2QPPP/2R1R1K1 w kq - 0 18",
+      "say": "Watch the knight travel to e6 and the queen to g4. Every white move increases the pressure on a king that cannot castle.",
+      "autoMoves": [
+        {
+          "san": "Nd4",
+          "say": "18.Nd4, heading for the outpost."
+        },
+        {
+          "san": "Kf7",
+          "say": "Black unpins by hand — the king steps up to connect the rooks, which is exactly what the attack wants."
+        },
+        {
+          "san": "Ne6",
+          "say": "19.Ne6! The knight lands on a square where it cannot be taken, cutting the position in half."
+        },
+        {
+          "san": "Rhc8"
+        },
+        {
+          "san": "Qg4",
+          "say": "20.Qg4, adding the queen and eyeing g7."
+        },
+        {
+          "san": "g6"
+        },
+        {
+          "san": "Ng5+",
+          "say": "21.Ng5+ — check, driving the king back to e8 where it started, but now with Black's pieces tangled."
+        },
+        {
+          "san": "Ke8"
+        }
+      ],
+      "highlights": [
+        "e6",
+        "g4",
+        "g5"
+      ]
+    },
+    {
+      "kind": "challenge",
+      "fen": "r1r1k3/pp1qn2p/5pp1/3p2N1/6Q1/8/PP3PPP/2R1R1K1 w - - 2 22",
+      "prompt": "Every black piece is defended and the king is back on e8. Win by offering a rook on four squares in a row.",
+      "hints": [
+        "The e7 knight is defended three times. Take it anyway — and then never move the rook to safety.",
+        "Rxe7+! The king cannot take (Ng5 covers f7... check every recapture), the queen cannot take (back rank), the rook cannot take (knight fork on f7).",
+        "Rxe7+ Kf8 Rf7+ Kg8 Rg7+ Kh8 Rxh7+ — the rook has been hanging for four moves and Black has never been able to take it."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Rxe7+",
+              "say": "The rook takes a defended knight and stands en prise to three pieces. Kxe7 loses to Re1+ winning the queen; Qxe7 loses to Rc8+ and mate on the back rank; Rxc1 allows Rxd7+ — so the king must step aside."
+            },
+            {
+              "san": "Kf8"
+            },
+            {
+              "san": "Rf7+",
+              "say": "Still hanging, still untouchable. Kxf7 runs into Qxd7+, and the king is driven on."
+            },
+            {
+              "san": "Kg8"
+            },
+            {
+              "san": "Rg7+",
+              "say": "The third offer. The rook is now attacked by the king AND the pawn, and taking still loses — Kxg7 to Qxd7+, and the rook on c8 is loose."
+            },
+            {
+              "san": "Kh8"
+            },
+            {
+              "san": "Rxh7+",
+              "say": "The fourth. Von Bardeleben did not resign here — he simply left the room and let his clock run down, which is why the finish had to be announced rather than played. Steinitz demonstrated mate in ten from this position."
+            }
+          ],
+          "assert": "check"
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Nxh7",
+          "say": "Winning a pawn and losing the thread — Black plays ...Rxc1 and the attack is gone. The move is the one that looks impossible: take the DEFENDED knight on e7."
+        },
+        {
+          "san": "Qh4",
+          "say": "The queen swings to the h-file a move too early — Black answers ...Rxc1 and the attack evaporates with rooks coming off. Qh4 is in fact the winning move three moves LATER, once the rook has driven the king to h8. Start with the capture on e7."
+        },
+        {
+          "san": "Rxc8+",
+          "say": "Trading rooks relieves all the pressure and gives Black exactly the simplification the defence needs. Keep every attacker on the board and strike at e7."
+        },
+        {
+          "san": "Ne6",
+          "say": "Retreating the knight to a nice square is not enough — Black untangles with ...Rxc1. This position is winning only because a forcing sequence exists; find it and play it."
+        }
+      ],
+      "wrongSay": "The knight on e7 is defended three times, which is exactly why taking it works: after the capture, every single recapture loses to a different tactic. Take it and see.",
+      "successSay": "Four consecutive rook offers, none of them accepted. Steinitz called this the finest combination he ever played."
+    },
+    {
+      "kind": "explain",
+      "fen": "r1r4k/pp1q2Rp/5pp1/3p2N1/6Q1/8/PP3PPP/2R3K1 w - - 5 25",
+      "say": "And here is the mate Steinitz announced from the board, ten moves deep, with the black king marched from h8 all the way to d7.",
+      "autoMoves": [
+        {
+          "san": "Rxh7+"
+        },
+        {
+          "san": "Kg8"
+        },
+        {
+          "san": "Rg7+",
+          "say": "Back again — the rook still cannot be taken."
+        },
+        {
+          "san": "Kh8"
+        },
+        {
+          "san": "Qh4+",
+          "say": "Now the queen joins, and NOW the rook may be captured — because it was never the point."
+        },
+        {
+          "san": "Kxg7"
+        },
+        {
+          "san": "Qh7+",
+          "say": "The king is dragged into the open."
+        },
+        {
+          "san": "Kf8"
+        },
+        {
+          "san": "Qh8+"
+        },
+        {
+          "san": "Ke7"
+        },
+        {
+          "san": "Qg7+"
+        },
+        {
+          "san": "Ke8"
+        },
+        {
+          "san": "Qg8+"
+        },
+        {
+          "san": "Ke7"
+        },
+        {
+          "san": "Qf7+"
+        },
+        {
+          "san": "Kd8"
+        },
+        {
+          "san": "Qf8+",
+          "say": "Forcing the queen to interpose — and putting it on a square the knight attacks."
+        },
+        {
+          "san": "Qe8"
+        },
+        {
+          "san": "Nf7+",
+          "say": "The knight arrives with a fork on the king and queen."
+        },
+        {
+          "san": "Kd7"
+        },
+        {
+          "san": "Qd6#",
+          "say": "Mate, ten moves after the rook stopped being takeable. Every move from move 22 onwards was a check or a capture — the defender never had one free move in which to unravel."
+        }
+      ],
+      "highlights": [
+        "d6",
+        "f7"
+      ]
+    },
+    {
+      "kind": "intro",
+      "fen": "r1r1q3/pp1k1N2/3Q1pp1/3p4/8/8/PP3PPP/2R3K1 b - - 15 35",
+      "say": "The lesson underneath the fireworks is Steinitz's own theory: an attack only succeeds when the position has already earned it. He did not sacrifice because he felt like it — he sacrificed because Black's king was stuck in the centre, the h8 rook was out of play, and every white piece was on its best square. Build the position first; the combination shows up on its own.",
+      "highlights": [
+        "e8",
+        "a8"
+      ]
+    }
+  ]
+}

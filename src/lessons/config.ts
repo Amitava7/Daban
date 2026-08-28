@@ -272,6 +272,12 @@ export const LESSONS: LessonMeta[] = [
   { id: 'more-mating-nets', topic: 'mating-patterns', level: 5, estMinutes: 7,
     title: 'More Mating Nets',
     subtitle: 'Six more finishing pictures every attacker should own.' },
+  { id: 'the-king-hunt', topic: 'mating-patterns', level: 6, estMinutes: 10,
+    title: 'The King Hunt',
+    subtitle: 'Drag the king from h8 to g1 — and mate it there.' },
+  { id: 'zukertort-blackburne', topic: 'mating-patterns', level: 6, estMinutes: 9,
+    title: 'The Quiet Queen Move',
+    subtitle: 'Zukertort, London 1883 — a queen offer on an empty square.' },
 
   // ——— Combinations (Levels 4–5) ———
   { id: 'zwischenzug', topic: 'combinations', level: 4, estMinutes: 6,
@@ -359,6 +365,9 @@ export const LESSONS: LessonMeta[] = [
   { id: 'kasparov-topalov', topic: 'masterpieces', level: 6, estMinutes: 9,
     title: "Kasparov's Immortal",
     subtitle: 'Kasparov–Topalov, Wijk aan Zee 1999 — a rook sacrifice and a king hunt across the board.' },
+  { id: 'steinitz-von-bardeleben', topic: 'masterpieces', level: 6, estMinutes: 10,
+    title: 'The Immortal Rook',
+    subtitle: 'Steinitz, Hastings 1895 — a rook that could not be taken.' },
 ];
 
 export function getLessonMeta(id: string): LessonMeta | undefined {

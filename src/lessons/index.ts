@@ -72,6 +72,8 @@ const REGISTRY: Record<string, () => Lesson> = {
   'philidors-legacy': () => require('./data/mating-patterns/philidors-legacy.json'),
   'greek-gift': () => require('./data/mating-patterns/greek-gift.json'),
   'more-mating-nets': () => require('./data/mating-patterns/more-mating-nets.json'),
+  'the-king-hunt': () => require('./data/mating-patterns/the-king-hunt.json'),
+  'zukertort-blackburne': () => require('./data/mating-patterns/zukertort-blackburne.json'),
   // Combinations
   'zwischenzug': () => require('./data/combinations/zwischenzug.json'),
   'clearance-sacrifice': () => require('./data/combinations/clearance-sacrifice.json'),
@@ -102,6 +104,7 @@ const REGISTRY: Record<string, () => Lesson> = {
   'evergreen-game': () => require('./data/masterpieces/evergreen-game.json'),
   'rubinstein-immortal': () => require('./data/masterpieces/rubinstein-immortal.json'),
   'kasparov-topalov': () => require('./data/masterpieces/kasparov-topalov.json'),
+  'steinitz-von-bardeleben': () => require('./data/masterpieces/steinitz-von-bardeleben.json'),
 };
 
 export function getLessonById(id: string): Lesson | undefined {
