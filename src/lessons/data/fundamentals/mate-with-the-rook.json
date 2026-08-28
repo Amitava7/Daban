@@ -1,0 +1,68 @@
+{
+  "id": "mate-with-the-rook",
+  "title": "Mate with the Rook",
+  "topic": "fundamentals",
+  "level": 3,
+  "subtitle": "One rook, one king, and a box that keeps shrinking.",
+  "goals": [
+    "Cut the enemy king off with the rook",
+    "Bring your own king up to take the escape squares",
+    "Finish with the rook check along the edge"
+  ],
+  "estMinutes": 6,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "8/8/4k3/8/8/8/8/R3K3 w - - 0 1",
+      "say": "King and rook against a lone king. It is a forced win every time, and it takes about fifteen moves — but only if you use both pieces. The rook alone can never mate; the king alone can never mate. The method is a box: the rook draws a line the enemy king may not cross, your king walks up, and the box gets one rank smaller at a time.",
+      "highlights": ["a1", "e6"]
+    },
+    {
+      "kind": "explain",
+      "fen": "8/8/4k3/8/8/8/8/R3K3 w - - 0 1",
+      "say": "Watch the box shrink. Notice that the rook only ever checks when the check gains a rank — otherwise it is your KING that does the work.",
+      "autoMoves": [
+        { "san": "Ke2", "say": "First, bring the king. A rook on its own just chases the enemy king in circles." },
+        { "san": "Kd5" },
+        { "san": "Ra5+", "say": "Now a useful check: the black king is pushed off the fifth rank, and the rook on a5 becomes a fence it can never cross." },
+        { "san": "Ke6" },
+        { "san": "Ke3", "say": "King up again. The box is now ranks 6-8 — three ranks instead of eight." },
+        { "san": "Kf6" },
+        { "san": "Kf4", "say": "Marching toward the opposition. The kings will end up facing each other with one square between them — that is the trigger for the next check." },
+        { "san": "Ke6" },
+        { "san": "Ra6+", "say": "There it is: kings in opposition, so the check shrinks the box again. Ranks 7-8 left." },
+        { "san": "Kf7" },
+        { "san": "Kf5", "say": "And the process repeats until the black king is on the last rank with your king opposite. Same idea, every time: king up, wait for the opposition, then check." }
+      ],
+      "highlights": ["a5", "a6"]
+    },
+    {
+      "kind": "challenge",
+      "fen": "7k/8/5K2/8/8/8/8/R7 w - - 0 1",
+      "prompt": "The black king is on the last rank and your king is close. Finish it — mate in two.",
+      "hints": [
+        "Don't check yet. Move your king so the black king has exactly one square left.",
+        "Kf7! covers g8 and g7, so Black is forced to h7 — and then the rook checks along the file the king is standing on.",
+        "Kf7 Kh7, and now Rh1 is mate."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Kf7", "say": "The waiting move that does everything. g8 and g7 are now covered by your king, so the black king has exactly one legal square." },
+            { "san": "Kh7" },
+            { "san": "Rh1", "say": "Mate. Here is the detail worth learning: the king cannot run to h8, because h8 is on the same file as the checking rook — the moment the king steps off h7, the rook's line reaches h8 too. A king can never escape a rook check by moving ALONG the line of the check." }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "rejections": [
+        { "san": "Ra8+", "say": "Check for the sake of check. The black king simply walks to h7 and you have made no progress — worse, you've given up the rook's ideal square. Bring the KING first: it must take away g7 and g8." },
+        { "san": "Kg6", "say": "Close, and it stalemates you out of a win: from g6 your king covers g7 and h7, and the black king on h8 would have no legal move at all. Step to f7 instead, leaving Black exactly one square." },
+        { "san": "Rh1+", "say": "Premature. With your king still on f6, the black king answers Kg8 and slips away toward the centre. Take g8 away first with Kf7." },
+        { "san": "Ra7", "say": "A waiting move with the wrong piece. Your rook is already perfectly placed to swing to the h-file; it's the king that needs one more step." }
+      ],
+      "wrongSay": "Before you check, ask how many squares the black king has. If it has two, a check just lets it run. Make it one.",
+      "successSay": "King first, rook last. Every basic mate in chess works the same way — the big piece delivers, but the king does the cornering."
+    }
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "id": "bishop-and-knight-mate",
+  "title": "Bishop & Knight Mate",
+  "topic": "fundamentals",
+  "level": 6,
+  "subtitle": "The hardest basic mate — and the only corner that works.",
+  "goals": [
+    "Know which corner you must drive the king to",
+    "Recognise the final net before you start",
+    "Finish with a discovered check from your own king"
+  ],
+  "estMinutes": 7,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "7k/8/5K2/6N1/3B4/8/8/8 w - - 0 1",
+      "say": "Bishop, knight and king against a lone king. It is a forced win, and it is the hardest thing in elementary chess — plenty of strong players have failed to do it inside the fifty-move limit. The one fact that makes it possible: you cannot mate in just any corner. You must drive the king to a corner of the SAME COLOUR as your bishop. Your bishop here is dark-squared, so the target is h8 or a1.",
+      "highlights": [
+        "h8",
+        "d4",
+        "g5"
+      ]
+    },
+    {
+      "kind": "challenge",
+      "fen": "7k/8/5K2/6N1/3B4/8/8/8 w - - 0 1",
+      "prompt": "The king is in the right corner and every escape is covered. Find mate in one.",
+      "hints": [
+        "Nothing is giving check yet. Look at your bishop on d4 — what is standing in the way of its diagonal to h8?",
+        "Your own king on f6 blocks the bishop. Move it, and the check appears by itself.",
+        "Kf7! It steps off the diagonal (discovering the bishop's check) and covers g8 and g7 at the same time."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Kf7",
+              "say": "Mate — delivered by a king move. This is a discovered check: the bishop on d4 was always aiming at h8 through e5, f6, g7, and your own king on f6 was the only thing blocking it. Now count the escape squares: g8 and g7 are covered by your king on f7, h7 is covered by the knight on g5, and h8 is covered by the bishop. Four pieces, four squares, no gaps."
+            }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Ne6",
+          "say": "The knight leaves h7 uncovered, and after Kh7 the king escapes back toward the light corner where you can never mate it. The knight's only job in the final net is h7 — leave it alone."
+        },
+        {
+          "san": "Ke6",
+          "say": "This also unblocks the bishop's diagonal and gives check — but from e6 your king covers neither g7 nor g8, so Black plays Kg8 (or Kg7) and walks out. The king must step to f7."
+        },
+        {
+          "san": "Nf3",
+          "say": "Any knight move hands Black the h7 square. Once the king reaches h7 and then g6, the whole net has to be rebuilt from scratch — and the fifty-move clock is running."
+        },
+        {
+          "san": "Bc5",
+          "say": "The bishop stays on a dark diagonal but abandons the a1-h8 one, so there is no check at all and Black plays Kg8. The bishop is already on the right diagonal; the piece that has to move is your KING."
+        }
+      ],
+      "wrongSay": "No piece is currently giving check, yet the black king already has no safe square. What is blocking your bishop's path to h8?",
+      "successSay": "That's the picture to memorise. If you know the final net, the twenty moves of driving that come before it have somewhere to aim."
+    },
+    {
+      "kind": "explain",
+      "fen": "7k/8/5K2/6N1/3B4/8/8/8 w - - 0 1",
+      "say": "Learn the net first, then the journey. The standard method has three phases: push the king to any edge with the bishop and knight working together; then, if it is sitting in the WRONG-coloured corner, walk it along the edge to the right one — the knight does this with a zig-zag path known as the W-manoeuvre; finally, build the picture you have just seen.",
+      "autoMoves": [
+        {
+          "san": "Kf7",
+          "say": "The finishing move once more. Everything before it exists only to reach this position — bishop on the long diagonal, knight covering h7, king on f7."
+        }
+      ],
+      "highlights": [
+        "f7",
+        "g5",
+        "d4"
+      ]
+    },
+    {
+      "kind": "intro",
+      "fen": "8/8/8/3k4/8/3B4/4N3/4K3 w - - 0 1",
+      "say": "One practical note. If you ever have to do this in a real game, remember two things: the fifty-move rule gives you enough time only if you do not waste moves, and the enemy king will always run toward the wrong-coloured corner, because that is its only hope. Herding it out of that corner and along the edge to the right one is the part worth practising.",
+      "highlights": [
+        "d3",
+        "e2"
+      ]
+    }
+  ]
+}

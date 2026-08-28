@@ -121,6 +121,15 @@ export const LESSONS: LessonMeta[] = [
   { id: 'stalemate-and-draw-traps', topic: 'fundamentals', level: 2, estMinutes: 5,
     title: 'Stalemate & Draw Traps',
     subtitle: "Don't let a won game slip into a draw." },
+  { id: 'mate-with-the-rook', topic: 'fundamentals', level: 3, estMinutes: 6,
+    title: 'Mate with the Rook',
+    subtitle: 'One rook, one king, and a box that keeps shrinking.' },
+  { id: 'mate-with-two-bishops', topic: 'fundamentals', level: 4, estMinutes: 6,
+    title: 'Mate with Two Bishops',
+    subtitle: 'Two diagonals, a shrinking corner, and no escape.' },
+  { id: 'bishop-and-knight-mate', topic: 'fundamentals', level: 6, estMinutes: 7,
+    title: 'Bishop & Knight Mate',
+    subtitle: 'The hardest basic mate — and the only corner that works.' },
 
   // ——— Openings (Level 3) ———
   { id: 'control-the-center', topic: 'openings', level: 3, estMinutes: 5,

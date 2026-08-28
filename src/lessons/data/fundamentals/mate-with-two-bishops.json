@@ -1,0 +1,100 @@
+{
+  "id": "mate-with-two-bishops",
+  "title": "Mate with Two Bishops",
+  "topic": "fundamentals",
+  "level": 4,
+  "subtitle": "Two diagonals, a shrinking corner, and no escape.",
+  "goals": [
+    "Use both bishops on adjacent diagonals as a wall",
+    "Drive the king to any corner with the king's help",
+    "Deliver the criss-cross mate"
+  ],
+  "estMinutes": 6,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "7k/8/6K1/8/8/8/B7/2B5 w - - 0 1",
+      "say": "Two bishops and a king force mate against a lone king — unlike two knights, which cannot. The reason is that two bishops cover both colours, so side by side on adjacent diagonals they build a wall the enemy king cannot step through. Unlike the rook mate, this one works in ANY corner. Here Black is already cornered on h8.",
+      "highlights": [
+        "a2",
+        "c1",
+        "h8"
+      ],
+      "arrows": [
+        {
+          "from": "a2",
+          "to": "g8"
+        }
+      ]
+    },
+    {
+      "kind": "challenge",
+      "fen": "7k/8/6K1/8/8/8/B7/2B5 w - - 0 1",
+      "prompt": "Your king covers g7 and h7, and the a2 bishop covers g8. One move ends it.",
+      "hints": [
+        "Count the black king's squares: g8, g7 and h7. Two are already covered — g7 and h7 by your king, g8 by the bishop on a2.",
+        "So all you need is a check on h8 itself. Which diagonal reaches h8?",
+        "The long diagonal. Bring the c1 bishop to b2."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Bb2",
+              "say": "Mate. The two bishops work on adjacent diagonals — a2-g8 and b2-h8 — so between them they cover the corner square and its neighbour, while your king holds g7 and h7. This criss-cross picture is the finish of every two-bishop mate; the whole technique is just about reaching it."
+            }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Ba3",
+          "say": "STALEMATE — and half a point thrown away. Look at what Black has after Ba3: g7 and h7 are covered by your king, g8 by the a2 bishop, and h8 is not attacked at all, so Black is not in check and has no legal move. In this endgame the draw is always one careless bishop move away. Give CHECK, on the long diagonal."
+        },
+        {
+          "san": "Bh6",
+          "say": "STALEMATE, and the game is drawn. h6 covers g7, which your king already covered, and leaves Black with no legal move and no check. That is the whole danger of the two-bishop mate: the net is so tight that a non-checking move stalemates. Play Bb2 and check on h8."
+        },
+        {
+          "san": "Kf7",
+          "say": "Now Black has g7! Your king was doing exactly the right job on g6, covering g7 and h7. Don't move it — bring the dark-squared bishop to the long diagonal."
+        },
+        {
+          "san": "Bb1",
+          "say": "Wrong bishop. The a2 bishop is already perfect: it covers g8. Moving it to b1 gives up that square and covers h7, which your king covers anyway. It's the c1 bishop that must reach h8."
+        },
+        {
+          "san": "Bg8",
+          "say": "Blocking the escape square with the bishop instead of covering it — and the bishop is simply captured, since g8 is next to the black king and nothing defends it. Cover from a distance and check from the long diagonal."
+        }
+      ],
+      "wrongSay": "The black king has three squares and two are already covered — so a quiet move here is STALEMATE, not progress. Find the check on the corner square itself.",
+      "successSay": "The criss-cross corner mate. Two bishops, side by side, cover every escape."
+    },
+    {
+      "kind": "explain",
+      "fen": "7k/8/6K1/8/8/8/B7/4B3 w - - 0 1",
+      "say": "The same picture from a different bishop square — proof that the pattern, not the exact squares, is what you memorise.",
+      "autoMoves": [
+        {
+          "san": "Bc3",
+          "say": "Bc3 mate: same long diagonal, same criss-cross, same result. Any bishop that reaches the a1-h8 diagonal finishes the job, provided the other one covers g8 and your king holds g7 and h7."
+        }
+      ],
+      "highlights": [
+        "c3",
+        "a2"
+      ]
+    },
+    {
+      "kind": "intro",
+      "fen": "8/8/3k4/8/8/8/BB3K2/8 w - - 0 1",
+      "say": "How do you get there from the middle of the board? Put the bishops side by side on adjacent diagonals and walk them forward like a plough, with your king behind them. The enemy king is squeezed toward a corner — any corner — and the box never re-opens as long as the bishops stay adjacent. Give yourself the full fifty moves the rules allow; it usually takes fewer than twenty.",
+      "highlights": [
+        "a2",
+        "b2"
+      ]
+    }
+  ]
+}

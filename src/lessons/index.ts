@@ -20,6 +20,9 @@ const REGISTRY: Record<string, () => Lesson> = {
   'mate-with-two-rooks': () => require('./data/fundamentals/mate-with-two-rooks.json'),
   'mate-with-the-queen': () => require('./data/fundamentals/mate-with-the-queen.json'),
   'stalemate-and-draw-traps': () => require('./data/fundamentals/stalemate-and-draw-traps.json'),
+  'mate-with-the-rook': () => require('./data/fundamentals/mate-with-the-rook.json'),
+  'mate-with-two-bishops': () => require('./data/fundamentals/mate-with-two-bishops.json'),
+  'bishop-and-knight-mate': () => require('./data/fundamentals/bishop-and-knight-mate.json'),
   // Openings
   'control-the-center': () => require('./data/openings/control-the-center.json'),
   'develop-your-pieces': () => require('./data/openings/develop-your-pieces.json'),
