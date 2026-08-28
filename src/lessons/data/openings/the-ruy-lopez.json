@@ -1,0 +1,116 @@
+{
+  "id": "the-ruy-lopez",
+  "title": "The Ruy Lopez",
+  "topic": "openings",
+  "level": 4,
+  "subtitle": "Bishop to b5 — pressure that lasts forty moves.",
+  "goals": [
+    "Understand what Bb5 really attacks",
+    "Play the Morphy Defence move order",
+    "Prove the e5 pawn is not free in the Exchange Variation"
+  ],
+  "estMinutes": 8,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 3 3",
+      "say": "The Spanish Game, named for a 16th-century priest and still the most respected opening in chess. The bishop on b5 doesn't attack the king — it attacks the c6 knight, and the c6 knight is what defends the e5 pawn. This is pressure by indirection, and it can last the whole game.",
+      "highlights": [
+        "b5",
+        "c6",
+        "e5"
+      ],
+      "arrows": [
+        {
+          "from": "b5",
+          "to": "c6"
+        },
+        {
+          "from": "c6",
+          "to": "e5"
+        }
+      ]
+    },
+    {
+      "kind": "explain",
+      "fen": "r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 3 3",
+      "say": "Black's main reply is 3...a6, the Morphy Defence — a small move that forces a big decision. White must either retreat, keeping the tension, or take.",
+      "autoMoves": [
+        {
+          "san": "a6",
+          "say": "3...a6, putting the question to the bishop."
+        },
+        {
+          "san": "Ba4",
+          "say": "4.Ba4 — the main line. The bishop keeps the pin on the a4-e8 diagonal and White plays on."
+        },
+        {
+          "san": "Nf6",
+          "say": "Black develops and hits e4."
+        },
+        {
+          "san": "O-O",
+          "say": "5.O-O, offering the e-pawn: the point is that after ...Nxe4 White plays d4 and regains it with a big lead in development."
+        },
+        {
+          "san": "Be7"
+        },
+        {
+          "san": "Re1",
+          "say": "6.Re1, defending e4 properly and building the classical Spanish set-up. Both sides now manoeuvre for twenty moves — that's the Ruy Lopez."
+        }
+      ],
+      "highlights": [
+        "a6",
+        "a4"
+      ]
+    },
+    {
+      "kind": "intro",
+      "fen": "r1bqkbnr/1pp2ppp/p1p5/4p3/4P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 0 5",
+      "say": "The other choice is the Exchange Variation: 4.Bxc6 dxc6. White has given up the bishop pair to wreck Black's queenside pawns — Black now has doubled c-pawns and can never make a healthy queenside majority. In return, Black gets two bishops and open lines. You're White, and the e5 pawn looks distinctly loose.",
+      "highlights": [
+        "c6",
+        "c7",
+        "e5"
+      ]
+    },
+    {
+      "kind": "challenge",
+      "fen": "r1bqkbnr/1pp2ppp/p1p5/4p3/4P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 0 5",
+      "prompt": "Black's e5 pawn has lost its defender. Is it really free? Decide — and play the right move.",
+      "hints": [
+        "Before taking, ask what Black gets in return. Put your knight on e5 in your head and look for black moves that hit two things at once.",
+        "5.Nxe5? runs into Qd4!, forking the knight on e5 and the pawn on e4 — Black wins the pawn straight back with a better position.",
+        "Castle instead. 5.O-O is the main line: safe king first, and the e5 pawn isn't going anywhere."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "O-O",
+              "say": "The correct move, and it takes discipline to play it. The e5 pawn is 'hanging' but poisoned; castling keeps every advantage of the Exchange Variation — the superior pawn structure — without handing Black activity. White's long-term plan is simply to trade everything and win the pawn endgame, where Black's doubled c-pawns cannot make a passer."
+            }
+          ],
+          "assert": null
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Nxe5",
+          "say": "The trap. Black replies Qd4!, attacking your knight on e5 AND your pawn on e4 at the same time. After Nf3 Qxe4+ Black has regained the pawn with the bishop pair and an active queen — you've handed over everything the exchange on c6 won you."
+        },
+        {
+          "san": "d4",
+          "say": "Playable, but it opens the position for Black's two bishops — exactly the wrong policy when your whole advantage is a static structural one. Keep the position closed-ish and castle."
+        },
+        {
+          "san": "Qe2",
+          "say": "Over-protecting e4 by hand is clumsy and leaves the king in the centre. There's a move that solves king safety and keeps every structural trump."
+        }
+      ],
+      "wrongSay": "Count carefully before grabbing: if you put a knight on e5, is there a black move that attacks it and something else at the same time?",
+      "successSay": "Structural advantages are patient. The Exchange Ruy is won in the endgame, not on move five."
+    }
+  ]
+}

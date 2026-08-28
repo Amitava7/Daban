@@ -1,0 +1,83 @@
+{
+  "id": "the-scotch-and-gambits",
+  "title": "The Scotch & Open Gambits",
+  "topic": "openings",
+  "level": 4,
+  "subtitle": "Open the centre on move three and race.",
+  "goals": [
+    "Open the position immediately with d4",
+    "Punish a premature knight exchange with a double attack",
+    "Judge when a pawn is worth a lead in development"
+  ],
+  "estMinutes": 8,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "r1bqkbnr/pppp1ppp/2n5/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3",
+      "say": "Instead of the slow bishop moves of the Italian and the Spanish, the Scotch strikes at once: 3.d4. The centre opens on move three, pieces come flying out, and the game is decided by activity rather than manoeuvring. Kasparov revived it at world championship level for exactly that reason.",
+      "highlights": ["d4", "e5"],
+      "arrows": [{ "from": "d2", "to": "d4" }]
+    },
+    {
+      "kind": "explain",
+      "fen": "r1bqkbnr/pppp1ppp/2n5/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3",
+      "say": "The basic sequence: White trades the d-pawn for the e-pawn and recaptures with the knight, reaching a wide-open position with equal material.",
+      "autoMoves": [
+        { "san": "d4", "say": "3.d4 — the challenge." },
+        { "san": "exd4", "say": "Black takes; declining would leave White with a dominating centre." },
+        { "san": "Nxd4", "say": "4.Nxd4, and the centre is open. White's knight is beautifully placed, but it's also a target." },
+        { "san": "Bc5", "say": "4...Bc5, the sharpest reply — pinning nothing but attacking the knight and eyeing f2." }
+      ],
+      "highlights": ["d4", "c5", "f2"]
+    },
+    {
+      "kind": "intro",
+      "fen": "r1bqk1nr/pppp1ppp/2n5/2b5/3NP3/8/PPP2PPP/RNBQKB1R w KQkq - 1 5",
+      "say": "Here's the moment where the Scotch punishes carelessness. White's knight on d4 is attacked by the bishop, and the obvious response is to trade it off. That obvious response loses a pawn — because of where the black queen can go.",
+      "highlights": ["d4", "c5", "f2"]
+    },
+    {
+      "kind": "explain",
+      "fen": "r1bqk1nr/pppp1ppp/2n5/2b5/3NP3/8/PPP2PPP/RNBQKB1R w KQkq - 1 5",
+      "say": "Watch White solve the problem the lazy way.",
+      "autoMoves": [
+        { "san": "Nxc6", "say": "5.Nxc6? — trading the attacked knight. It looks like it wins a tempo, since Black must recapture. Black doesn't have to recapture." }
+      ],
+      "highlights": ["c6", "f2"]
+    },
+    {
+      "kind": "challenge",
+      "fen": "r1bqk1nr/pppp1ppp/2N5/2b5/4P3/8/PPP2PPP/RNBQKB1R b KQkq - 0 5",
+      "prompt": "White's knight sits on c6 attacking your queen's neighbours. Don't recapture yet — find the move that attacks two things at once.",
+      "hints": [
+        "The knight on c6 isn't going anywhere — it's deep in your position and you can take it next move. Use this move for something better.",
+        "Your bishop on c5 already attacks f2. Which of your pieces can attack f2 as well, while also hitting the knight on c6?",
+        "Qf6! It attacks f2 (with the bishop) and the c6 knight at the same time."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Qf6", "say": "The in-between move. The queen hits f2 — where only the king defends, and your bishop is already aimed — and it also attacks the knight on c6. White must deal with the mate-ish threat on f2..." },
+            { "san": "Qd2" },
+            { "san": "dxc6", "say": "...and only now do you recapture, having gained a free developing move and opened the d-file for your bishop. This is why the Scotch move order matters: 5.Nxc6 gives Black a tempo, which is why the main lines play 5.Be3 or 5.Nb3 instead." }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "rejections": [
+        { "san": "dxc6", "say": "Perfectly playable, and you've missed a free move. The knight on c6 cannot escape, so spend this turn creating a threat — look at f2 and count who defends it." },
+        { "san": "bxc6", "say": "The wrong recapture, on top of missing the tempo — it wrecks your own queenside and blocks nothing useful. Take with the d-pawn, but not yet: there's a double attack available first." },
+        { "san": "Bxf2+", "say": "Kxf2 and you've given a bishop for a pawn — f2 is defended by the king, so you need a second attacker before that sacrifice means anything. Bring the queen to f6 first." },
+        { "san": "Qh4", "say": "Aggressive, but it doesn't touch the c6 knight and White gets Nxd8 in first — a queen for a knight. The square that hits BOTH targets is f6." }
+      ],
+      "wrongSay": "The knight on c6 can't run away. Is there a move that both attacks it and creates a second threat?",
+      "successSay": "The zwischenzug — the in-between move — is the Scotch player's constant companion. Open positions punish automatic recaptures."
+    },
+    {
+      "kind": "intro",
+      "fen": "r1bqkbnr/pppp1ppp/2n5/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3",
+      "say": "The Scotch has gambit cousins that go further still: the Göring Gambit (3.d4 exd4 4.c3) and the Danish (2.d4 exd4 3.c3) throw one or two pawns at Black for a huge lead in development and two bishops raking the kingside. The judgement is always the same question: can you convert a lead in development into an attack before your opponent finishes developing? If yes, the pawn was cheap. If no, you're just a pawn down.",
+      "highlights": ["c3", "d4"]
+    }
+  ]
+}

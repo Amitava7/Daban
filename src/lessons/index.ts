@@ -25,6 +25,12 @@ const REGISTRY: Record<string, () => Lesson> = {
   'develop-your-pieces': () => require('./data/openings/develop-your-pieces.json'),
   'castle-to-safety': () => require('./data/openings/castle-to-safety.json'),
   'punish-early-queen-attacks': () => require('./data/openings/punish-early-queen-attacks.json'),
+  'the-italian-game': () => require('./data/openings/the-italian-game.json'),
+  'the-scotch-and-gambits': () => require('./data/openings/the-scotch-and-gambits.json'),
+  'the-ruy-lopez': () => require('./data/openings/the-ruy-lopez.json'),
+  'the-sicilian-defense': () => require('./data/openings/the-sicilian-defense.json'),
+  'the-french-defense': () => require('./data/openings/the-french-defense.json'),
+  'the-queens-gambit': () => require('./data/openings/the-queens-gambit.json'),
   // Tactics
   'forks': () => require('./data/tactics/forks.json'),
   'pins': () => require('./data/tactics/pins.json'),

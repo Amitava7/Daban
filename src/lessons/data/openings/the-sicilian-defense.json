@@ -1,0 +1,71 @@
+{
+  "id": "the-sicilian-defense",
+  "title": "The Sicilian Defense",
+  "topic": "openings",
+  "level": 4,
+  "subtitle": "Trade a wing pawn for a centre pawn — and attack.",
+  "goals": [
+    "Understand why 1...c5 is the most popular answer to 1.e4",
+    "See the half-open c-file as Black's main asset",
+    "Punish a careless h3 with the Siberian Trap"
+  ],
+  "estMinutes": 9,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "rnbqkb1r/pp2pppp/3p1n2/8/3NP3/8/PPP2PPP/RNBQKB1R w KQkq - 1 5",
+      "say": "The Open Sicilian, reached after 1.e4 c5 2.Nf3 d6 3.d4 cxd4 4.Nxd4 Nf6. Look at the pawn count: Black has traded a c-pawn (a wing pawn) for White's d-pawn (a centre pawn). Materially equal, structurally a win for Black — and the c-file is now half-open, pointing straight at c2 and at White's queenside. This is why more than a quarter of all master games with 1.e4 go here.",
+      "highlights": ["c8", "c2", "e4"],
+      "arrows": [{ "from": "c8", "to": "c2" }]
+    },
+    {
+      "kind": "explain",
+      "fen": "rnbqkb1r/pp2pppp/3p1n2/8/3NP3/8/PPP2PPP/RNBQKB1R w KQkq - 1 5",
+      "say": "In exchange for that structural gift, White gets a lead in development and a free hand in the centre. The standard plans: White castles queenside and storms the kingside with pawns; Black piles up on the c-file and hunts the white king. Opposite-side castling means both sides are racing.",
+      "autoMoves": [
+        { "san": "Nc3", "say": "5.Nc3, and now Black chooses a system." },
+        { "san": "a6", "say": "5...a6 — the Najdorf, the most analysed opening in history. It stops Nb5 and prepares ...e5 or ...b5." },
+        { "san": "Be3" },
+        { "san": "e5", "say": "Black grabs the centre, accepting a hole on d5 in exchange for space and activity." },
+        { "san": "Nb3" },
+        { "san": "Be7", "say": "A typical Najdorf position: White will play f3, Qd2 and O-O-O; Black will play ...Be6, ...Nbd7, ...b5 and race down the b- and c-files." }
+      ],
+      "highlights": ["a6", "e5", "d5"]
+    },
+    {
+      "kind": "intro",
+      "fen": "r1b1kb1r/ppqp1ppp/2n1p3/8/2B1P1n1/2N2N2/PP2QPPP/R1B2RK1 w kq - 6 9",
+      "say": "Now the Sicilian's counterattacking spirit in miniature. This is a Smith-Morra Gambit — White sacrificed a pawn for development — and Black has calmly built up: queen on c7 aiming down the c-file at the c4 bishop, knight on g4 aiming at h2. White is about to play the most natural move on the board.",
+      "highlights": ["c7", "g4", "h2"],
+      "arrows": [{ "from": "c7", "to": "h2" }, { "from": "g4", "to": "h2" }]
+    },
+    {
+      "kind": "challenge",
+      "fen": "r1b1kb1r/ppqp1ppp/2n1p3/8/2B1P1n1/2N2N1P/PP2QPP1/R1B2RK1 b kq - 0 9",
+      "prompt": "White played 9.h3 to kick your knight. Don't move it — find the knight move that wins on the spot.",
+      "hints": [
+        "Your queen on c7 and your knight on g4 both attack h2. The only thing defending h2 is the knight on f3.",
+        "So remove the f3 knight — with a move it cannot ignore. What can you attack with your OTHER knight?",
+        "Nd4! It attacks White's queen on e2. If White takes the knight, the f3 defender leaves h2 and Qh2 is mate."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Nd4", "say": "The knight lands in the middle of the board attacking the queen, and it is defended by nothing. White's most natural move — take the free knight — loses instantly." },
+            { "san": "Nxd4" },
+            { "san": "Qh2#", "say": "The Siberian Trap. The knight that captured on d4 was the only defender of h2, and the g4 knight covers the escape square f2 and defends the queen. Mate on move ten, in a line where White was 'winning a piece'." }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "rejections": [
+        { "san": "Nf6", "say": "The obedient retreat, and the whole point is gone: White plays e5 or Rd1 with real compensation for the pawn. The knight on g4 is doing a job — it attacks h2. Find a way to remove h2's defender instead." },
+        { "san": "Nge5", "say": "Trading knights relieves all the pressure on h2 and lets White develop the initiative the gambit paid for. Attack the DEFENDER of h2 rather than retreating the attacker." },
+        { "san": "Qh2+", "say": "One move too early — the knight on f3 defends h2, so this is simply a queen for a pawn. Deflect the f3 knight first, by attacking something it must answer." },
+        { "san": "Nxf2", "say": "Rxf2 and you've given a knight for a pawn. The sacrifice square isn't f2; the target is h2, and the way in is to lure the f3 knight away." }
+      ],
+      "wrongSay": "Two of your pieces attack h2 and exactly one white piece defends it. How do you make that defender leave?",
+      "successSay": "That's the Sicilian bargain in one game: Black's structure and counterplay against White's initiative — and when White's development stalls for one move, the counterattack arrives first."
+    }
+  ]
+}
