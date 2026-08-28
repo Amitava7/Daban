@@ -1,0 +1,127 @@
+{
+  "id": "the-exchange-sacrifice",
+  "title": "The Exchange Sacrifice",
+  "topic": "combinations",
+  "level": 6,
+  "subtitle": "Give a rook for a bishop — and buy the whole position.",
+  "goals": [
+    "Value a rook by what it does, not what it costs",
+    "Trade the exchange for a permanent outpost and a safe king",
+    "Play Petrosian's most famous defensive idea"
+  ],
+  "estMinutes": 9,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "3rq1k1/4rppp/2n3b1/pp2P3/2pP1QB1/P1P1R3/1B4PP/4R1K1 b - - 3 25",
+      "say": "Zurich, 1953. Samuel Reshevsky has White against Tigran Petrosian, and White's attack looks overwhelming: both rooks are stacked on the e-file, the queen is on f4, the bishop on g4 rakes toward Black's king, and e5-e6 is coming. Black's pieces are passive and the g6 bishop is doing nothing. You're Black. Every exchange in chess is a trade of one kind of value for another — and here, a rook is worth less than a square.",
+      "highlights": [
+        "e3",
+        "e1",
+        "e6",
+        "d5"
+      ],
+      "arrows": [
+        {
+          "from": "e3",
+          "to": "e6"
+        }
+      ]
+    },
+    {
+      "kind": "challenge",
+      "fen": "3rq1k1/4rppp/2n3b1/pp2P3/2pP1QB1/P1P1R3/1B4PP/4R1K1 b - - 3 25",
+      "prompt": "White is about to break through on the e-file. Stop the attack by giving up a rook — and then a knight's journey to d5.",
+      "hints": [
+        "White's whole attack runs through the e6 square. Put something on it that White must take.",
+        "Re6!! offers the rook to the g4 bishop. If White takes, the recapture with the f-pawn builds a wall on e6 and blunts the bishop forever.",
+        "Re6, and after a4 comes Ne7!, heading for the beautiful d5 square; then Bxe6 fxe6 leaves Black with a fortress."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Re6",
+              "say": "The most famous positional sacrifice ever played. The rook plants itself on the one square White's attack needs, and it cannot be ignored."
+            },
+            {
+              "san": "a4"
+            },
+            {
+              "san": "Ne7",
+              "say": "The point. The knight abandons c6 and heads for d5 — a square no white pawn can ever attack, since the c- and e-pawns are fixed. Black is offering the exchange a second time, and improving a piece while doing it."
+            },
+            {
+              "san": "Bxe6"
+            },
+            {
+              "san": "fxe6",
+              "say": "Count what Black paid and what Black bought. Paid: a rook for a bishop. Bought: the e-file is sealed by a pawn, White's light-squared bishop is gone so the light squares around the black king are safe forever, the pawn chain c4-d5... e6 is unbreakable, and the knight is about to sit on d5 permanently. White has an extra exchange and no way in. Petrosian drew the game comfortably from here — and chess players have been studying the idea for seventy years."
+            }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Red7",
+          "say": "Retreating the rook to defend is natural and passive — White continues with e6 or h4-h5 and the attack rolls on. The rook has to go FORWARD to e6, where White must either take it or watch the attack die."
+        },
+        {
+          "san": "Nxd4",
+          "say": "Winning a pawn while your king is under fire is exactly the wrong currency: after cxd4 White's rooks own the e-file and the attack crashes through. Look at e6 — it needs a plug, and the plug is a rook."
+        },
+        {
+          "san": "Nxe5",
+          "say": "Grabbing the e-pawn removes the wrong thing. After dxe5 White's rooks are still doubled, the g4 bishop still rakes the light squares, and Black's structure is worse. The move that stops the attack costs a rook and is still cheap."
+        },
+        {
+          "san": "h6",
+          "say": "Making luft doesn't address the problem: the attack comes down the e-file, not the back rank. Find the square White's attack must pass through and occupy it."
+        },
+        {
+          "san": "Qd7",
+          "say": "Passive defence loses slowly to e6 followed by heavy pieces piling in. Petrosian's insight is that a rook is only worth five pawns if it has something to do — here it's worth more as a doorstop."
+        }
+      ],
+      "wrongSay": "White's attack has exactly one route: the e-file, through e6. What can you put on that square that White is obliged to capture?",
+      "successSay": "Reshevsky-Petrosian, Zurich 1953. The exchange sacrifice that taught the chess world that material is a means, not the goal."
+    },
+    {
+      "kind": "explain",
+      "fen": "3rq1k1/4n1pp/4p1b1/pp2P3/P1pP1Q2/2P1R3/1B4PP/4R1K1 w - - 0 28",
+      "say": "Here is the position after the smoke clears. White is a full exchange up and completely unable to make progress. Watch Black finish the regrouping.",
+      "autoMoves": [
+        {
+          "san": "Qf1",
+          "say": "White's queen retreats — the attack is gone, and White now has to worry about the c4 pawn and the light squares."
+        },
+        {
+          "san": "Nd5",
+          "say": "The knight arrives. It can never be dislodged: no white pawn can attack d5, and trading it off is impossible because White's light-squared bishop was traded on e6."
+        },
+        {
+          "san": "Rf3"
+        },
+        {
+          "san": "Bd3",
+          "say": "And Black's 'bad' bishop reaches a dominant square too. An extra rook, and not one open line to use it on. That is what the exchange bought."
+        }
+      ],
+      "highlights": [
+        "d5",
+        "e6",
+        "c4"
+      ]
+    },
+    {
+      "kind": "intro",
+      "fen": "3rq1k1/6pp/4p3/pp1nP3/P1pP4/2Pb1R2/1B4PP/4RQK1 w - - 4 30",
+      "say": "When is an exchange sacrifice right? Ask three questions. Does it kill the opponent's only active plan? Does it give a knight a permanent outpost the rook could never use? Does it leave your king safe and theirs no safer? If you can answer yes twice, the rook was overpriced. Petrosian built a world championship on that arithmetic.",
+      "highlights": [
+        "d5",
+        "d3"
+      ]
+    }
+  ]
+}

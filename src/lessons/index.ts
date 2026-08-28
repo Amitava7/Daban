@@ -76,6 +76,9 @@ const REGISTRY: Record<string, () => Lesson> = {
   'desperado-and-mad-rook': () => require('./data/combinations/desperado-and-mad-rook.json'),
   'quiet-moves': () => require('./data/combinations/quiet-moves.json'),
   'counting-exchanges': () => require('./data/combinations/counting-exchanges.json'),
+  'double-check': () => require('./data/combinations/double-check.json'),
+  'overloaded-pieces': () => require('./data/combinations/overloaded-pieces.json'),
+  'the-exchange-sacrifice': () => require('./data/combinations/the-exchange-sacrifice.json'),
   // Opening Traps
   'lasker-trap': () => require('./data/opening-traps/lasker-trap.json'),
   'elephant-trap': () => require('./data/opening-traps/elephant-trap.json'),

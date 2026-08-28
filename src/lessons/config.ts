@@ -283,6 +283,15 @@ export const LESSONS: LessonMeta[] = [
   { id: 'counting-exchanges', topic: 'combinations', level: 5, estMinutes: 6,
     title: 'Counting Exchanges',
     subtitle: 'Play the whole capture sequence in your head before move one.' },
+  { id: 'double-check', topic: 'combinations', level: 5, estMinutes: 8,
+    title: 'Double Check',
+    subtitle: 'The only check that cannot be blocked or captured.' },
+  { id: 'overloaded-pieces', topic: 'combinations', level: 5, estMinutes: 10,
+    title: 'Overloaded Pieces',
+    subtitle: 'A defender with two jobs is doing neither.' },
+  { id: 'the-exchange-sacrifice', topic: 'combinations', level: 6, estMinutes: 9,
+    title: 'The Exchange Sacrifice',
+    subtitle: 'Give a rook for a bishop — and buy the whole position.' },
 
   // ——— Opening Traps (Level 4) ———
   { id: 'lasker-trap', topic: 'opening-traps', level: 4, estMinutes: 7,
