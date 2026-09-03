@@ -552,14 +552,16 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const canUndo = useCallback(() => {
-    if (status === 'game_over' || status === 'idle') return false;
+    if (status === 'idle') return false;
     if (status === 'engine_thinking') return false; // wait for engine
-    // We can undo as long as the player has at least one move in history.
+    // We can undo as long as the player has at least one move in history —
+    // including after the game ends, so a move that walked into checkmate can
+    // be taken back and retried.
     return moveHistory.some(m => m.playerMove);
   }, [status, moveHistory]);
 
   const undoLastMove = useCallback(() => {
-    if (status === 'game_over' || status === 'idle' || status === 'engine_thinking') return;
+    if (status === 'idle' || status === 'engine_thinking') return;
     if (moveHistory.length === 0) return;
 
     // Undo enough half-moves to land just BEFORE the player's last move,
@@ -588,6 +590,10 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     setMoveHistory(newHistory);
     setLastAnalysis(null);
     setStatus('playing');
+    setResult(null);             // resuming after a game-ending move
+    // If the game had ended on a flag fall, drop the (zeroed) clock so the
+    // flag-fall effect doesn't immediately fire again.
+    if (playerTime === 0) setPlayerTime(null);
     setSelectedSquare(null);
     setLegalMoves([]);
     setCaptureFlash(null);
@@ -604,7 +610,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
     // Refresh eval from the engine in the background.
     evaluatePosition(chess.fen()).then(setCurrentEval).catch(() => {});
-  }, [chess, moveHistory, status]);
+  }, [chess, moveHistory, status, playerTime]);
 
   const loadSavedGame = useCallback(async () => {
     const saved = await Storage.getSavedGame();

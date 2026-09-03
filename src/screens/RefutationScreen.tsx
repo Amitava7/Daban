@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '../context/ThemeContext';
@@ -131,11 +131,20 @@ export function RefutationScreen() {
     : [];
 
   if (!f) {
+    // While a blunder exists we're computing its refutation — show a spinner
+    // rather than flashing the "nothing to refute" message.
     return (
       <SafeAreaView style={[styles.safe, { backgroundColor: colors.bg }]}>
         <AppBar left="✕" title="What you missed" onLeft={() => nav.goBack()} />
-        <View style={[styles.body, { alignItems: 'center', justifyContent: 'center' }]}>
-          <Text style={{ color: colors.inkMute }}>No blunder to refute yet.</Text>
+        <View style={[styles.body, { alignItems: 'center', justifyContent: 'center', gap: 12 }]}>
+          {blunderRecord ? (
+            <>
+              <ActivityIndicator color={colors.brand} />
+              <Text style={{ color: colors.inkMute }}>Analysing the refutation…</Text>
+            </>
+          ) : (
+            <Text style={{ color: colors.inkMute }}>No blunder to refute yet.</Text>
+          )}
         </View>
       </SafeAreaView>
     );
