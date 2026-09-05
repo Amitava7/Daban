@@ -14,7 +14,7 @@ import { getLessonMeta } from '../lessons/config';
 import { lessonAfter, starString } from '../lessons/progress';
 import {
   initLesson, lessonReducer, legalTargets, isPromotion, pieceAt, sideToMoveLabel,
-  AUTO_MOVE_DELAY, WRONG_RESET_DELAY, LessonRunState,
+  AUTO_MOVE_DELAY, LessonRunState,
 } from '../lessons/LessonEngine';
 import { ChallengeStep } from '../lessons/types';
 
@@ -92,14 +92,15 @@ function LessonRunner({
     [selected, state.fen],
   );
 
-  // Auto-play opponent replies and demonstrations; rewind wrong moves.
+  // Auto-play opponent replies and demonstrations.
+  //
+  // A wrong move is deliberately NOT rewound on a timer: the mistake stays on
+  // the board with the coach's explanation until the player taps "Try again".
+  // Reading why the move failed is the whole point of the feedback, and any
+  // timeout short enough to feel responsive is too short to finish reading.
   useEffect(() => {
     if (state.phase === 'watching' || state.phase === 'animating') {
       const timer = setTimeout(() => dispatch({ type: 'TICK' }), AUTO_MOVE_DELAY);
-      return () => clearTimeout(timer);
-    }
-    if (state.phase === 'feedback-bad') {
-      const timer = setTimeout(() => dispatch({ type: 'RETRY' }), WRONG_RESET_DELAY);
       return () => clearTimeout(timer);
     }
     return undefined;
