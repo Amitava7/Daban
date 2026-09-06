@@ -1,0 +1,116 @@
+{
+  "id": "the-italian-game",
+  "title": "The Italian Game",
+  "topic": "openings",
+  "level": 3,
+  "subtitle": "Bishop to c4, and a fight for the d4 square.",
+  "goals": [
+    "Understand why the bishop goes to c4",
+    "Build the big centre with c3 and d4",
+    "Punish a careless knight development with a pin-break"
+  ],
+  "estMinutes": 8,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 3 3",
+      "say": "The Italian Game — the oldest opening still played at the top level. White's bishop on c4 does one thing above all: it stares at f7, the square in Black's camp defended only by the king. Combined with a knight on f3 hitting e5, White is already asking questions on move three.",
+      "highlights": [
+        "c4",
+        "f7",
+        "e5"
+      ],
+      "arrows": [
+        {
+          "from": "c4",
+          "to": "f7"
+        }
+      ]
+    },
+    {
+      "kind": "explain",
+      "fen": "r1bqk1nr/pppp1ppp/2n5/2b1p3/2B1P3/2P2N2/PP1P1PPP/RNBQK2R b KQkq - 0 4",
+      "say": "Black mirrors with 3...Bc5 and White plays 4.c3 — a modest pawn move with a big idea. It's not developing anything; it's preparing d2-d4, so that White can build the whole centre in one go. Watch the plan run.",
+      "autoMoves": [
+        {
+          "san": "Nf6",
+          "say": "Black develops and attacks e4."
+        },
+        {
+          "san": "d4",
+          "say": "5.d4! — there it is. White challenges the centre while the c3 pawn stands ready to recapture."
+        },
+        {
+          "san": "exd4",
+          "say": "Black takes..."
+        },
+        {
+          "san": "cxd4",
+          "say": "...and c3 recaptures, leaving White with pawns on d4 and e4 — the classical big centre — while the black bishop on c5 is suddenly attacked."
+        }
+      ],
+      "highlights": [
+        "c3",
+        "d4",
+        "e4"
+      ]
+    },
+    {
+      "kind": "challenge",
+      "fen": "r1bqk2r/pppp1ppp/2n2n2/8/1bBPP3/2N2N2/PP3PPP/R1BQK2R b KQkq - 2 7",
+      "prompt": "White blocked your check with 7.Nc3, leaving that knight pinned to the king. Win a pawn.",
+      "hints": [
+        "Your bishop on b4 pins the c3 knight against White's king on e1. A pinned piece cannot really defend anything.",
+        "Which white pawn is defended only by the pinned knight?",
+        "Nxe4! The c3 knight guards e4, but it cannot move — it's pinned."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Nxe4",
+              "say": "Free pawn. The c3 knight is ABSOLUTELY pinned — moving it would expose the king on e1 to your b4 bishop, so it is not merely a bad recapture, it is an illegal one. Nothing else guards e4 at all."
+            },
+            {
+              "san": "O-O"
+            },
+            {
+              "san": "Bxc3",
+              "say": "Removing the pin's target now that it has done its work, and keeping the extra pawn. This is the Greco Variation — theory says White gets real attacking chances for the pawn, but you've won the pawn correctly, and that's the skill: seeing that a pinned defender is not a defender."
+            }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Bxc3+",
+          "say": "Trading first throws the whole idea away: after bxc3 the e4 pawn is defended by the d-pawn and there is nothing to win. Take on e4 FIRST, while the knight is still pinned and unable to recapture."
+        },
+        {
+          "san": "O-O",
+          "say": "Safe and sensible — and it lets White play d5 or Bd2, after which the pin evaporates and e4 is solid. Pins are temporary; cash yours in now."
+        },
+        {
+          "san": "d5",
+          "say": "A thematic central break in many Italian positions, but here it just loses a pawn to exd5. There's a free pawn on the board right now, guarded only by a piece that cannot move."
+        },
+        {
+          "san": "Nxd4",
+          "say": "The d4 pawn is defended by the f3 knight and the queen — after Nxd4 you simply lose a knight. The undefendable pawn is the OTHER one in the centre."
+        }
+      ],
+      "wrongSay": "Look at your bishop on b4 and White's king on e1. What is stuck between them, and what is that piece supposed to be defending?",
+      "successSay": "That's the Italian in one idea: c3 and d4 build the centre, but the check on b4 means the centre is held together by a pinned knight."
+    },
+    {
+      "kind": "intro",
+      "fen": "r1bqk1nr/pppp1ppp/2n5/2b1p3/2B1P3/2P2N2/PP1P1PPP/RNBQK2R b KQkq - 0 4",
+      "say": "Modern players often prefer the quiet 4.d3 instead — the 'Giuoco Pianissimo', the very quiet game. White gives up on an immediate big centre, plays c3, Bb3, Nbd2, Re1 and only then pushes d4. Slower, but with no early pins to worry about. Both plans are good; what matters is knowing which one you're playing.",
+      "highlights": [
+        "c3",
+        "d3"
+      ]
+    }
+  ]
+}

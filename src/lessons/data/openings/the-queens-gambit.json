@@ -1,0 +1,71 @@
+{
+  "id": "the-queens-gambit",
+  "title": "The Queen's Gambit",
+  "topic": "openings",
+  "level": 4,
+  "subtitle": "The gambit that isn't — and how to punish greed.",
+  "goals": [
+    "Understand why c4 is not a real pawn sacrifice",
+    "Know the difference between accepting and declining",
+    "Punish an attempt to hold the extra pawn"
+  ],
+  "estMinutes": 8,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "rnbqkbnr/ppp1pppp/8/3p4/3P4/8/PPP1PPPP/RNBQKBNR w KQkq - 0 2",
+      "say": "1.d4 d5 2.c4 — the Queen's Gambit, the most respected opening move order in classical chess. It's called a gambit, but it isn't one: Black can take the pawn on c4, and White will always win it back. What White is really offering is a wing pawn for control of the centre.",
+      "highlights": ["c4", "d5", "e4"]
+    },
+    {
+      "kind": "explain",
+      "fen": "rnbqkbnr/ppp1pppp/8/3p4/3P4/8/PPP1PPPP/RNBQKBNR w KQkq - 0 2",
+      "say": "Declining is the main line. 2...e6 is the Queen's Gambit Declined: solid, slightly passive, and played in more World Championship games than any other opening.",
+      "autoMoves": [
+        { "san": "c4", "say": "2.c4 — the offer." },
+        { "san": "e6", "say": "2...e6, declining. Black keeps a pawn on d5 and accepts a slightly boxed-in light bishop." },
+        { "san": "Nc3" },
+        { "san": "Nf6" },
+        { "san": "Bg5", "say": "4.Bg5, pinning the knight that defends d5 — the same indirect pressure idea as the Ruy Lopez." },
+        { "san": "Be7", "say": "Black unpins by hand. This is the classical QGD, and White's edge is small but permanent." }
+      ],
+      "highlights": ["e6", "g5", "d5"]
+    },
+    {
+      "kind": "intro",
+      "fen": "rnbqkbnr/p1p1pppp/8/1p6/2pP4/4P3/PP3PPP/RNBQKBNR w KQkq - 0 4",
+      "say": "Accepting is fine too — 2...dxc4 3.e3, and White simply plays Bxc4 next move. What is NOT fine is trying to keep the pawn. Black has just played 3...b5??, propping up c4 with a pawn. It looks like a fortress. You're White; it's a house of cards.",
+      "highlights": ["b5", "c4", "a8"]
+    },
+    {
+      "kind": "challenge",
+      "fen": "rnbqkbnr/p1p1pppp/8/1p6/2pP4/4P3/PP3PPP/RNBQKBNR w KQkq - 0 4",
+      "prompt": "Black is trying to hold the gambit pawn with 3...b5. Blow the queenside open and win material — in three moves.",
+      "hints": [
+        "Undermine the pawn that's doing the propping. Which of your pawns can attack b5?",
+        "a4! Black defends with c6, but then you exchange twice on b5 and open the long diagonal.",
+        "a4 c6 axb5 cxb5 and now the a8 rook is naked — find the queen move that hits it."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "a4", "say": "Attacking the base of Black's little pawn chain. Black's most natural defence is to add another pawn..." },
+            { "san": "c6" },
+            { "san": "axb5", "say": "Opening the a-file and forcing matters. Black has to recapture, and doing so with the c-pawn empties the long diagonal completely." },
+            { "san": "cxb5" },
+            { "san": "Qf3", "say": "And there it is. The a8-h1 diagonal has no pawn left on it — b7 went to b5, c6 was traded — so your queen attacks the rook on a8 from f3. Black cannot defend it adequately, and the greedy attempt to keep one pawn has cost the exchange." }
+          ],
+          "assert": null
+        }
+      ],
+      "rejections": [
+        { "san": "b3", "say": "Attacking c4 from the other side is met by ...cxb3 and Black's queenside pawns survive. The pawn to attack is b5, the one holding the whole structure together — and the pawn that attacks it is on a2." },
+        { "san": "Bxc4", "say": "You can't — and if you could, bxc4 just wins a piece. Undermine the defender first: a4." },
+        { "san": "e4", "say": "A fine central move that ignores the queenside entirely. Black consolidates with ...Bb7 and ...e6 and really is a pawn up. Punish the structure while it's still loose: a4." },
+        { "san": "Nf3", "say": "Developing is almost never wrong, but here it hands Black a free tempo to play ...Bb7 and ...e6 and genuinely keep the pawn. The refutation is a pawn move, and it's available right now." }
+      ],
+      "wrongSay": "Black's c4 pawn is held up by b5. Which white pawn can attack b5 — and what happens to the long diagonal after the trades?",
+      "successSay": "That's why the Queen's Gambit isn't a gambit: take the pawn if you like, but try to KEEP it and the whole queenside falls apart."
+    }
+  ]
+}

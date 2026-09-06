@@ -1,0 +1,114 @@
+{
+  "id": "opposite-coloured-bishops",
+  "title": "Opposite-Coloured Bishops",
+  "topic": "endgames",
+  "level": 6,
+  "subtitle": "The most drawish endgame — and the most dangerous middlegame.",
+  "goals": [
+    "Hold a draw two pawns down",
+    "Place pawns on the colour the enemy bishop can't reach",
+    "Know when opposite bishops favour the attacker"
+  ],
+  "estMinutes": 7,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "6k1/8/8/2P5/3b4/2B5/6K1/8 b - - 0 1",
+      "say": "When each side has one bishop and they travel on different colours, the pieces can never meet — and the usual rules break. In the ENDGAME this is the most drawish material in chess: a single bishop can hold back two or even three pawns forever, because the attacker's bishop can never challenge the blockading square. In the MIDDLEGAME the same fact makes attacks deadly: on the attacking colour, the defender is effectively a piece down.",
+      "highlights": [
+        "c5",
+        "d4",
+        "c3"
+      ]
+    },
+    {
+      "kind": "challenge",
+      "fen": "6k1/8/8/2P5/3b4/2B5/6K1/8 b - - 0 1",
+      "prompt": "You're Black, a pawn down. Set up the blockade that draws!",
+      "hints": [
+        "The pawn stands on a light square and your bishop is dark-squared — you can never attack it. Block the square in FRONT of it instead.",
+        "c6 is a dark square: Be5 covers it and the pawn can never pass."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Be5",
+              "say": "The blockade. c6 is a dark square, so your bishop controls it forever — and White's light-squared bishop can never challenge you there. The pawn is stopped for good: a draw held by a piece that cannot even touch the thing it is stopping."
+            }
+          ]
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Bxc3",
+          "say": "Never trade! Once the opposite-coloured bishops leave the board, the extra pawn simply wins. Your bishop's inability to meet his is precisely what saves you."
+        },
+        {
+          "san": "Kf7",
+          "say": "The king walks while the pawn runs: c6, c7, c8. Blockade with the BISHOP first — the king only helps afterwards."
+        }
+      ],
+      "wrongSay": "You cannot attack a light-squared pawn with a dark-squared bishop. Block its path instead.",
+      "successSay": "Blockade, don't capture. That single idea saves countless 'lost' endgames."
+    },
+    {
+      "kind": "challenge",
+      "fen": "6k1/5b2/8/1PP5/8/2B5/6K1/8 b - - 0 1",
+      "prompt": "Now TWO connected passers — still drawable. Find the blockading square!",
+      "hints": [
+        "Your bishop is light-squared, so it can only stop a pawn standing on (or heading to) a light square.",
+        "Bd5! One bishop stops both pawns: b6 is covered by the blockade, and c6 is a light square your bishop owns."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Bd5",
+              "say": "One bishop, two pawns, total blockade. This is the miracle of opposite-coloured bishops: material means almost nothing, the COLOUR of the blockading square means everything. White can shuffle forever and never break through."
+            }
+          ]
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Be6",
+          "say": "Close — but from e6 the bishop doesn't stop the b-pawn's advance, and after b6 the pawns roll. The one square that halts BOTH is d5."
+        },
+        {
+          "san": "Kf8",
+          "say": "Passive king moves lose the race — the pawns are much faster. The blockade must be set by the bishop, immediately."
+        }
+      ],
+      "wrongSay": "One square stops both pawns. It must be a light square your bishop can hold.",
+      "successSay": "Two connected passers, held by one bishop — opposite bishops in a nutshell."
+    },
+    {
+      "kind": "challenge",
+      "fen": "6k1/pp3ppp/8/2P5/8/2B5/PP3PPP/6K1 w - - 0 1",
+      "prompt": "Switch sides: you're the attacker now. Put your pawns where the enemy bishop can never touch them!",
+      "hints": [
+        "Your bishop is dark-squared. Enemy dark squares are therefore yours to control — so your PAWNS belong on light squares, where his dark bishop can never attack them.",
+        "b4 keeps the pawns on light-square duty and supports the c5 passer."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "b4",
+              "say": "Correct: pawns on the colour the enemy bishop cannot attack, and your own bishop covering the squares in front of them. That combination — pawns on one colour, bishop on the other — is how the attacking side actually converts opposite-bishop positions."
+            }
+          ]
+        }
+      ],
+      "rejections": [
+        {
+          "san": "f4",
+          "say": "Kingside expansion on the wrong wing, and it weakens your king's dark squares — exactly where his bishop lives. When bishops are opposite, put your pawns where his bishop can't go and keep your king off his colour."
+        }
+      ],
+      "wrongSay": "His bishop is dark-squared. Which colour should your pawns stand on?",
+      "successSay": "Drawish for the defender, deadly for the attacker — opposite bishops reward whoever understands the colour complex better."
+    }
+  ]
+}

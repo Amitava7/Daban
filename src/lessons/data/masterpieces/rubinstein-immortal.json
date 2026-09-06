@@ -1,0 +1,56 @@
+{
+  "id": "rubinstein-immortal",
+  "title": "Rubinstein's Immortal",
+  "topic": "masterpieces",
+  "level": 6,
+  "subtitle": "Rotlewi–Rubinstein, Łódź 1907 — every piece sacrificed at once.",
+  "goals": [
+    "Attack with all four pieces at maximum activity",
+    "Sacrifice a queen for two crossing bishops",
+    "Finish with the quietest possible mating move"
+  ],
+  "estMinutes": 8,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "2rr2k1/1b3ppp/pb2p3/1p2P3/1P2BPnq/P1N3P1/1B2Q2P/R4R1K b - - 0 22",
+      "say": "Łódź, 1907. Akiba Rubinstein has both bishops on the long diagonals, both rooks on open files, a knight on g4 and his queen on h4 — every single piece pointed at the white king. White has just played g3, attacking the queen and apparently winning a piece. Rubinstein's answer is one of the most admired moves in chess history, and it hangs literally everything.",
+      "highlights": ["b7", "b6", "c8", "d8", "h4"]
+    },
+    {
+      "kind": "challenge",
+      "fen": "2rr2k1/1b3ppp/pb2p3/1p2P3/1P2BPnq/P1N3P1/1B2Q2P/R4R1K b - - 0 22",
+      "prompt": "Your queen is attacked. Ignore it — and play the seven-move combination to the end!",
+      "hints": [
+        "Do not move the queen. Look instead at what defends White's king: the c3 knight and the e4 bishop. Remove them and both your bishops arrive.",
+        "Rxc3!! gxh4 Rd2!! Qxd2 Bxe4+ Qg2 Rh3 — the quiet rook move at the end is mate next move and cannot be stopped."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Rxc3", "say": "The queen is left hanging and the defender of e4 is removed. White takes the queen — anything else loses faster..." },
+            { "san": "gxh4" },
+            { "san": "Rd2", "say": "The SECOND rook offers itself, deflecting the queen from the defence of g2..." },
+            { "san": "Qxd2" },
+            { "san": "Bxe4+", "say": "And now the bishops cross: check on the long diagonal, and White's queen must block on g2..." },
+            { "san": "Qg2" },
+            { "san": "Rh3", "say": "The quiet finish — no check at all. White cannot prevent ...Rxh2#, because taking the rook allows ...Bxg2#. Rubinstein gave up his queen and both rooks; the two bishops did the rest. Rotlewi resigned." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "Qxh2+", "say": "Kxh2 and the attack is over — a queen for a pawn. The point of the position is that Rubinstein's ATTACKING pieces are worth more than his queen: remove the defenders instead." },
+        { "san": "Qh5", "say": "Saving the queen saves nothing: White consolidates with Nd1 or Bd3 and the beautiful setup fades. When every one of your pieces is aimed at the king, the queen is the most expendable of them." },
+        { "san": "Bxe4+", "say": "One move too early — Nxe4! defends, and the combination never gets going. The c3 knight must be removed FIRST." }
+      ],
+      "wrongSay": "The move that wins leaves your queen en prise. Which white defender must disappear first?",
+      "successSay": "Two rooks and a queen invested, two bishops collecting — the most harmonious combination ever played."
+    },
+    {
+      "kind": "intro",
+      "fen": "6k1/5ppp/pb2p3/1p2P3/1P2bPnP/P6r/1B4QP/R4R1K w - - 2 26",
+      "say": "Look at the final picture: Black has a bishop pair slicing across the board, a rook on h3 and a knight on g4, and White's pieces cannot untangle. Rubinstein's whole style is in this game — the sacrifices were not inspiration, they were the harvest of twenty quiet moves that put every piece on its best square first. Build the position, and the combination appears by itself.",
+      "highlights": ["b6", "e4", "h3", "g4"]
+    }
+  ]
+}

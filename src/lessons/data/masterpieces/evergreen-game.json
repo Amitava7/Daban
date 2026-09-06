@@ -1,0 +1,60 @@
+{
+  "id": "evergreen-game",
+  "title": "The Evergreen Game",
+  "topic": "masterpieces",
+  "level": 6,
+  "subtitle": "Anderssen–Dufresne, Berlin 1852 — a quiet rook move, then a queen sacrifice.",
+  "goals": [
+    "Find a quiet move in the middle of a firefight",
+    "Execute an eleven-move forced combination",
+    "Mate with two bishops and a rook"
+  ],
+  "estMinutes": 9,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "1r2k1r1/pbppnp1p/1bn2P2/7q/Q7/B1PB1N2/P4PPP/R3R1K1 w - - 1 19",
+      "say": "Berlin, 1852. Wilhelm Steinitz called it 'the evergreen in Anderssen's laurel wreath'. Both kings are exposed, Black threatens ...Qxf3 with mate ideas of his own, and White is about to play a move that touches none of it. What follows is an eleven-move forced sequence ending in mate — and it starts with the quietest rook move imaginable.",
+      "highlights": ["a1", "d1", "e1", "h5"]
+    },
+    {
+      "kind": "challenge",
+      "fen": "1r2k1r1/pbppnp1p/1bn2P2/7q/Q7/B1PB1N2/P4PPP/R3R1K1 w - - 1 19",
+      "prompt": "Black threatens mate. Ignore it — play the quiet move that wins the game, then the whole combination to mate!",
+      "hints": [
+        "Both rooks want the centre. The move that wins is the one that brings the LAST piece into the attack, even though it gives Black a free capture.",
+        "Rad1!! Then after ...Qxf3, the storm: Rxe7+ Nxe7 Qxd7+!! Kxd7 Bf5+ Ke8 Bd7+ Kf8 Bxe7#."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Rad1", "say": "The immortal quiet move. It develops the last piece, ignores the threat completely, and prepares a sacrifice on d7 that needs this rook. Black grabs the knight with check-like force..." },
+            { "san": "Qxf3" },
+            { "san": "Rxe7+", "say": "Now the machine runs — every move is check, so Black's mate threat never gets a turn." },
+            { "san": "Nxe7" },
+            { "san": "Qxd7+", "say": "The queen sacrifice, and it must be accepted..." },
+            { "san": "Kxd7" },
+            { "san": "Bf5+", "say": "Double duty from the light bishop: the king is dragged back toward the mating net..." },
+            { "san": "Ke8" },
+            { "san": "Bd7+", "say": "...and shoved again. Notice White has not made a single non-forcing move since Rad1." },
+            { "san": "Kf8" },
+            { "san": "Bxe7#", "say": "CHECKMATE. Rook, queen and a knight given away — and mate delivered by two bishops. The Evergreen Game: the quiet move Rad1 was the hard part, and the eleven forced moves after it were merely the proof." }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "rejections": [
+        { "san": "Ne5", "say": "Defending the knight lets Black consolidate with ...Qxh2+ or ...Rd8 — the initiative dies and White's exposed king becomes the problem. The winning move ignores the threat and brings the last rook in." },
+        { "san": "Rxe7+", "say": "The right sacrifice one move too early: without Rad1 there is no rook on d1, so Qxd7+ Kxd7 leaves you with nothing to follow up. Quiet move FIRST, fireworks second." }
+      ],
+      "wrongSay": "The move that wins does not address Black's threat at all — it develops your last piece.",
+      "successSay": "Rad1!! — the quiet move behind the fireworks. Eleven forced moves, played by you."
+    },
+    {
+      "kind": "intro",
+      "fen": "1r3kr1/pbpBBp1p/1b3P2/8/8/2P2q2/P4PPP/3R2K1 b - - 0 24",
+      "say": "The final position is worth ten seconds of study. Black has a queen, two rooks and two bishops — nearly his whole army — and is checkmated by a rook and two bishops. Every white piece that mattered was developed; almost every black piece never left home. Anderssen played both this game and the Immortal within eighteen months, and together they taught chess the lesson it built the next century on: time is material.",
+      "highlights": ["e7", "d7", "f8"]
+    }
+  ]
+}

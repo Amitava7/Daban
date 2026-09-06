@@ -1,0 +1,78 @@
+{
+  "id": "double-check",
+  "title": "Double Check",
+  "topic": "combinations",
+  "level": 5,
+  "subtitle": "The only check that cannot be blocked or captured.",
+  "goals": [
+    "Understand why a double check forces a king move",
+    "Sacrifice a queen to set up a discovered double check",
+    "Finish with a mate that works against every king move"
+  ],
+  "estMinutes": 8,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "rnb1kb1r/pp3ppp/2p2n2/4q3/4N3/3Q4/PPPB1PPP/R3KBNR w KQkq - 0 8",
+      "say": "Vienna, 1910. Richard Réti has White against Savielly Tartakower, and the position looks ordinary. There are three legal answers to a normal check: take the checking piece, block the line, or move the king. A DOUBLE check — where moving one piece discovers a second attacker — kills the first two outright. You cannot capture two pieces at once, and you cannot block two lines at once. The king must move, always.",
+      "highlights": ["d2", "d3", "e4"]
+    },
+    {
+      "kind": "explain",
+      "fen": "rnb1kb1r/pp3ppp/2p2n2/4q3/4N3/3Q4/PPPB1PPP/R3KBNR w KQkq - 0 8",
+      "say": "Réti castles queenside — the move that loads the gun. The rook lands on d1 behind the bishop on d2, and Black, who is still uncastled, takes a knight.",
+      "autoMoves": [
+        { "san": "O-O-O", "say": "8.O-O-O! The rook now sits on d1, aimed down the d-file. In front of it stands White's own bishop on d2 — that is the battery." },
+        { "san": "Nxe4", "say": "8...Nxe4? Black wins a piece and, for one move, is completely winning on material. The black king is still on e8, on the d1 rook's file but one square across." }
+      ],
+      "highlights": ["d1", "d2", "e8"],
+      "arrows": [{ "from": "d1", "to": "d8" }]
+    },
+    {
+      "kind": "challenge",
+      "fen": "rnb1kb1r/pp3ppp/2p5/4q3/4n3/3Q4/PPPB1PPP/2KR1BNR w kq - 0 9",
+      "prompt": "You're a piece down and it's your move. Give away the queen — and mate in three.",
+      "hints": [
+        "The black king on e8 has no escape squares of its own. What it has is defenders — so give it a square it MUST walk to.",
+        "Qd8+!! The king is forced to take (nothing else can capture on d8, and nothing can block). Now the king stands on d8, in front of your rook, with your bishop ready to swing out with check.",
+        "Qd8+ Kxd8, then Bg5+ is a DOUBLE check — bishop and rook at once — so the king must move, and both squares lose."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Qd8+", "say": "The queen is offered on a square where only the king can take it. This is attraction: you are not winning material, you are choosing where the enemy king will stand." },
+            { "san": "Kxd8" },
+            { "san": "Bg5+", "say": "Double check! The bishop checks along g5-d8, and moving off d2 discovers the rook on d1 checking up the file. Black cannot take the bishop (that leaves the rook check), cannot block (two lines), and so must move the king — to c7 or e8, and both lose." },
+            { "san": "Kc7" },
+            { "san": "Bd8#", "say": "Mate. The bishop returns to the square the queen died on and the king has nowhere. Réti gave up a queen to gain one thing — the right to say where the enemy king stood." }
+          ],
+          "assert": "checkmate"
+        },
+        {
+          "line": [
+            { "san": "Qd8+" },
+            { "san": "Kxd8" },
+            { "san": "Bg5+", "say": "Double check — the king must move." },
+            { "san": "Ke8" },
+            { "san": "Rd8#", "say": "The other branch, and it's even simpler: the rook delivers mate on d8 supported by the bishop on g5. Whichever way the king ran, the battery caught it." }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "rejections": [
+        { "san": "Qxe4", "say": "Regaining the piece and reaching a level game — which is a fine practical decision and a completely missed win. Look again at the d-file: your rook is aimed at d8, and the black king is one square away from stepping onto it." },
+        { "san": "Bg5", "say": "The right piece, one move too early. With the black king still on e8 this is only a single check-free move, and Black plays Qxg5+ or simply defends. First force the king ONTO the d-file with a queen sacrifice." },
+        { "san": "Bb4", "say": "Attacking the f8 bishop achieves nothing while you're a piece down. The d-file battery is the asset — find the move that drags the black king onto it." },
+        { "san": "Re1", "say": "Adding a piece to the attack is too slow: Black consolidates with ...Nf6 or ...Be7 and remains a piece up. This position needs forcing moves only — and the most forcing one gives away your queen." }
+      ],
+      "wrongSay": "Your rook on d1 and bishop on d2 form a battery. The black king is on e8. What would happen if the king were standing on d8 instead — and how do you make it go there?",
+      "successSay": "Double check is the most violent move in chess: it removes two of the three legal answers to a check, and often the third as well."
+    },
+    {
+      "kind": "intro",
+      "fen": "rnbk1b1r/pp3ppp/2p5/4q3/4n3/8/PPPB1PPP/2KR1BNR w - - 0 10",
+      "say": "Worth remembering as a rule of thumb: when you have a battery — two pieces stacked on one line, where the front one can move away with check — look for a sacrifice that puts the enemy king on that line. The material cost almost doesn't matter, because a double check cannot be answered by taking or blocking. Réti gave a queen; the mate arrived two moves later.",
+      "highlights": ["d1", "d2", "d8"]
+    }
+  ]
+}

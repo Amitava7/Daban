@@ -1,0 +1,76 @@
+{
+  "id": "overloaded-pieces",
+  "title": "Overloaded Pieces",
+  "topic": "combinations",
+  "level": 5,
+  "subtitle": "A defender with two jobs is doing neither.",
+  "goals": [
+    "Identify a piece that is defending two things at once",
+    "Offer material on squares the overloaded piece cannot accept",
+    "Play an eleven-ply combination from a real master game"
+  ],
+  "estMinutes": 10,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "2r1r1k1/1p1q1ppp/3p1b2/p2P4/3Q4/5N2/PP2RPPP/4R1K1 w - - 0 18",
+      "say": "New Orleans, 1920. Edwin Adams against Carlos Torre — one of the most famous combinations ever played, and it is nothing but this single idea repeated five times. Look at Black's back rank: the rook on e8 is defended only by the queen on d7. And your rooks are doubled on the e-file. Black's queen has two jobs: guard the e8 rook, and stay safe. You're White.",
+      "highlights": ["e8", "d7", "e2", "e1"],
+      "arrows": [{ "from": "d7", "to": "e8" }, { "from": "e2", "to": "e8" }]
+    },
+    {
+      "kind": "explain",
+      "fen": "2r1r1k1/1p1q1ppp/3p1b2/p2P4/3Q4/5N2/PP2RPPP/4R1K1 w - - 0 18",
+      "say": "Before the fireworks, count it. If Black's queen ever leaves the defence of e8 — or is captured — then Rxe8+ Rxe8 Rxe8 is mate on the back rank. That single fact is the engine of the whole combination: every white queen move from here is a free offer, and Black can never accept.",
+      "autoMoves": [
+        { "san": "Rxe8+", "say": "Just to see it: Rxe8+ forces Rxe8..." },
+        { "san": "Rxe8" },
+        { "san": "Rxe8+", "say": "...and Rxe8+ would be mate, except that here the queen on d7 is still guarding e8 and simply recaptures. So the goal is clear: get rid of that queen without letting it take anything." },
+        { "san": "Qxe8" }
+      ],
+      "highlights": ["e8"]
+    },
+    {
+      "kind": "challenge",
+      "fen": "2r1r1k1/1p1q1ppp/3p1b2/p2P4/3Q4/5N2/PP2RPPP/4R1K1 w - - 0 18",
+      "prompt": "Black's queen is overloaded — it guards e8 and cannot leave. Hound it off the board. Six queen moves, one pawn move, and Black is lost.",
+      "hints": [
+        "Attack the black queen with your own queen, on a square where capturing it loses to Rxe8+ Rxe8 Rxe8#.",
+        "Qg4! is the first offer: Qxg4 allows the back-rank mate. Black must decline and keep guarding e8 — every square the queen finds, attack it again.",
+        "Qg4 Qb5, Qc4 Qd7, Qc7 Qb5, then a4! drives it once more, and Re4 seals the file before Qxb7 finishes."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Qg4", "say": "Offer number one. 18...Qxg4 loses to Rxe8+ Rxe8 Rxe8#, so the queen must run — and it must run to a square that still defends e8." },
+            { "san": "Qb5" },
+            { "san": "Qc4", "say": "Offer number two, attacking the queen again. Taking still loses to the same back-rank mate." },
+            { "san": "Qd7" },
+            { "san": "Qc7", "say": "Offer number three — the queen sits right next to Black's, completely en prise, and still cannot be taken." },
+            { "san": "Qb5" },
+            { "san": "a4", "say": "A quiet pawn move, and the cruellest one: the queen is attacked by a PAWN and still cannot take anything or leave the e8 rook." },
+            { "san": "Qxa4" },
+            { "san": "Re4", "say": "Offer number four, this time with a rook — and the rook stays on the e-file while it attacks. Black's queen has run out of safe squares that also guard e8." },
+            { "san": "Qb5" },
+            { "san": "Qxb7", "say": "And the last one. Black resigned here: the queen cannot take on b7 because of Rxe8+ Rxe8 Rxe8#, and it can no longer hold both the b7 pawn and the e8 rook. Every single white move in this combination was a piece hanging on purpose." }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "rejections": [
+        { "san": "Rxe8+", "say": "The mate is real but the order is wrong: after Rxe8+ Rxe8 Rxe8+ the queen simply recaptures on e8 and you've traded everything for nothing. First DEFLECT the queen — attack it on squares where taking allows that same mate." },
+        { "san": "Qa4", "say": "Attacking the queen is the right idea, but a4 lets Black answer Qxa4 straight away with no back-rank problem, because your queen isn't protected by the mate threat there. The square is g4." },
+        { "san": "Qb4", "say": "Close, but Black replies axb4 — you've hung the queen to a pawn for nothing. Choose a square where the capture loses to the back-rank mate: g4." },
+        { "san": "Ne5", "say": "Bringing another piece in looks natural, but it lets Black untangle with ...dxe5 or ...Rxe5. The combination is purely about the overloaded queen — attack it directly and never stop." }
+      ],
+      "wrongSay": "Black's queen cannot leave e8 undefended, and it cannot capture anything that allows Rxe8+ Rxe8 Rxe8#. Attack it with your queen on a square protected by that threat.",
+      "successSay": "Adams-Torre, 1920. White offered the queen on five different squares and Black could not take it once. That is what 'overloaded' means."
+    },
+    {
+      "kind": "intro",
+      "fen": "2r1r1k1/1Q3ppp/3p1b2/pq1P4/4R3/5N2/1P3PPP/4R1K1 b - - 0 23",
+      "say": "The habit to build from this: when you're looking for a combination, don't start by asking 'what can I take?'. Ask 'which enemy piece is doing two jobs?'. Then attack it, or take one of the things it guards. A defender that must stay where it is has stopped being a piece and become a target.",
+      "highlights": ["b5", "e8"]
+    }
+  ]
+}

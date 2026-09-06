@@ -1,0 +1,156 @@
+{
+  "id": "the-king-hunt",
+  "title": "The King Hunt",
+  "topic": "mating-patterns",
+  "level": 6,
+  "subtitle": "Drag the king from h8 to g1 — and mate it there.",
+  "goals": [
+    "Sacrifice the queen to open the king's shelter",
+    "Keep checking so the defender never gets a move",
+    "Finish a fourteen-ply hunt across the whole board"
+  ],
+  "estMinutes": 10,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "rn3rk1/pbppq1pp/1p2pb2/4N2Q/3PN3/3B4/PPP2PPP/R3K2R w KQ - 6 11",
+      "say": "London, 1912. Edward Lasker against Sir George Thomas — a game that ends with the black king mated on g1, the square White's own king started on. Count White's attackers: queen on h5, knights on e4 and e5, bishop on d3, and a rook that can lift to h2. Black's queenside pieces have not moved. When you have five attackers and your opponent has none, the material on the board stops mattering.",
+      "highlights": [
+        "h5",
+        "e5",
+        "e4",
+        "d3",
+        "h7"
+      ],
+      "arrows": [
+        {
+          "from": "h5",
+          "to": "h7"
+        },
+        {
+          "from": "d3",
+          "to": "h7"
+        }
+      ]
+    },
+    {
+      "kind": "challenge",
+      "fen": "rn3rk1/pbppq1pp/1p2pb2/4N2Q/3PN3/3B4/PPP2PPP/R3K2R w KQ - 6 11",
+      "prompt": "Start the hunt. Give up the queen on h7 and drive the king out — five moves, all checks.",
+      "hints": [
+        "h7 is defended only by the king. Take it anyway: the point is not the pawn, it's to force the king into the open.",
+        "Qxh7+! Kxh7, and now every single move must be check — the moment Black gets a free move, the attack dies.",
+        "Qxh7+ Kxh7 Nxf6+ Kh6 Neg4+ Kg5, and the king is out on the fifth rank with your whole army waiting."
+      ],
+      "solutions": [
+        {
+          "line": [
+            {
+              "san": "Qxh7+",
+              "say": "The queen goes for a pawn. Black has no choice — the king must take, and the roof is off."
+            },
+            {
+              "san": "Kxh7"
+            },
+            {
+              "san": "Nxf6+",
+              "say": "Check with tempo, removing the defender AND opening the h-file. Note that the king cannot go back to h8 or g8: the knight covers both."
+            },
+            {
+              "san": "Kh6"
+            },
+            {
+              "san": "Neg4+",
+              "say": "The second knight joins with check. Now h5 and h7 are covered too, so the king is herded forward — every check pushes it one rank further from home."
+            },
+            {
+              "san": "Kg5"
+            },
+            {
+              "san": "h4+",
+              "say": "A humble pawn continues the hunt. The king is on g5, in the middle of the board on move fourteen, and White has not yet moved a rook."
+            }
+          ],
+          "assert": "check"
+        }
+      ],
+      "rejections": [
+        {
+          "san": "Nxf6+",
+          "say": "The knight capture is part of the attack, but the ORDER matters: play it now and Black recaptures with the queen (Qxf6), keeping the king safely tucked behind h7 and g7. The queen sacrifice on h7 has to come first, to force the king into the open."
+        },
+        {
+          "san": "Qf7+",
+          "say": "A check, and a bad one — after Kh8 the king is safer than before, and your queen on f7 achieves nothing. The square that matters is h7, because it is defended by the KING, which means capturing there drags the king out."
+        },
+        {
+          "san": "Ng6",
+          "say": "A flashy-looking knight jump that just loses a piece to hxg6. Look for the sacrifice the king itself has to accept — on h7."
+        },
+        {
+          "san": "Nxd7",
+          "say": "Grabbing material in the middle of an attack. Every tempo you spend is a tempo Black uses to bring the a8 rook and b8 knight into the game. Attack now, count later."
+        },
+        {
+          "san": "O-O-O",
+          "say": "Tidy, and far too slow. With five pieces already aimed at h7 you do not need one more developing move — you need the sacrifice that opens the king. Castling here lets Black play ...Nc6 and consolidate."
+        }
+      ],
+      "wrongSay": "The h7 pawn is defended only by the king. What happens if you give up your queen for it?",
+      "successSay": "The king is out in the open on g5, and it has not been allowed a single free move. Now finish the walk."
+    },
+    {
+      "kind": "explain",
+      "fen": "rn3r2/pbppq1p1/1p2pN2/6k1/3P2N1/3B4/PPP2PPP/R3K2R w KQ - 3 14",
+      "say": "Every remaining move is a check, and the king is escorted all the way down the board to White's back rank.",
+      "autoMoves": [
+        {
+          "san": "h4+",
+          "say": "14.h4+ — the pawn joins in. The king cannot go back: h5 and h6 are covered."
+        },
+        {
+          "san": "Kf4"
+        },
+        {
+          "san": "g3+",
+          "say": "Another pawn, another check. The king is on f4 — deep in White's half."
+        },
+        {
+          "san": "Kf3"
+        },
+        {
+          "san": "Be2+",
+          "say": "The bishop finally develops, with check, pushing the king to g2."
+        },
+        {
+          "san": "Kg2"
+        },
+        {
+          "san": "Rh2+",
+          "say": "The rook enters on h2, driving the king into the corner it will die in."
+        },
+        {
+          "san": "Kg1"
+        },
+        {
+          "san": "Kd2#",
+          "say": "Checkmate — delivered by castling by hand. White's king steps to d2 and the rook on a1 covers the back rank, so the black king on g1 has nothing. Lasker actually played this as O-O-O mate in some sources; either way the picture is the same, and the black queenside pieces never moved once."
+        }
+      ],
+      "highlights": [
+        "g1",
+        "a1"
+      ]
+    },
+    {
+      "kind": "intro",
+      "fen": "rn3r2/pbppq1p1/1p2pN2/8/3P2NP/6P1/PPPKBP1R/R5k1 b - - 6 18",
+      "say": "The rule this game teaches: in a king hunt, only forcing moves exist. Fourteen consecutive checks meant Black never once got to play a move of their own — the rook on a8 and knight on b8 sat untouched from move one to mate. If you ever find a hunt and the checks run out, the attack is over; so before you sacrifice, count that the checks reach all the way.",
+      "highlights": [
+        "a8",
+        "b8",
+        "g1"
+      ]
+    }
+  ]
+}

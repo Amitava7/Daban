@@ -1,0 +1,71 @@
+{
+  "id": "isolated-queens-pawn",
+  "title": "The Isolated Queen's Pawn",
+  "topic": "strategy",
+  "level": 5,
+  "subtitle": "A permanent weakness that attacks — and how to defuse it.",
+  "goals": [
+    "Play the IQP for activity and the d5 break",
+    "Blockade the pawn as the defender",
+    "Know which side wants to trade pieces"
+  ],
+  "estMinutes": 7,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "r1bq1rk1/pp3ppp/2n1pn2/8/2BP4/2N2N2/PP3PPP/R1BQ1RK1 w - - 0 1",
+      "say": "The pawn on d4 has no friends on the c- or e-files: it is ISOLATED, and it can never be defended by another pawn. That makes it a long-term weakness — and a short-term weapon. It grants space, two open files for the rooks, and the e5 and c5 squares for pieces. The whole struggle has one rule: **the attacker wants pieces on the board; the defender wants them traded off.** Every trade brings the endgame, where the isolani is simply weak.",
+      "highlights": ["d4", "d5", "e5", "c5"]
+    },
+    {
+      "kind": "challenge",
+      "fen": "r1bq1rk1/pp3ppp/2n1pn2/8/2BP4/2N2N2/PP3PPP/R1BQ1RK1 w - - 0 1",
+      "prompt": "You have the isolani. Play the thematic break that turns weakness into attack!",
+      "hints": [
+        "The isolated pawn's dream is to advance: d4–d5 opens lines for both bishops and the rooks while the pawn is still alive.",
+        "d5! Open the position while you have the more active pieces."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "d5", "say": "The thematic break. The pawn stops being a target by advancing at the perfect moment — lines open for the c4 bishop and the d-file rook, and Black's position creaks. The rule: an isolani that pushes is an asset; an isolani that sits is a liability." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "Bg5", "say": "A sensible developing move, but it invites trades — and every trade helps the DEFENDER. With an isolated pawn you must play for the break and the attack before the endgame arrives." },
+        { "san": "Qd3", "say": "Reasonable, yet slow: Black consolidates with ...Nb4 and ...Nfd5, blockading the pawn permanently. The break d5 is available right now, and its moment does not come twice." }
+      ],
+      "wrongSay": "The isolani wants to advance while your pieces are the more active ones. Which pawn break?",
+      "successSay": "Push it or lose it: the isolated pawn is a weapon with a short fuse."
+    },
+    {
+      "kind": "challenge",
+      "fen": "r1bq1rk1/pp3ppp/2n1pn2/8/2BP4/2N2N2/PP3PPP/R1BQ1RK1 b - - 0 1",
+      "prompt": "Now defend against it. Start the blockade — the square in front of the pawn is everything!",
+      "hints": [
+        "The defender's method: put a piece on d5, where no pawn can ever chase it, and the isolani is frozen forever.",
+        "Nb4 heads for d5 — the blockading square."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "Nb4", "say": "The knight begins its journey to d5. Once a knight lands there the pawn can never advance, White's attack has no fuel, and the endgame — where the isolani is just weak — comes closer with every trade. Blockade first, win the pawn later." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "b6", "say": "A useful move eventually, but it does nothing about the pawn's advance. Against an isolani the first job is always the BLOCKADE: control d5 before White can play it." },
+        { "san": "e5", "say": "This opens the position for White's pieces — exactly what the isolani player wants. The defender keeps things closed and trades pieces, not pawns." }
+      ],
+      "wrongSay": "Aim a piece at the square directly in front of the isolated pawn.",
+      "successSay": "Blockade, trade, then win the pawn — the three-step defence against every isolani."
+    },
+    {
+      "kind": "intro",
+      "fen": "r1bq1rk1/pp3ppp/2n1pn2/8/2BP4/2N2N2/PP3PPP/R1BQ1RK1 w - - 0 1",
+      "say": "Carry these away: with an isolani, keep pieces on, aim at the kingside, and look for d4–d5 at every moment. Against one, blockade d5 with a knight, trade every pair of pieces you can, and head for an endgame where you simply win the pawn. Both plans are correct — the position just asks which side of it you're on.",
+      "highlights": ["d4", "d5"]
+    }
+  ]
+}

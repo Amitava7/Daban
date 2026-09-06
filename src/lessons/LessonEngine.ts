@@ -66,8 +66,8 @@ export type LessonEvent =
 
 /** Delay the screen should wait before dispatching TICK. */
 export const AUTO_MOVE_DELAY = 850;
-/** Delay before a wrong move is rewound (screen dispatches RETRY). */
-export const WRONG_RESET_DELAY = 1700;
+// Wrong moves have no matching delay on purpose: the board stays frozen on the
+// mistake until the player dispatches RETRY themselves ("Try again").
 
 // ─── helpers ────────────────────────────────────────────────────────────────
 

@@ -1,0 +1,81 @@
+{
+  "id": "pawn-breakthrough",
+  "title": "The Pawn Breakthrough",
+  "topic": "endgames",
+  "level": 5,
+  "subtitle": "Sacrifice two pawns to make the third one a queen.",
+  "goals": [
+    "Spot the 3-vs-3 breakthrough",
+    "Calculate promotion races to the end",
+    "Sacrifice material for a passed pawn"
+  ],
+  "estMinutes": 6,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "6k1/ppp3pp/8/PPP3PP/8/8/8/6K1 w - - 0 1",
+      "say": "Three pawns against three, all blocked, kings far away — it looks like nothing. It is actually a forced win, and the mechanism is one of the most beautiful in chess: throw away TWO pawns so the third arrives at the queening square before anything can stop it. The whole thing is a counting exercise: if your pawn queens first by one move, you win.",
+      "highlights": ["b5", "c5", "a5"]
+    },
+    {
+      "kind": "challenge",
+      "fen": "6k1/ppp3pp/8/PPP3PP/8/8/8/6K1 w - - 0 1",
+      "prompt": "Three against three, all blocked. Find the breakthrough — the middle pawn goes first!",
+      "hints": [
+        "The key is the MIDDLE pawn: it attacks both neighbours' recaptures at once, and whichever way Black takes, the other file opens.",
+        "b6! If axb6 then c6 runs; if cxb6 then a6 runs. Either way you queen first."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "b6", "say": "The sacrifice. Black must choose a side, and either capture opens a road..." },
+            { "san": "axb6" },
+            { "san": "c6", "say": "The c-pawn is now unstoppable: c7 and c8=Q come next, and the black king is far too far away. You gave a pawn; you get a queen." }
+          ]
+        },
+        {
+          "line": [
+            { "san": "b6", "say": "The middle pawn steps forward, offering itself to either neighbour..." },
+            { "san": "cxb6" },
+            { "san": "a6", "say": "The other side opens instead — and the a-pawn runs home unopposed. Symmetry is what makes the breakthrough work: whichever pawn takes, it abandons the file next door." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "a6", "say": "bxa6! and nothing runs: your remaining pawns are still blocked and you're a pawn down. The breakthrough only works with the MIDDLE pawn, because it deflects a defender either way." },
+        { "san": "c6", "say": "bxc6 and the position is dead. Same reason: an outside pawn can be captured by a defender that stays in place. Push b6!" },
+        { "san": "Kf2", "say": "The king is far too slow to matter — this position is won by the pawns alone, right now. Count the race after b6! and you'll see the queen." }
+      ],
+      "wrongSay": "One of the three pawns creates a passer whichever way Black captures. Which one?",
+      "successSay": "The 3-vs-3 breakthrough: memorize the picture and you'll spot it in real endings."
+    },
+    {
+      "kind": "challenge",
+      "fen": "6k1/1pp3pp/1P6/2P3PP/8/8/8/6K1 b - - 0 1",
+      "prompt": "You're Black, and the breakthrough has been played. Show the best defence — capture and run!",
+      "hints": [
+        "You can't stop the passed pawn with the king, so grab material and count the race.",
+        "cxb6 keeps the pawn count even and forces White to prove the passer wins."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "cxb6", "say": "The most testing defence: take, and make White demonstrate. Now count the race with the a-file open — this is precisely the calculation you must do BEFORE allowing the breakthrough, not after." }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "rejections": [
+        { "san": "Kf7", "say": "The king is too slow — count the moves: the passer promotes long before he arrives. When facing a breakthrough, capture immediately and race; walking never works." }
+      ],
+      "wrongSay": "Take the pawn and count the resulting race — that's the only defence worth trying.",
+      "successSay": "Both sides of the breakthrough understood: it's arithmetic, not magic."
+    },
+    {
+      "kind": "intro",
+      "fen": "6k1/ppp3pp/8/PPP3PP/8/8/8/6K1 w - - 0 1",
+      "say": "The transferable rule: whenever pawn majorities face each other with the kings out of range, look for the middle-pawn sacrifice. Two pawns for one queening pawn is always a bargain — and the defender's capture is what opens the very file you need.",
+      "highlights": ["b6", "c6", "a6"]
+    }
+  ]
+}

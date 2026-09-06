@@ -1,0 +1,79 @@
+{
+  "id": "the-french-defense",
+  "title": "The French Defense",
+  "topic": "openings",
+  "level": 4,
+  "subtitle": "Build a pawn chain — then attack its base.",
+  "goals": [
+    "Understand the French pawn chain and the bad bishop",
+    "Attack a chain at its base, not its head",
+    "Win a pawn when the base is under-defended"
+  ],
+  "estMinutes": 8,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "rnbqkbnr/ppp2ppp/4p3/3p4/3PP3/8/PPP2PPP/RNBQKBNR w KQkq - 0 3",
+      "say": "The French Defense: 1.e4 e6 2.d4 d5. Black challenges the centre immediately, but at a price — the pawn on e6 locks in the light-squared bishop on c8. That bishop is the 'French bishop', and finding a job for it is Black's lifelong problem in this opening. In return, Black gets a rock-solid structure and a clear plan.",
+      "highlights": ["e6", "c8", "d5"]
+    },
+    {
+      "kind": "explain",
+      "fen": "rnbqkbnr/ppp2ppp/4p3/3p4/3PP3/8/PPP2PPP/RNBQKBNR w KQkq - 0 3",
+      "say": "White's most direct try is the Advance Variation — push past and take the space. This creates a pawn CHAIN, and pawn chains have a rule: you cannot attack the head, so you attack the base.",
+      "autoMoves": [
+        { "san": "e5", "say": "3.e5 — White gains space and shuts the centre. The chain is d4-e5, and its base is d4." },
+        { "san": "c5", "say": "3...c5! Immediately hitting the base of the chain. Not the e5 pawn — that one is defended and hard to reach — but d4, which holds everything up." },
+        { "san": "c3", "say": "White props up d4 with another pawn..." },
+        { "san": "Nc6", "say": "...and Black adds a second attacker to d4." },
+        { "san": "Nf3" },
+        { "san": "Qb6", "say": "A third attacker on d4, and the queen on b6 also eyes the b2 pawn. The entire opening battle is now about one square." }
+      ],
+      "highlights": ["d4", "e5", "c5"],
+      "arrows": [{ "from": "c5", "to": "d4" }, { "from": "c6", "to": "d4" }, { "from": "b6", "to": "d4" }]
+    },
+    {
+      "kind": "intro",
+      "fen": "r1b1kbnr/pp3ppp/1qn1p3/2ppP3/3P4/2P2N2/PP3PPP/RNBQKB1R w KQkq - 3 6",
+      "say": "Count the d4 square: White defends it with the c3 pawn and the f3 knight — two. Black attacks it with the c5 pawn, the c6 knight and the b6 queen — three. White must add a defender, and the natural developing move does not do that. Watch.",
+      "highlights": ["d4"]
+    },
+    {
+      "kind": "explain",
+      "fen": "r1b1kbnr/pp3ppp/1qn1p3/2ppP3/3P4/2P2N2/PP3PPP/RNBQKB1R w KQkq - 3 6",
+      "say": "White develops the bishop — a perfectly natural move that ignores the argument on d4.",
+      "autoMoves": [
+        { "san": "Bd3", "say": "6.Bd3? The bishop looks great on the b1-h7 diagonal, and it defends absolutely nothing on d4." }
+      ],
+      "highlights": ["d3", "d4"]
+    },
+    {
+      "kind": "challenge",
+      "fen": "r1b1kbnr/pp3ppp/1qn1p3/2ppP3/3P4/2PB1N2/PP3PPP/RNBQK2R b KQkq - 4 6",
+      "prompt": "White ignored the base of the chain. Win the d4 pawn — it takes three accurate moves.",
+      "hints": [
+        "Don't start with the knight. Clear the c3 pawn out of the way first, so that d4 loses a defender.",
+        "cxd4 cxd4, and now d4 is defended only by the f3 knight but attacked by your knight AND your queen.",
+        "cxd4 cxd4 Nxd4! and the recapture Nxd4 runs into Qxd4 — you come out a clean pawn up."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "cxd4", "say": "First, trade off the propping pawn. White must recapture..." },
+            { "san": "cxd4" },
+            { "san": "Nxd4", "say": "Now the counting works. White's f3 knight recaptures, but then your queen on b6 takes on d4 — and there is no third defender. A clean extra pawn, and White's e5 pawn is left weak with its base gone. Note the move order: taking with the knight FIRST would have failed, because the c3 pawn was still guarding d4." }
+          ],
+          "assert": "capture"
+        }
+      ],
+      "rejections": [
+        { "san": "Nxd4", "say": "Too early. The c3 pawn still defends d4, so after cxd4 you have simply given away a knight for a pawn. Exchange on d4 with the c-pawn FIRST to remove that defender." },
+        { "san": "Qxb2", "say": "The b2 pawn is a distraction, and after Nbd2 your queen can find itself short of squares. The real target is the base of the chain — start with the pawn exchange on d4." },
+        { "san": "Nb4", "say": "Attacking the bishop instead of the pawn lets White play Be2 and consolidate the centre. The whole plan of the French is d4 — three attackers against two defenders, once the c-pawns come off." },
+        { "san": "Bd7", "say": "Developing the bad bishop is a real French idea, but not while a pawn is hanging by a thread. Cash in on d4 now — the counting favours you only for this one move." }
+      ],
+      "wrongSay": "d4 has two defenders (c3 and Nf3) and three attackers. Which capture removes a defender before you take with a piece?",
+      "successSay": "That's the French in one rule: never attack the head of a pawn chain, always the base — and trade off its supports before you take."
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "id": "minority-attack",
+  "title": "The Minority Attack",
+  "topic": "strategy",
+  "level": 5,
+  "subtitle": "Advance two pawns against three — and leave a weakness behind.",
+  "goals": [
+    "Recognize the Carlsbad structure",
+    "Push b4–b5 to create a backward c-pawn",
+    "Defend by counterattacking in the centre"
+  ],
+  "estMinutes": 7,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "r4rk1/pp2ppbp/2p2np1/q7/2PP4/2N1BN2/PP3PPP/R2Q1RK1 w - - 0 1",
+      "say": "This looks upside down: White attacks on the queenside where Black has MORE pawns. That is exactly the point. By pushing b2–b4–b5 into a three-pawn majority, White forces an exchange that leaves Black with a permanently backward pawn on c6 — a weakness on an open file that lasts the rest of the game. The minority attack is the clearest example in chess of playing for a structural target rather than a tactic.",
+      "highlights": ["c6", "b2", "b4", "b5"]
+    },
+    {
+      "kind": "challenge",
+      "fen": "r4rk1/pp2ppbp/2p2np1/q7/2PP4/2N1BN2/PP3PPP/R2Q1RK1 w - - 0 1",
+      "prompt": "Launch the minority attack — send the b-pawn on its way!",
+      "hints": [
+        "Two pawns are marching at three. The goal is not to win material but to force a weakness on c6.",
+        "b4, heading for b5 where it hits the c6 pawn."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "b4", "say": "The march begins. Next comes b5, and when Black captures (or allows bxc6), his c-pawn becomes backward on a half-open file — a target his pieces must babysit for the rest of the game. Two pawns advancing into three: the arithmetic looks wrong and the strategy is perfect." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "a3", "say": "A useful preparatory move in some versions, but slow — Black gets time for ...a5 stopping the whole plan. When the minority attack is available, play b4 immediately." },
+        { "san": "d5", "say": "Opening the centre helps the defender: with the centre open, Black's pieces come alive and your queenside plan becomes irrelevant. Minority attacks require a stable centre." }
+      ],
+      "wrongSay": "Push the pawn that will attack c6 — the b-pawn.",
+      "successSay": "The target is c6, and the weapon is a pawn that will be exchanged, not queened."
+    },
+    {
+      "kind": "challenge",
+      "fen": "r4rk1/1p2ppbp/p1p2np1/q7/1PPP4/2N1BN2/P4PPP/R2Q1RK1 w - - 0 1",
+      "prompt": "The pawn has reached b4 and Black met it with ...a6. Continue the plan!",
+      "hints": [
+        "Don't be distracted: the plan is to reach b5 and force the exchange on c6.",
+        "b5! Whether Black takes or allows bxc6, the c-pawn becomes backward."
+      ],
+      "solutions": [
+        {
+          "line": [
+            { "san": "b5", "say": "The critical moment. Now ...axb5 cxb5 leaves Black's c6 pawn backward on the half-open c-file, or ...cxb5 cxb5 gives you a protected passer and the c-file. Either way, the structural damage is permanent — and permanent is what strategy means." }
+          ]
+        }
+      ],
+      "rejections": [
+        { "san": "a4", "say": "Supporting the push looks natural but wastes time and lets Black organize ...c5. The pawn should arrive at b5 while Black is still untangling." },
+        { "san": "Qb3", "say": "Piece play instead of the pawn push. The minority attack is carried out by PAWNS; the pieces only support the resulting weakness afterwards." }
+      ],
+      "wrongSay": "Continue the march: the b-pawn goes to b5 and forces the exchange.",
+      "successSay": "One pawn push, one permanent weakness. That is a plan you can play for twenty moves."
+    },
+    {
+      "kind": "intro",
+      "fen": "r4rk1/pp2ppbp/2p2np1/q7/2PP4/2N1BN2/PP3PPP/R2Q1RK1 w - - 0 1",
+      "say": "And the defence, since you will be on both sides: meet a minority attack with counterplay in the CENTRE or on the kingside, where you have the extra pawn. Trading pieces does not help the defender here — activity does. If you're ever the one with a backward c-pawn, your plan is ...c5 (breaking the structure) or a kingside attack. Structure against activity is the oldest argument in chess.",
+      "highlights": ["c6", "e7", "f6"]
+    }
+  ]
+}

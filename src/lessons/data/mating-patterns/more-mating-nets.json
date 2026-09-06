@@ -1,0 +1,141 @@
+{
+  "id": "more-mating-nets",
+  "title": "More Mating Nets",
+  "topic": "mating-patterns",
+  "level": 5,
+  "subtitle": "Six more finishing pictures every attacker should own.",
+  "goals": [
+    "Recognize rook-and-knight and rook-and-bishop nets",
+    "Finish with queen-and-pawn and queen-and-knight duos",
+    "Convert doubled rooks on the seventh"
+  ],
+  "estMinutes": 7,
+  "steps": [
+    {
+      "kind": "intro",
+      "fen": "7k/4R1p1/8/6N1/8/8/8/6K1 w - - 0 1",
+      "say": "Attacks succeed when you already know the finishing picture. You've met the back rank, Anastasia, Boden, Damiano, Philidor and the Greek Gift — here are six more, each a one-move kill. The pattern to internalize in every case: one piece takes away the flight squares, the other delivers the blow.",
+      "highlights": ["g5", "e7", "h8"]
+    },
+    {
+      "kind": "challenge",
+      "fen": "7k/4R1p1/8/6N1/8/8/8/6K1 w - - 0 1",
+      "prompt": "Rook and knight. Mate in one.",
+      "hints": [
+        "Which squares does the g5 knight already control around the black king?",
+        "It covers h7 and f7 — so the back rank is the only door left. Slam it."
+      ],
+      "goal": { "type": "checkmate" },
+      "solutions": [
+        {
+          "line": [
+            { "san": "Re8#", "say": "The knight seals h7, the king's own g7 pawn blocks his last retreat, and the rook mates on the back rank. Rook + knight is the most common attacking duo in practical chess — this is the picture it aims for." }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "wrongSay": "Count the squares the knight covers, then find the check the king cannot answer.",
+      "successSay": "Rook mates, knight covers the escape. Whenever you have R+N near a king, look for this."
+    },
+    {
+      "kind": "challenge",
+      "fen": "6k1/3Q2p1/5P2/8/8/8/8/6K1 w - - 0 1",
+      "prompt": "Queen and pawn — the humblest support in chess. Mate in one!",
+      "hints": [
+        "The f6 pawn guards g7. A queen that lands there cannot be taken by the king.",
+        "Qxg7#."
+      ],
+      "goal": { "type": "checkmate" },
+      "solutions": [
+        {
+          "line": [
+            { "san": "Qxg7#", "say": "The queen sits right next to the king, protected by a single pawn — and that is the entire mate. Any time you have a pawn on f6 (or h6) against a castled king, the queen is one move from ending the game." }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "wrongSay": "Look for a queen move to a square your pawn already defends.",
+      "successSay": "A pawn on f6 is worth an attacking piece. Plant one and the queen finishes."
+    },
+    {
+      "kind": "challenge",
+      "fen": "4r1k1/5p2/7R/8/8/8/1B4K1/8 w - - 0 1",
+      "prompt": "Rook and bishop, working from opposite ends of the board. Mate in one.",
+      "hints": [
+        "The b2 bishop is aiming down the long diagonal at g7 — so the king cannot step there.",
+        "The rook takes the h-file to the back rank: Rh8#."
+      ],
+      "goal": { "type": "checkmate" },
+      "solutions": [
+        {
+          "line": [
+            { "san": "Rh8#", "say": "The long-diagonal bishop covers g7 from three squares away while the rook delivers on h8 — and Black's own rook on e8 blocks the last escape. Distant bishops are the most-missed defenders AND the most-missed attackers." }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "wrongSay": "The bishop already covers g7 from far away. Which rook check has no answer?",
+      "successSay": "A bishop on the long diagonal turns a lone rook into a mating attack."
+    },
+    {
+      "kind": "challenge",
+      "fen": "6k1/5p2/4N2Q/8/8/8/8/7K w - - 0 1",
+      "prompt": "Queen and knight — the deadliest attacking pair. Mate in one!",
+      "hints": [
+        "The e6 knight covers g7 and f8. That leaves the king exactly nowhere.",
+        "Qg7#."
+      ],
+      "goal": { "type": "checkmate" },
+      "solutions": [
+        {
+          "line": [
+            { "san": "Qg7#", "say": "Queen and knight cover squares no other pair can: the knight's protection lets the queen sit right beside the king. This duo is why swapping your knight for a bishop before an attack is so often a mistake." }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "wrongSay": "The knight protects g7. Put the queen there.",
+      "successSay": "Queen + knight — keep them on the board when you're attacking."
+    },
+    {
+      "kind": "challenge",
+      "fen": "6k1/2RR2pp/8/8/8/8/8/6K1 w - - 0 1",
+      "prompt": "Two rooks on the seventh — the 'blind swine'. Feed them: mate in one!",
+      "hints": [
+        "The rooks already own the whole seventh rank. The king has no moves at all — he just needs to be checked.",
+        "Swing one rook to the back rank."
+      ],
+      "goal": { "type": "checkmate" },
+      "solutions": [
+        {
+          "line": [
+            { "san": "Rc8#", "say": "Blind swine converted. Doubled rooks on the seventh usually force mate or perpetual by themselves — when you get them there, look for the back-rank switch first." }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "wrongSay": "The seventh rank is already sealed. Deliver the check on the eighth.",
+      "successSay": "Two rooks on the seventh: get them there and the mate finds itself."
+    },
+    {
+      "kind": "challenge",
+      "fen": "3rkr2/8/3Q4/8/8/8/8/6K1 w - - 0 1",
+      "prompt": "The king is boxed in by his own rooks. Mate in one — and mind the escape squares!",
+      "hints": [
+        "His rooks block d8 and f8. Only d7, e7 and f7 remain — cover all three at once.",
+        "Qe6! — the queen touches every remaining square while checking down the e-file."
+      ],
+      "goal": { "type": "checkmate" },
+      "solutions": [
+        {
+          "line": [
+            { "san": "Qe6#", "say": "The swallowtail (or 'Gueridon') mate: the queen covers d7, e7 and f7 from one square while the king's own rooks seal the back rank. Crowded kings die of their own furniture — a theme you've now met three times." }
+          ],
+          "assert": "checkmate"
+        }
+      ],
+      "wrongSay": "Three flight squares, one queen move. Which square touches d7, e7 and f7 together?",
+      "successSay": "Six new pictures banked. Attacks are pattern recognition — and your library just doubled."
+    }
+  ]
+}
