@@ -150,18 +150,37 @@ Pinned at `chess.js@1.3.0`. These bit us:
   rejected.
 - `moves()` returns SAN strings; `moves({verbose:true})` returns objects with
   `from`, `to`, `captured`, `promotion`, `piece`.
+- **`inCheck()` reports the side to move only.** To test whether a constructed
+  FEN is legal you must also load it with the colours flipped and check again —
+  the illegal case is the side *not* to move being in check, and the loader
+  will not tell you (see the previous bullet: it loads such positions happily).
+- **A king cannot escape a rook check by moving along the checking line.** In
+  `7k/8/5K2/8/8/8/8/R7 w`, `Kf7 Kh7 Rh1#` is mate: `h8` looks free, but once
+  the king steps off `h7` the rook's line extends to `h8`. Manual reasoning
+  gets this backwards in both directions — trust `isCheckmate()`, not the
+  mental picture.
+
+When the tool and your intuition disagree, the tool is right often enough that
+it is not worth the minutes spent proving otherwise — but *do* look at why, and
+sometimes the answer improves the lesson. `Ba3` and `Bh6` in the two-bishop
+mate turned out to be stalemate, which made them far better rejections than the
+ones originally drafted.
 
 ---
 
 ## 7. Failure catalogue
 
-Real failures from the first 51 lessons, with the lesson learned.
+Real failures from the first 90 lessons, with the lesson learned.
 
 **Content**
 
 | Symptom | Cause | Prevention |
 |---|---|---|
 | `illegal SAN "Nxe4" at position …` | Rejection move invented from memory | Probe **every** rejection with `probe san` |
+| `illegal SAN "Qxf7+"` on a square that *is* reachable | Capture notation for an **empty** square — the move was `Qf7+` | `probe san` prints the canonical form; paste that |
+| `illegal SAN "Bd4"` from a bishop that "obviously" reaches it | Wrong square colour, or the bishop's own knight blocking the diagonal | Rejections are where illegal moves cluster — probe each one, never batch-trust them |
+| A rejection duplicates the solution's first move | Two rejections written with the same SAN, or one matching the solution | Dedupe by canonical SAN before commit; the validator rejects solution-matching entries |
+| Constructed position rejected as illegal | Only the side to move was checked for check | Load the FEN with colours flipped too — see §6 |
 | `assert "checkmate" failed` | The line ends in check, not mate | Let `probe line` suggest the assert |
 | `goal "checkmate" is unachievable` | `goal` attached to a multi-move mate | `goal` = one move only; use `solutions` for sequences |
 | Lesson teaches the "wrong" best move | The constructed position had a faster mate (a queen on d3 gave mate in 1 in a position built for a 9-move combination) | `probe mate` every constructed position before writing |
@@ -186,6 +205,11 @@ Real failures from the first 51 lessons, with the lesson learned.
 | App boots to a blank screen | Reanimated/Worklets version mismatch from a lockfile-free install |
 | `tsconfig.json` appears in `git status` | Expo generates one on `expo start`; delete it |
 | `database.lichess.org` returns 403 | Blocked by network policy — plan sourcing around it |
+| `chessgames.com`, `lichess.org`, `en.wikipedia.org` return `EGRESS_BLOCKED` | Also blocked. Web *search* still works and its result summaries often carry the move list; otherwise search for a source on a reachable host |
+| `expo start` exits before serving | Version-check call blocked by the proxy — `EXPO_OFFLINE=1` skips it |
+| Dev server suddenly can't find `react-dom` / `react-native-web` | An `npm install --no-save` (e.g. adding Playwright) makes npm reconcile `node_modules` against `package.json` and **delete** anything unsaved | Reinstall the web deps *and* the pinned `react-native-reanimated` in one command, then confirm `package.json` and the lockfile are untouched |
+| Playwright: `Executable doesn't exist at …chromium_headless_shell-1234` | The installed Playwright expects a different browser revision than the pre-installed one | Launch with `executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome'` and `args: ['--no-sandbox']`; never run `playwright install` |
+| Playwright clicks the wrong element | React Navigation keeps previous screens mounted but hidden, so `getByText` matches an off-screen copy | Use `.getByText(t, {exact: true}).locator('visible=true')` |
 
 ---
 

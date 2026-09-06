@@ -2,7 +2,7 @@
 
 How to add lessons to the Daban chess coach — written for whoever (or
 whatever) picks this up next. It encodes what worked, and what broke, while
-building the first 51 lessons.
+building the first 90 lessons.
 
 | Document | Read it when |
 |---|---|
@@ -36,6 +36,7 @@ positions drafted from memory in the first build had a flaw the tools caught.
 ## Workflow
 
 ```
+0. DE-DUPE    Dump existing solution lines; grep your idea     → AUTHORING.md §1
 1. SOURCE     Pick material, find the real move score          → AUTHORING.md §1
 2. VERIFY     Replay it; extract FENs at decision points       → probe-lesson.js
 3. DESIGN     Choose the step arc and difficulty ramp          → AUTHORING.md §3
@@ -45,6 +46,10 @@ positions drafted from memory in the first build had a flaw the tools caught.
 7. SHIP       Commit per topic batch; CI builds the APK        → VALIDATION.md §5
 ```
 
+Step 0 is not optional and is not the validator's job. Ids and titles never
+collide, but **content duplicates hide as a single challenge inside a
+differently-named lesson** — four of a planned twenty were dropped that way.
+
 Author in batches of one topic, and run steps 6–7 per batch. Every push builds
 a full release APK (~25 min), so a broken batch is expensive; a validated one
 is free.
@@ -53,6 +58,7 @@ is free.
 
 - [ ] `npm run validate:lessons` — **0 errors**
 - [ ] `npm run test:engine` — **0 failures**
+- [ ] The idea is **not already taught** inside another lesson's challenges
 - [ ] Every rejection was probed and is legal *and* instructive
 - [ ] Every `assert` claim comes from a probe, not an assumption
 - [ ] The lesson is registered in `config.ts` **and** `index.ts`
@@ -82,6 +88,17 @@ Paste this, filling the brackets:
 
 ## Current state
 
-51 lessons across 10 topics · 240 steps · 168 challenges · deepest challenge
-13 plies. Validator: 0 errors, 2 intentional style warnings. Engine suite:
-3759 checks.
+90 lessons across 10 topics · 403 steps · 241 challenges · deepest challenge
+13 plies. Every topic holds 8–10 lessons. Validator: 0 errors, 2 intentional
+style warnings. Engine suite: 6045 checks.
+
+### Known gaps
+
+- **Interference / Novotny** — attempted and deliberately cut; no verified
+  position was reachable (see AUTHORING.md §1, *If you cannot verify it, drop
+  it*). Still an open slot for anyone who can source or derive one.
+- Mating patterns is the thinnest topic by *new* material: the 9 lessons there
+  already cover epaulette, smothered, Arabian, Damiano, Boden, Anastasia, the
+  Greek gift, rook-and-knight, rook-and-bishop, queen-and-pawn,
+  queen-and-knight and doubled rooks on the seventh. Check §1's de-dupe recipe
+  carefully before adding there.
