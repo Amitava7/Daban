@@ -18,6 +18,47 @@ Prerequisite: [README.md](README.md). Verification lives in
 | **Opening theory** | Traps, refutations, move-order lessons | Verify the trap actually works; most "traps" online are misremembered |
 | **Puzzle databases** | Bulk tactical drills | The Lichess CC0 puzzle DB (`database.lichess.org`) is ideal, **but it was blocked by this environment's network egress policy**. Check availability before planning around it |
 
+### Check for duplicates before you author
+
+Do this **before** sourcing, not after writing. Ids and titles are checked by
+the validator, so those never collide — but that is not where duplication
+happens. **Duplicated content hides as one challenge inside a lesson with an
+unrelated name.** Four of a planned twenty lessons were dropped this way, each
+caught only by reading the existing solution lines:
+
+| Planned lesson | Already covered by | How it hid |
+|---|---|---|
+| Blackburne–Shilling trap | `opening-traps/gambit-traps` | It *is* that lesson's first challenge; the title says "Queen-Raid Gambits" |
+| Legal's Mate | `tactics/pins` | The whole `Nxe5 Bxd1 Bxf7+ Ke7 Nd5#` combination, as the last challenge |
+| Underpromotion | `opening-traps/lasker-trap` **and** `masterpieces/immortal-studies` | Knight underpromotion in one, the Saavedra rook promotion in the other |
+| Epaulette mate | `mating-patterns/more-mating-nets` **and** `spot-the-mate` | A `Qe6#` / `Qd6#` mate-in-one in each — the pattern is never named in either |
+
+The listing of lesson titles will not save you. Dump the actual solution lines
+and grep the signature moves:
+
+```bash
+# every challenge FEN + solution line in the knowledge base
+python3 - <<'PY'
+import json, glob
+for f in sorted(glob.glob('src/lessons/data/*/*.json')):
+    d = json.load(open(f))
+    for s in d['steps']:
+        if s['kind'] == 'challenge':
+            for sol in s.get('solutions', []):
+                print(d['id'], '|', ' '.join(m['san'] for m in sol['line']))
+PY
+
+# and grep the moves that identify your idea
+grep -rl "Nd5#\|Qxg3#\|=N" src/lessons/data/
+grep -ril "fried liver\|traxler\|englund" src/lessons/data/
+```
+
+Also read the `goals` array of any lesson in the same neighbourhood — a theme
+is often claimed there without appearing in a title. `remove-the-defender`
+lists "Exploit pinned and overloaded defenders" and "Combine deflection with
+the back rank", which is why a separate *Deflection* lesson would have been
+redundant.
+
 ### Getting a game score right
 
 Prose descriptions of famous games are unreliable — truncated, transposed, or
@@ -44,6 +85,63 @@ For named patterns you invent the position. Two rules:
   repeatedly: a position built to teach a 9-move combination that happens to
   contain a mate in 1, so the lesson's "correct" answer is objectively second
   best. Move a piece and re-probe until the search returns your line.
+
+#### Prefer a real game — the reliability gap is enormous
+
+Across the second and third batches the split was stark, and it is the single
+most useful planning fact in this document:
+
+| Material | First-check pass rate |
+|---|---|
+| Web-sourced game scores, replayed | **Effectively all** — Lasker–Thomas, Steinitz–von Bardeleben, Zukertort–Blackburne, Adams–Torre, Réti–Tartakower, Reshevsky–Petrosian and every trap line replayed clean |
+| Positions constructed by hand | **Poor, and it degrades with the pattern's difficulty** — about a third of the simpler nets in the first build had a flaw; for minor-piece mates in the later batches, *every* hand-built attempt failed its first machine check |
+
+Sourcing is cheap and near-certain; construction is expensive and usually
+wrong. **Budget accordingly: reach for a real game first, and treat a
+constructed position as work, not as a shortcut.** Concrete failures, all from
+confident-feeling drafts:
+
+- A "Novotny" interference position where **Black was already in check** from a
+  queen on an open g-file — an illegal position, with White to move.
+- A knight-mate net that assumed a knight on `g6` covers `h7`. It does not: a
+  knight on g6 reaches e5, e7, f4, f8, h4, h8.
+- A two-bishop mate where two natural-looking moves (`Ba3`, `Bh6`) are
+  **stalemate**, not progress.
+
+Verify legality for **both** sides. Checking only "is the side to move in
+check" misses the illegal case, which is the side *not* to move being in check:
+
+```js
+const w = new Chess(fen), b = new Chess(fen.replace(' w ', ' b '));
+const legal = !w.inCheck() && !b.inCheck();   // both must be false
+```
+
+#### Derive the position from a search, not from a diagram in your head
+
+When a pattern really does need a constructed position, let a solver find it.
+Enumerate candidates and filter for the property you want, rather than drafting
+a position and hoping. Breadth is the thing to get right:
+
+- **Fix the kings, enumerate the rest.** Pinning the black king to a corner and
+  the white king to a handful of plausible squares, then sweeping the remaining
+  two pieces over all 64, returns bishop-and-knight mating nets in seconds.
+- **Unconstrained random search is a trap.** A sweep for "a position with a
+  unique forced mate whose key move is a quiet sacrifice" ran for five minutes
+  and found nothing; the same budget spent on a narrow enumeration succeeded
+  immediately.
+- Filter on `mates.length === 1` to guarantee the lesson's answer is *the*
+  answer, and require the defender to have at least one legal move so the
+  position is not already stalemate.
+
+#### If you cannot verify it, drop it
+
+A planned *Interference* lesson was cut for exactly this reason: the geometry
+failed every construction attempt, the one famous practical example sat on
+domains this environment's egress policy blocks, and reconstructing it from a
+prose description would have meant asserting a position no tool had confirmed.
+Shipping it would have broken the non-negotiable rule at the top of
+`README.md`. **A missing lesson is a gap; a wrong lesson teaches something
+false.** Cut it, say so plainly, and leave a note for whoever tries next.
 
 ### Curating for the audience
 
