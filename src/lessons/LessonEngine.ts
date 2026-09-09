@@ -570,3 +570,16 @@ export function pieceAt(fen: string, sq: string): { type: string; color: 'w' | '
 export function sideToMoveLabel(state: LessonRunState): string {
   return state.userColor === 'w' ? 'White to Move' : 'Black to Move';
 }
+
+/** True when the position on the board could be handed to the coach as a real
+ *  game — it loads, and the side to move still has a move to make. Lesson FENs
+ *  are constructed positions, and a step can also end on mate or stalemate, so
+ *  the "play from here" affordance asks this before offering itself. */
+export function isPlayablePosition(fen: string): boolean {
+  try {
+    const chess = new Chess(fen);
+    return !chess.isGameOver() && chess.moves().length > 0;
+  } catch {
+    return false;
+  }
+}

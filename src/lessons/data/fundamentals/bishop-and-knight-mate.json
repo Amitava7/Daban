@@ -81,7 +81,7 @@
     {
       "kind": "intro",
       "fen": "8/8/8/3k4/8/3B4/4N3/4K3 w - - 0 1",
-      "say": "One practical note. If you ever have to do this in a real game, remember two things: the fifty-move rule gives you enough time only if you do not waste moves, and the enemy king will always run toward the wrong-coloured corner, because that is its only hope. Herding it out of that corner and along the edge to the right one is the part worth practising.",
+      "say": "One practical note. If you ever have to do this in a real game, remember two things: the fifty-move rule gives you enough time only if you do not waste moves, and the enemy king will always run toward the wrong-coloured corner, because that is its only hope. Herding it out of that corner and along the edge to the right one is the part worth practising — tap ⚔️ Play here to take this position against the coach and try it.",
       "highlights": [
         "d3",
         "e2"

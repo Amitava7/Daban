@@ -9,6 +9,7 @@
     "web": "expo start --web",
     "validate:lessons": "node scripts/validate-lessons.js",
     "test:engine": "node scripts/test-lesson-engine.js",
+    "test:play": "node scripts/test-play-from-here.js",
     "probe": "node scripts/probe-lesson.js"
   },
   "dependencies": {

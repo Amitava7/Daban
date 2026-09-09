@@ -90,7 +90,7 @@
     {
       "kind": "intro",
       "fen": "8/8/3k4/8/8/8/BB3K2/8 w - - 0 1",
-      "say": "How do you get there from the middle of the board? Put the bishops side by side on adjacent diagonals and walk them forward like a plough, with your king behind them. The enemy king is squeezed toward a corner — any corner — and the box never re-opens as long as the bishops stay adjacent. Give yourself the full fifty moves the rules allow; it usually takes fewer than twenty.",
+      "say": "How do you get there from the middle of the board? Put the bishops side by side on adjacent diagonals and walk them forward like a plough, with your king behind them. The enemy king is squeezed toward a corner — any corner — and the box never re-opens as long as the bishops stay adjacent. Reading about the plough is not the same as pushing it: tap ⚔️ Play here to take this exact position against the coach and force the mate yourself. It usually takes fewer than twenty moves, so the fifty-move rule leaves you plenty of room.",
       "highlights": [
         "a2",
         "b2"
