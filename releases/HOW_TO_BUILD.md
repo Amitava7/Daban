@@ -1,6 +1,8 @@
 # Building the APK
 
-The native Android project has been pre-generated (`android/` folder). Choose one of the options below to produce an APK.
+The native Android project is generated, not checked in — run `npx expo prebuild
+--platform android` first (Options A and B below do this for you where needed).
+Choose one of the options below to produce an APK.
 
 ---
 
@@ -21,6 +23,11 @@ eas build -p android --profile preview
 
 When done, download the `.apk` from the link shown in the terminal (or the Expo dashboard). Copy it here into `releases/`.
 
+> **Size knobs.** Release builds package `arm64-v8a` only and embed
+> Stockfish's small NNUE net (3.3 MB) instead of the stock 65 MB one. See
+> [`docs/APK_SIZE.md`](../docs/APK_SIZE.md) for the trade-off and how to get
+> the full-strength engine or other ABIs back.
+
 ---
 
 ## Option B — Local build (requires Android SDK)
@@ -33,11 +40,14 @@ When done, download the `.apk` from the link shown in the terminal (or the Expo 
 ### Build steps
 
 ```bash
-# From the repo root
+# From the repo root (after `npx expo prebuild --platform android`)
 cd android
 ./gradlew assembleRelease          # release build
 # or
 ./gradlew assembleDebug            # debug build (easier, no signing needed)
+
+# Full-strength engine instead of the small net (+65 MB):
+./gradlew assembleRelease -Pdaban.stockfishNet=big
 ```
 
 Output APK:

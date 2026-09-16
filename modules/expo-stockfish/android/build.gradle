@@ -19,7 +19,12 @@ android {
     externalNativeBuild {
       cmake {
         cppFlags '-std=c++17', '-O3', '-fexceptions', '-frtti'
-        arguments '-DANDROID_STL=c++_shared'
+        // Which NNUE net gets baked into libstockfish.so: 'small' (3.3 MB,
+        // the default) or 'big' (adds the stock 65 MB net back). See
+        // docs/APK_SIZE.md. Override with -Pdaban.stockfishNet=big or a line
+        // in android/gradle.properties.
+        arguments '-DANDROID_STL=c++_shared',
+                  "-DSTOCKFISH_NET=${project.findProperty('daban.stockfishNet') ?: 'small'}"
       }
     }
   }
