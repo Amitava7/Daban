@@ -14,7 +14,7 @@ import { getLessonMeta } from '../lessons/config';
 import { lessonAfter, starString } from '../lessons/progress';
 import {
   initLesson, lessonReducer, legalTargets, isPromotion, pieceAt, sideToMoveLabel,
-  AUTO_MOVE_DELAY, LessonRunState,
+  isPlayablePosition, AUTO_MOVE_DELAY, LessonRunState,
 } from '../lessons/LessonEngine';
 import { ChallengeStep } from '../lessons/types';
 
@@ -58,6 +58,10 @@ export function LessonPlayerScreen() {
       title={meta?.title ?? lesson.title}
       onExit={() => nav.goBack()}
       onGoToLesson={(id: string) => nav.replace('LessonPlayer', { lessonId: id })}
+      onPlayFromHere={(fen: string) => nav.navigate('ColorPicker', {
+        fen,
+        fromLabel: meta?.title ?? lesson.title,
+      })}
       completeLesson={completeLesson}
       recordLessonStep={recordLessonStep}
     />
@@ -70,12 +74,15 @@ interface RunnerProps {
   title: string;
   onExit: () => void;
   onGoToLesson: (id: string) => void;
+  /** Hand the live board position to the coach as a full game. */
+  onPlayFromHere: (fen: string) => void;
   completeLesson: (id: string, pct: number, stars: 0 | 1 | 2 | 3) => Promise<void>;
   recordLessonStep: (id: string, stepIndex: number) => Promise<void>;
 }
 
 function LessonRunner({
-  lessonId, lesson, title, onExit, onGoToLesson, completeLesson, recordLessonStep,
+  lessonId, lesson, title, onExit, onGoToLesson, onPlayFromHere,
+  completeLesson, recordLessonStep,
 }: RunnerProps) {
   const { colors } = useTheme();
   const { width, height } = useWindowDimensions();
@@ -145,6 +152,11 @@ function LessonRunner({
   // Leave the coach panel at least ~45% of the screen so the board is never
   // clipped by it on tall phones.
   const boardSize = Math.min(width, Math.max(240, height * 0.45));
+
+  // Any step's board can be taken over as a real game against the coach —
+  // intro slides included, which is the only way to actually practise the
+  // techniques the coach describes but never asks you to play.
+  const canPlayFromHere = useMemo(() => isPlayablePosition(state.fen), [state.fen]);
 
   const hintsLeft = challenge ? challenge.hints.length - state.hintsUsed : 0;
   const canHint = !!challenge
@@ -300,6 +312,18 @@ function LessonRunner({
               </TouchableOpacity>
             )}
 
+            {canPlayFromHere && (
+              <TouchableOpacity
+                style={[styles.playBtn, { backgroundColor: colors.surface2, borderColor: colors.border }]}
+                onPress={() => onPlayFromHere(state.fen)}
+                activeOpacity={0.8}
+              >
+                <Text style={[styles.playBtnText, { color: colors.ink2 }]} numberOfLines={1}>
+                  ⚔️ Play here
+                </Text>
+              </TouchableOpacity>
+            )}
+
             {(state.phase === 'intro' || state.phase === 'step-complete') && (
               <TouchableOpacity
                 style={[styles.primaryBtn, { backgroundColor: colors.brand }]}
@@ -426,6 +450,10 @@ const styles = StyleSheet.create({
   hintBtn: {
     paddingHorizontal: 16, paddingVertical: 12, borderRadius: 12, borderWidth: 1,
   },
+  playBtn: {
+    paddingHorizontal: 14, paddingVertical: 12, borderRadius: 12, borderWidth: 1,
+  },
+  playBtnText: { fontSize: 13, fontWeight: '600' },
   hintBtnText: { fontSize: 14, fontWeight: '700' },
   primaryBtn: {
     flex: 1, paddingVertical: 14, borderRadius: 12,

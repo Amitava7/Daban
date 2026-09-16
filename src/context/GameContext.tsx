@@ -56,7 +56,14 @@ export interface GameState {
 }
 
 interface GameActions {
-  startNewGame: (playerColor: 'w' | 'b', level: number, timeControl: 'none' | '10min' | '5min') => void;
+  /** `startFen` begins the game from an arbitrary position (e.g. the board a
+   *  lesson step is showing) instead of the initial array. */
+  startNewGame: (
+    playerColor: 'w' | 'b',
+    level: number,
+    timeControl: 'none' | '10min' | '5min',
+    startFen?: string,
+  ) => void;
   selectSquare: (sq: string) => void;
   makeMove: (from: string, to: string, promotion?: string) => Promise<void>;
   resign: () => void;
@@ -283,7 +290,14 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     dlog('state', `status=${status}`);
   }, [status]);
 
-  const endGame = useCallback((res: GameResult, chessInstance: Chess, history: MoveRecord[]) => {
+  // `asColor` overrides the playerColor state for callers that run in the same
+  // tick as startNewGame, before the state setter has landed.
+  const endGame = useCallback((
+    res: GameResult,
+    chessInstance: Chess,
+    history: MoveRecord[],
+    asColor?: 'w' | 'b',
+  ) => {
     setResult(res);
     setStatus('game_over');
     setSelectedSquare(null);
@@ -291,7 +305,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     Storage.saveGame({
       fen: chessInstance.fen(),
       pgn: chessInstance.pgn(),
-      playerColor,
+      playerColor: asColor ?? playerColor,
       level,
       evalHistory: history.map(m => m.eval),
       timestamp: Date.now(),
@@ -303,8 +317,12 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   // Helper: run engine move asynchronously (off the render path).
-  const runEngineMove = useCallback(() => {
-    dlog('engine', `runEngineMove scheduled (level=${level})`);
+  const runEngineMove = useCallback((opts?: { asColor?: 'w' | 'b'; atLevel?: number }) => {
+    // startNewGame calls this in its own tick, so the freshly chosen colour and
+    // level have to be passed in — the state setters have not landed yet.
+    const asColor = opts?.asColor ?? playerColor;
+    const atLevel = opts?.atLevel ?? level;
+    dlog('engine', `runEngineMove scheduled (level=${atLevel})`);
     // Defer to next tick so the "Thinking..." UI updates first; the native
     // engine then computes on its own threads.
     setTimeout(async () => {
@@ -321,7 +339,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       if (Stockfish.available) {
         try {
           await Stockfish.ensureReady();
-          const r = await Stockfish.bestMove(fen, { movetime: COACH_MOVETIME_MS, elo: levelToElo(level) });
+          const r = await Stockfish.bestMove(fen, { movetime: COACH_MOVETIME_MS, elo: levelToElo(atLevel) });
           const uci = r.bestmove;
           if (/^[a-h][1-8][a-h][1-8][qrbn]?$/.test(uci)) {
             moveData = chess.move({
@@ -332,7 +350,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
             const stm = fen.split(' ')[1];
             const cp = r.mate !== null ? (r.mate > 0 ? 100000 : -100000) : (r.scoreCp ?? 0);
             coachEvalWhite = stm === 'w' ? cp : -cp;
-            dlog('perf', `coach(SF) elo=${levelToElo(level)} ply=${ply} took=${Date.now() - tStart}ms depth=${r.depth} nps=${r.nps} bestmove=${uci}`);
+            dlog('perf', `coach(SF) elo=${levelToElo(atLevel)} ply=${ply} took=${Date.now() - tStart}ms depth=${r.depth} nps=${r.nps} bestmove=${uci}`);
           }
         } catch (e) {
           dlog('engine', `Stockfish move failed: ${String(e)}`);
@@ -368,8 +386,8 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       setMoveHistory(updated);
       if (chess.isGameOver()) {
         let res: GameResult = 'draw';
-        if (chess.isCheckmate()) res = playerColor === chess.turn() ? 'loss' : 'win';
-        endGame(res, chess, updated);
+        if (chess.isCheckmate()) res = asColor === chess.turn() ? 'loss' : 'win';
+        endGame(res, chess, updated, asColor);
       } else {
         setStatus('playing');
       }
@@ -383,8 +401,21 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     color: 'w' | 'b',
     lvl: number,
     timeControl: 'none' | '10min' | '5min',
+    startFen?: string,
   ) => {
-    chess.reset();
+    // A caller may hand us any position — a lesson step's board, say. Fall back
+    // to the initial array if it does not load, so a bad FEN never wedges the
+    // screen on an empty board.
+    let fromPosition = false;
+    if (startFen) {
+      try {
+        chess.load(startFen);
+        fromPosition = true;
+      } catch {
+        fromPosition = false;
+      }
+    }
+    if (!fromPosition) chess.reset();
     if (Stockfish.available) {
       Stockfish.ensureReady().then(() => Stockfish.newGame()).catch(() => {});
     }
@@ -404,16 +435,18 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     setPlayerTime(seconds);
     setHintsUsed(0);
     setPendingRefutation(null);
-    setBoardPieces(buildInitialPieces());
+    setBoardPieces(fromPosition ? piecesFromFen(chess.fen()) : buildInitialPieces());
     setLastMove(null);
     setCaptureFlash(null);
 
     // Initial eval from the engine (async; the start position is ~0).
     evaluatePosition(chess.fen()).then(setCurrentEval).catch(() => {});
 
-    if (color === 'b') {
+    // The coach moves first whenever the position's side to move is not ours —
+    // which from the initial array is exactly "the player chose Black".
+    if (chess.turn() !== color) {
       setStatus('engine_thinking');
-      runEngineMove();
+      runEngineMove({ asColor: color, atLevel: lvl });
     }
   }, [chess, runEngineMove]);
 

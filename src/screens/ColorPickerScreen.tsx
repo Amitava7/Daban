@@ -1,15 +1,21 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTheme } from '../context/ThemeContext';
 import { useGame } from '../context/GameContext';
 import { useProgress } from '../context/ProgressContext';
 import { RootStackParamList } from '../navigation/types';
 import { eloToLevel } from '../engine/rating';
+import { isPlayablePosition } from '../lessons/LessonEngine';
 
 type Nav = NativeStackNavigationProp<RootStackParamList, 'ColorPicker'>;
+type Route = RouteProp<RootStackParamList, 'ColorPicker'>;
+
+function sideToMove(fen: string): 'w' | 'b' {
+  return fen.split(' ')[1] === 'b' ? 'b' : 'w';
+}
 
 const TIME_OPTIONS: { label: string; value: 'none' | '5min' | '10min'; sub: string }[] = [
   { label: 'No clock', value: 'none', sub: 'Unlimited time' },
@@ -22,7 +28,19 @@ export function ColorPickerScreen() {
   const nav = useNavigation<Nav>();
   const { startNewGame } = useGame();
   const { settings, progress } = useProgress();
-  const [color, setColor] = useState<'w' | 'b' | 'random'>('w');
+  const params = useRoute<Route>().params;
+
+  // A caller (a lesson step, say) can hand us a position to play out. Anything
+  // unplayable — an illegal FEN, or a finished position — falls back to a
+  // normal game from the initial array.
+  const startFen = params?.fen && isPlayablePosition(params.fen) ? params.fen : undefined;
+  const fromLabel = startFen ? params?.fromLabel : undefined;
+
+  // Defaulting to the side to move is what you want nine times out of ten:
+  // you tapped "play here" because it is your turn in the lesson.
+  const [color, setColor] = useState<'w' | 'b' | 'random'>(
+    startFen ? sideToMove(startFen) : 'w'
+  );
   const [timeControl, setTimeControl] = useState<'none' | '5min' | '10min'>(
     settings.timeControl ?? '10min'
   );
@@ -35,7 +53,7 @@ export function ColorPickerScreen() {
     const chosen = color === 'random'
       ? (Math.random() < 0.5 ? 'w' : 'b')
       : color;
-    startNewGame(chosen, coachLevel, timeControl);
+    startNewGame(chosen, coachLevel, timeControl, startFen);
     nav.navigate('Game');
   };
 
@@ -47,11 +65,25 @@ export function ColorPickerScreen() {
         </TouchableOpacity>
 
         <Text style={[styles.title, { color: colors.ink, fontFamily: 'serif' }]}>
-          New game
+          {startFen ? 'Play from here' : 'New game'}
         </Text>
         <Text style={[styles.sub, { color: colors.inkSoft }]}>
           vs Coach · matches your {progress.elo} ELO
         </Text>
+
+        {startFen && (
+          <View style={[styles.fromCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+            <Text style={[styles.fromLabel, { color: colors.inkMute }]}>FROM THE POSITION ON THE BOARD</Text>
+            {!!fromLabel && (
+              <Text style={[styles.fromTitle, { color: colors.ink }]} numberOfLines={2}>
+                {fromLabel}
+              </Text>
+            )}
+            <Text style={[styles.fromFen, { color: colors.inkSoft }]} numberOfLines={1}>
+              {startFen}
+            </Text>
+          </View>
+        )}
 
         {/* Color choice */}
         <Text style={[styles.sectionLabel, { color: colors.inkMute }]}>PLAY AS</Text>
@@ -131,6 +163,15 @@ const styles = StyleSheet.create({
     marginBottom: -6,
     marginTop: 4,
   },
+  fromCard: { borderWidth: 1, borderRadius: 14, padding: 12, gap: 5 },
+  fromLabel: {
+    fontSize: 10,
+    fontFamily: 'monospace',
+    textTransform: 'uppercase',
+    letterSpacing: 1.2,
+  },
+  fromTitle: { fontSize: 15, fontWeight: '600' },
+  fromFen: { fontSize: 11, fontFamily: 'monospace' },
   colorRow: { flexDirection: 'row', gap: 12 },
   colorBtn: {
     flex: 1,
